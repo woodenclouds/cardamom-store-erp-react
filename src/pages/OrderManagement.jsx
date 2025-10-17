@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, ArrowRight, Package, Droplet, CheckCircle2, Truck } from 'lucide-react';
+import { Plus, ArrowRight, Package, Droplet, CheckCircle2, Truck, Search, X } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -23,6 +23,11 @@ const OrderManagement = () => {
   const [customers, setCustomers] = useState([]);
   const [drierNumber, setDrierNumber] = useState('');
   const [dryQuantity, setDryQuantity] = useState('');
+  const [searchTerms, setSearchTerms] = useState({
+    pending: '',
+    drying: '',
+    completed: '',
+  });
 
   const {
     register,
@@ -138,19 +143,79 @@ const OrderManagement = () => {
     reset({});
   };
 
-  // Filter orders by status
-  const pendingOrders = orders.filter(o => o.status === 'pending');
-  const dryingOrders = orders.filter(o => o.status === 'drying');
-  const completedOrders = orders.filter(o => o.status === 'completed');
+  const handleSearchChange = (column, value) => {
+    setSearchTerms(prev => ({
+      ...prev,
+      [column]: value
+    }));
+  };
 
-  const StatusColumn = ({ title, icon: Icon, color, orders, actionButton }) => (
+  const clearSearch = (column) => {
+    setSearchTerms(prev => ({
+      ...prev,
+      [column]: ''
+    }));
+  };
+
+  // Search function to filter orders
+  const searchOrders = (orders, searchTerm) => {
+    if (!searchTerm) return orders;
+    
+    const term = searchTerm.toLowerCase();
+    return orders.filter(order => 
+      order.customerName.toLowerCase().includes(term) ||
+      order.batchNo?.toLowerCase().includes(term) ||
+      order.drierNo?.toLowerCase().includes(term) ||
+      order.quantity.toString().includes(term) ||
+      order.amount?.toString().includes(term) ||
+      order.date.includes(term)
+    );
+  };
+
+  // Filter orders by status and search
+  const pendingOrders = searchOrders(
+    orders.filter(o => o.status === 'pending'), 
+    searchTerms.pending
+  );
+  const dryingOrders = searchOrders(
+    orders.filter(o => o.status === 'drying'), 
+    searchTerms.drying
+  );
+  const completedOrders = searchOrders(
+    orders.filter(o => o.status === 'completed'), 
+    searchTerms.completed
+  );
+
+  const StatusColumn = ({ title, icon: Icon, color, orders, actionButton, searchKey }) => (
     <div className="flex-1 min-w-[280px]">
-      <div className={`${color} rounded-t-lg p-4 flex items-center gap-2`}>
-        <Icon className="w-5 h-5" />
-        <h2 className="font-normal text-lg">{title}</h2>
-        <span className="ml-auto bg-white dark:bg-slate-800 px-2.5 py-0.5 rounded-full text-sm font-medium text-slate-900 dark:text-slate-100">
-          {orders.length}
-        </span>
+      <div className={`${color} rounded-t-lg p-4`}>
+        <div className="flex items-center gap-2 mb-3">
+          <Icon className="w-5 h-5" />
+          <h2 className="font-normal text-lg">{title}</h2>
+          <span className="ml-auto bg-white dark:bg-slate-800 px-2.5 py-0.5 rounded-full text-sm font-medium text-slate-900 dark:text-slate-100">
+            {orders.length}
+          </span>
+        </div>
+        
+        {/* Search Input */}
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <input
+            type="text"
+            placeholder="Search orders..."
+            value={searchTerms[searchKey]}
+            onChange={(e) => handleSearchChange(searchKey, e.target.value)}
+            className="w-full pl-10 pr-8 py-2 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-lg text-sm border border-white/20 focus:border-white/40 focus:outline-none"
+          />
+          {searchTerms[searchKey] && (
+            <button
+              onClick={() => clearSearch(searchKey)}
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
+        </div>
       </div>
       <div className="bg-slate-50 dark:bg-slate-800/50 min-h-[calc(100vh-280px)] p-3 space-y-3 rounded-b-lg">
         {orders.length === 0 ? (
@@ -247,6 +312,7 @@ const OrderManagement = () => {
           icon={Package}
           color="bg-slate-600 dark:bg-slate-700 text-white"
           orders={pendingOrders}
+          searchKey="pending"
           actionButton={{
             label: 'Add to Drier',
             icon: <ArrowRight className="w-4 h-4" />,
@@ -260,6 +326,7 @@ const OrderManagement = () => {
           icon={Droplet}
           color="bg-blue-600 dark:bg-blue-700 text-white"
           orders={dryingOrders}
+          searchKey="drying"
           actionButton={{
             label: 'Mark Completed',
             icon: <CheckCircle2 className="w-4 h-4" />,
@@ -273,6 +340,7 @@ const OrderManagement = () => {
           icon={CheckCircle2}
           color="bg-green-600 dark:bg-green-700 text-white"
           orders={completedOrders}
+          searchKey="completed"
           actionButton={{
             label: 'Complete & Remove',
             icon: <Truck className="w-4 h-4" />,
