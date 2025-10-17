@@ -109,22 +109,22 @@ const Ledger = () => {
             </div>
           </div>
 
-          <div className="flex gap-2 items-end">
+          <div className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-end">
             <button
               onClick={() => handleExport('pdf')}
               disabled={!selectedCustomer}
-              className="btn-secondary flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="btn-secondary flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Download className="w-4 h-4" />
-              Export PDF
+              <span>Export PDF</span>
             </button>
             <button
               onClick={() => handleExport('excel')}
               disabled={!selectedCustomer}
-              className="btn-secondary flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="btn-secondary flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Download className="w-4 h-4" />
-              Export Excel
+              <span>Export Excel</span>
             </button>
           </div>
         </div>

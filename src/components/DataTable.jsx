@@ -92,7 +92,7 @@ const DataTable = ({
                 </th>
               ))}
               {(onEdit || onDelete) && (
-                <th className="px-4 py-3 text-right text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                <th className="px-2 sm:px-4 py-3 text-right text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider whitespace-nowrap">
                   Actions
                 </th>
               )}
@@ -135,25 +135,27 @@ const DataTable = ({
                     </td>
                   ))}
                   {(onEdit || onDelete) && (
-                    <td className="px-4 py-3 text-right text-sm space-x-2">
-                      {onEdit && (
-                        <button
-                          onClick={() => onEdit(row)}
-                          className="inline-flex items-center p-1.5 text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded transition-colors"
-                          title="Edit"
-                        >
-                          <Edit className="w-4 h-4" />
-                        </button>
-                      )}
-                      {onDelete && (
-                        <button
-                          onClick={() => onDelete(row)}
-                          className="inline-flex items-center p-1.5 text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
-                          title="Delete"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      )}
+                    <td className="px-2 sm:px-4 py-3 text-right text-sm">
+                      <div className="flex justify-end gap-1 sm:gap-2">
+                        {onEdit && (
+                          <button
+                            onClick={() => onEdit(row)}
+                            className="inline-flex items-center p-1.5 sm:p-2 text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded transition-colors min-w-[2rem] min-h-[2rem] touch-manipulation"
+                            title="Edit"
+                          >
+                            <Edit className="w-4 h-4" />
+                          </button>
+                        )}
+                        {onDelete && (
+                          <button
+                            onClick={() => onDelete(row)}
+                            className="inline-flex items-center p-1.5 sm:p-2 text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors min-w-[2rem] min-h-[2rem] touch-manipulation"
+                            title="Delete"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        )}
+                      </div>
                     </td>
                   )}
                 </tr>

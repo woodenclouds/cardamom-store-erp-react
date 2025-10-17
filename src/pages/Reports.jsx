@@ -137,7 +137,7 @@ const Reports = () => {
                 </div>
               </div>
 
-              <div className="flex items-end gap-2">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-end gap-2">
                 <button
                   onClick={fetchReports}
                   className="btn-primary"
@@ -146,10 +146,10 @@ const Reports = () => {
                 </button>
                 <button
                   onClick={() => handleExport('drying')}
-                  className="btn-secondary flex items-center gap-2"
+                  className="btn-secondary flex items-center justify-center gap-2"
                 >
                   <Download className="w-4 h-4" />
-                  Export
+                  <span>Export</span>
                 </button>
               </div>
             </div>

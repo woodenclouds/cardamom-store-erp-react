@@ -138,7 +138,7 @@ const Settings = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-normal text-slate-700 dark:text-slate-300 mb-2">
                   Full Name
@@ -187,7 +187,7 @@ const Settings = () => {
                 />
               </div>
 
-              <div className="md:col-span-2">
+              <div className="sm:col-span-2">
                 <label className="block text-sm font-normal text-slate-700 dark:text-slate-300 mb-2">
                   Address
                 </label>
@@ -286,7 +286,7 @@ const Settings = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-normal text-slate-700 dark:text-slate-300 mb-2">
                   Price per Kg
@@ -366,7 +366,7 @@ const Settings = () => {
               </button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {places.map((place) => (
                 <div
                   key={place.id}
@@ -448,7 +448,7 @@ const Settings = () => {
       case 'categories':
         return (
           <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-lg p-6 border border-green-200 dark:border-green-800">
                 <div className="flex items-center space-x-3 mb-4">
                   <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center">
@@ -597,7 +597,7 @@ const Settings = () => {
       <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
         {/* Tabs */}
         <div className="border-b border-slate-200 dark:border-slate-700">
-          <nav className="flex space-x-1 p-2 overflow-x-auto" aria-label="Settings tabs">
+          <nav className="flex space-x-1 p-2 overflow-x-auto scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-600 scrollbar-track-transparent" aria-label="Settings tabs">
             {tabs.map((tab) => {
               const Icon = tab.icon;
               return (
@@ -610,7 +610,7 @@ const Settings = () => {
                       : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700'
                   }`}
                 >
-                  <Icon className="w-4 h-4" />
+                  <Icon className="w-4 h-4 flex-shrink-0" />
                   <span>{tab.label}</span>
                 </button>
               );

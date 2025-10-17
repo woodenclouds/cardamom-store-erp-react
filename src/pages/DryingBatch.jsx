@@ -189,7 +189,7 @@ const DryingBatch = () => {
             )}
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label htmlFor="startDate" className="label">
                 Start Date
@@ -218,7 +218,7 @@ const DryingBatch = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label htmlFor="rawQty" className="label">
                 Raw Quantity (kg)
@@ -262,7 +262,7 @@ const DryingBatch = () => {
             </div>
           )}
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label htmlFor="grade" className="label">
                 Grade
