@@ -191,7 +191,7 @@ const Payrolls = () => {
       render: (value) => (
         <div className="flex items-center space-x-2">
           <DollarSign className="w-4 h-4 text-green-600 dark:text-green-400" />
-          <span className="text-sm font-bold text-slate-900 dark:text-slate-100">
+          <span className="text-sm font-normal text-slate-900 dark:text-slate-100">
             ₹{value.toLocaleString()}
           </span>
         </div>
@@ -484,7 +484,7 @@ const Payrolls = () => {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Total Payrolls</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">{totalPayrolls}</p>
+              <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">{totalPayrolls}</p>
             </div>
           </div>
         </div>
@@ -496,7 +496,7 @@ const Payrolls = () => {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Total Paid</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+              <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
                 ₹{totalPaid.toLocaleString()}
               </p>
             </div>
@@ -510,7 +510,7 @@ const Payrolls = () => {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Total Pending</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+              <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
                 ₹{totalPending.toLocaleString()}
               </p>
             </div>
@@ -524,7 +524,7 @@ const Payrolls = () => {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Pending Count</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">{pendingPayrolls}</p>
+              <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">{pendingPayrolls}</p>
             </div>
           </div>
         </div>

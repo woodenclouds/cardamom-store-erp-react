@@ -402,7 +402,7 @@ const Purchases = () => {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Total Purchases</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">{purchases.length}</p>
+              <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">{purchases.length}</p>
             </div>
           </div>
         </div>
@@ -414,7 +414,7 @@ const Purchases = () => {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Total Amount</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+              <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
                 ₹{totalPurchases.toLocaleString()}
               </p>
             </div>
@@ -428,7 +428,7 @@ const Purchases = () => {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Total Quantity</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+              <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
                 {totalQuantity.toFixed(2)}
               </p>
             </div>
@@ -442,7 +442,7 @@ const Purchases = () => {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Active Vendors</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+              <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
                 {new Set(purchases.map(p => p.vendorId)).size}
               </p>
             </div>

@@ -242,7 +242,7 @@ const Customers = () => {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Total Customers</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">{customers.length}</p>
+              <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">{customers.length}</p>
             </div>
           </div>
         </div>
@@ -254,7 +254,7 @@ const Customers = () => {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Locations</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+              <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
                 {new Set(customers.map(c => c.location)).size}
               </p>
             </div>
@@ -268,7 +268,7 @@ const Customers = () => {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Houses</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+              <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
                 {customers.filter(c => c.houseName).length}
               </p>
             </div>

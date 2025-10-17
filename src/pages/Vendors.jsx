@@ -299,7 +299,7 @@ const Vendors = () => {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Total Vendors</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">{vendors.length}</p>
+              <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">{vendors.length}</p>
             </div>
           </div>
         </div>
@@ -311,7 +311,7 @@ const Vendors = () => {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Active Vendors</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+              <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
                 {activeVendorsCount}
               </p>
             </div>
@@ -325,7 +325,7 @@ const Vendors = () => {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Locations</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+              <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
                 {new Set(vendors.map(v => v.address.split(',')[0])).size}
               </p>
             </div>

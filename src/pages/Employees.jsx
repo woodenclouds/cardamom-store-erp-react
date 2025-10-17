@@ -360,7 +360,7 @@ const Employees = () => {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Total Employees</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">{totalEmployees}</p>
+              <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">{totalEmployees}</p>
             </div>
           </div>
         </div>
@@ -372,7 +372,7 @@ const Employees = () => {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Active</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">{activeEmployees}</p>
+              <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">{activeEmployees}</p>
             </div>
           </div>
         </div>
@@ -384,7 +384,7 @@ const Employees = () => {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Weekly Payroll</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+              <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
                 ₹{weeklyPayroll.toLocaleString()}
               </p>
             </div>
@@ -398,7 +398,7 @@ const Employees = () => {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Monthly Payroll</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+              <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
                 ₹{monthlyPayroll.toLocaleString()}
               </p>
             </div>
