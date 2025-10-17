@@ -14,6 +14,7 @@ import {
   TrendingDown,
   Tag,
   Bell,
+  Workflow,
 } from 'lucide-react';
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -23,6 +24,7 @@ const Sidebar = ({ isOpen, onClose }) => {
 
   const menuItems = [
     { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+    { path: '/order-management', icon: Workflow, label: 'Order Management' },
     { path: '/collection', icon: Package, label: 'Collections' },
     { path: '/drying-batch', icon: Flame, label: 'Drying Batches' },
     { path: '/customers', icon: Users, label: 'Customers' },

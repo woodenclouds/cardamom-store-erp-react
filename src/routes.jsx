@@ -13,6 +13,7 @@ import Income from './pages/Income';
 import Expenses from './pages/Expenses';
 import IncomeCategories from './pages/IncomeCategories';
 import ExpenseCategories from './pages/ExpenseCategories';
+import OrderManagement from './pages/OrderManagement';
 
 // Protected Route wrapper
 export const ProtectedRoute = ({ children }) => {
@@ -54,6 +55,14 @@ const routes = [
     element: (
       <ProtectedRoute>
         <Dashboard />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/order-management',
+    element: (
+      <ProtectedRoute>
+        <OrderManagement />
       </ProtectedRoute>
     ),
   },

@@ -47,7 +47,7 @@ const Login = () => {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-600 rounded-full mb-4">
             <span className="text-3xl">🌿</span>
           </div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+          <h1 className="text-2xl font-normal text-slate-900 dark:text-slate-100 mb-2">
             Cardamom Dry Center
           </h1>
           <p className="text-sm text-slate-600 dark:text-slate-400">

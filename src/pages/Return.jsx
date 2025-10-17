@@ -133,7 +133,7 @@ const Return = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+          <h1 className="text-2xl font-normal text-slate-900 dark:text-slate-100 mb-2">
             Returns
           </h1>
           <p className="text-slate-600 dark:text-slate-400">

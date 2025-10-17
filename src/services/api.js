@@ -51,12 +51,14 @@ export const authAPI = {
 
 export const collectionAPI = {
   getAll: async () => {
-    // Mock data
+    // Mock data with status for Order Management
     return Promise.resolve({
       data: [
-        { id: 1, customerName: 'Rajesh Kumar', date: '2025-10-15', quantity: 150, rate: 850, amount: 127500, batchNo: 'B001' },
-        { id: 2, customerName: 'Suresh Nair', date: '2025-10-14', quantity: 200, rate: 820, amount: 164000, batchNo: 'B001' },
-        { id: 3, customerName: 'Mahesh Singh', date: '2025-10-13', quantity: 180, rate: 830, amount: 149400, batchNo: 'B002' },
+        { id: 1, customerName: 'Rajesh Kumar', date: '2025-10-15', quantity: 150, rate: 850, amount: 127500, batchNo: 'B001', status: 'drying', drierNo: 'D1', dryQty: 45 },
+        { id: 2, customerName: 'Suresh Nair', date: '2025-10-14', quantity: 200, rate: 820, amount: 164000, batchNo: 'B001', status: 'pending', drierNo: null, dryQty: 0 },
+        { id: 3, customerName: 'Mahesh Singh', date: '2025-10-13', quantity: 180, rate: 830, amount: 149400, batchNo: 'B002', status: 'pending', drierNo: null, dryQty: 0 },
+        { id: 4, customerName: 'Ramesh Patel', date: '2025-10-12', quantity: 220, rate: 800, amount: 176000, batchNo: 'B003', status: 'completed', drierNo: 'D2', dryQty: 66 },
+        { id: 5, customerName: 'Dinesh Reddy', date: '2025-10-11', quantity: 160, rate: 840, amount: 134400, batchNo: 'B004', status: 'completed', drierNo: 'D3', dryQty: 48 },
       ],
     });
   },

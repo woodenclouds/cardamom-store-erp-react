@@ -40,9 +40,9 @@ const Navbar = ({ onMenuClick, user, sidebarOpen }) => {
           </button>
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">🌿</span>
+              <span className="text-white font-normal text-sm">🌿</span>
             </div>
-            <h1 className="text-lg font-bold text-slate-900 dark:text-slate-100 hidden sm:block">
+            <h1 className="text-lg font-normal text-slate-900 dark:text-slate-100 hidden sm:block">
               Cardamom Dry Center
             </h1>
           </div>
