@@ -144,6 +144,7 @@ const StoreManagement = () => {
   };
 
   const handleSearchChange = (column, value) => {
+    console.log('Search change:', column, value); // Debug log
     setSearchTerms(prev => ({
       ...prev,
       [column]: value
@@ -159,17 +160,20 @@ const StoreManagement = () => {
 
   // Search function to filter orders
   const searchOrders = (orders, searchTerm) => {
-    if (!searchTerm) return orders;
+    if (!searchTerm || searchTerm.trim() === '') return orders;
     
-    const term = searchTerm.toLowerCase();
-    return orders.filter(order => 
+    const term = searchTerm.toLowerCase().trim();
+    console.log('Searching with term:', term, 'in orders:', orders.length); // Debug log
+    const filtered = orders.filter(order => 
       order.customerName.toLowerCase().includes(term) ||
-      order.batchNo?.toLowerCase().includes(term) ||
-      order.drierNo?.toLowerCase().includes(term) ||
+      (order.batchNo && order.batchNo.toLowerCase().includes(term)) ||
+      (order.drierNo && order.drierNo.toLowerCase().includes(term)) ||
       order.quantity.toString().includes(term) ||
       order.amount?.toString().includes(term) ||
       order.date.includes(term)
     );
+    console.log('Filtered results:', filtered.length); // Debug log
+    return filtered;
   };
 
   // Filter orders by status and search
@@ -203,11 +207,14 @@ const StoreManagement = () => {
           <input
             type="text"
             placeholder="Search orders..."
-            value={searchTerms[searchKey]}
-            onChange={(e) => handleSearchChange(searchKey, e.target.value)}
+            value={searchTerms[searchKey] || ''}
+            onChange={(e) => {
+              const value = e.target.value;
+              handleSearchChange(searchKey, value);
+            }}
             className="w-full pl-10 pr-8 py-2 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-lg text-sm border border-white/20 focus:border-white/40 focus:outline-none"
           />
-          {searchTerms[searchKey] && (
+          {searchTerms[searchKey] && searchTerms[searchKey].length > 0 && (
             <button
               onClick={() => clearSearch(searchKey)}
               className="absolute right-2 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-colors"
