@@ -437,7 +437,7 @@ const DebtManagement = () => {
     <div>
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-normal text-slate-900 dark:text-slate-100 mb-2">
+          <h1 className="text-lg sm:text-2xl font-normal text-slate-900 dark:text-slate-100 mb-1 sm:mb-2">
             Debt Management
           </h1>
           <p className="text-slate-600 dark:text-slate-400">
@@ -447,14 +447,14 @@ const DebtManagement = () => {
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
           <button
             onClick={() => setIsDebtModalOpen(true)}
-            className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
+            className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors text-sm sm:text-base"
           >
             <Plus className="w-5 h-5" />
             <span>Give Debt</span>
           </button>
           <button
             onClick={() => setIsRepaymentModalOpen(true)}
-            className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+            className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm sm:text-base"
           >
             <CreditCard className="w-5 h-5" />
             <span>Record Repayment</span>

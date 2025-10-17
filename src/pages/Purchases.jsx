@@ -377,19 +377,19 @@ const Purchases = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-normal text-slate-900 dark:text-slate-100">Purchase Management</h1>
+          <h1 className="text-lg sm:text-2xl font-normal text-slate-900 dark:text-slate-100 mb-1 sm:mb-2">Purchase Management</h1>
           <p className="text-slate-600 dark:text-slate-400">
             Track and manage all purchase transactions
           </p>
         </div>
         <button
           onClick={handleAddPurchase}
-          className="btn-primary flex items-center gap-2"
+          className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm sm:text-base"
         >
           <Plus className="w-4 h-4" />
-          Add Purchase
+          <span>Add Purchase</span>
         </button>
       </div>
 

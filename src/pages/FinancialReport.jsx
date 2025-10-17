@@ -131,7 +131,7 @@ const FinancialReport = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-normal text-slate-900 dark:text-slate-100 mb-2">
+          <h1 className="text-lg sm:text-2xl font-normal text-slate-900 dark:text-slate-100 mb-1 sm:mb-2">
             Financial Report
           </h1>
           <p className="text-slate-600 dark:text-slate-400">

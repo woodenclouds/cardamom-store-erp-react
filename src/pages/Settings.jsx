@@ -586,7 +586,7 @@ const Settings = () => {
             <SettingsIcon className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-2xl font-normal text-slate-900 dark:text-slate-100">Settings</h1>
+            <h1 className="text-lg sm:text-2xl font-normal text-slate-900 dark:text-slate-100">Settings</h1>
             <p className="text-slate-600 dark:text-slate-400">
               Manage your profile, store, and application preferences
             </p>

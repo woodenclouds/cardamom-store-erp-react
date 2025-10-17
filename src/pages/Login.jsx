@@ -47,7 +47,7 @@ const Login = () => {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-600 rounded-full mb-4">
             <span className="text-3xl">🌿</span>
           </div>
-          <h1 className="text-2xl font-normal text-slate-900 dark:text-slate-100 mb-2">
+          <h1 className="text-lg sm:text-2xl font-normal text-slate-900 dark:text-slate-100 mb-1 sm:mb-2">
             Cardamom Dry Center
           </h1>
           <p className="text-sm text-slate-600 dark:text-slate-400">
@@ -96,7 +96,7 @@ const Login = () => {
           <button
             type="submit"
             disabled={loading}
-            className="btn-primary w-full flex items-center justify-center gap-2"
+            className="w-full inline-flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm sm:text-base"
           >
             {loading && <Loader2 className="w-4 h-4 animate-spin" />}
             {loading ? 'Logging in...' : 'Login'}
