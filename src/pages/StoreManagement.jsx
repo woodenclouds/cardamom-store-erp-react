@@ -14,7 +14,7 @@ const schema = yup.object().shape({
   rate: yup.number().positive('Must be positive').required('Rate is required'),
 });
 
-const OrderManagement = () => {
+const StoreManagement = () => {
   const [orders, setOrders] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDrierModalOpen, setIsDrierModalOpen] = useState(false);
@@ -290,7 +290,7 @@ const OrderManagement = () => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-normal text-slate-900 dark:text-slate-100 mb-2">
-            Order Management
+            Store Management
           </h1>
           <p className="text-slate-600 dark:text-slate-400">
             Track orders from collection to return
@@ -582,5 +582,5 @@ const OrderManagement = () => {
   );
 };
 
-export default OrderManagement;
+export default StoreManagement;
 

@@ -144,7 +144,7 @@ const Dashboard = () => {
 
       {/* Collection Trends Chart */}
       <div className="card">
-        <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
+        <h2 className="text-lg font-normal text-slate-900 dark:text-slate-100 mb-4">
           Daily Collection Trends (Last 7 Days)
         </h2>
         <ResponsiveContainer width="100%" height={300}>
@@ -176,7 +176,7 @@ const Dashboard = () => {
 
       {/* Financial Trends Chart */}
       <div className="card">
-        <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
+        <h2 className="text-lg font-normal text-slate-900 dark:text-slate-100 mb-4">
           Revenue vs Expenses Trends (Last 7 Days)
         </h2>
         <ResponsiveContainer width="100%" height={300}>
@@ -221,8 +221,8 @@ const Dashboard = () => {
         <div className="card">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-medium text-slate-600 dark:text-slate-400">Cash Balance</h3>
-              <p className="text-2xl font-semibold text-slate-900 dark:text-slate-100">
+              <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">Cash Balance</h3>
+              <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
                 ₹{accountSummary.cashBalance.toLocaleString()}
               </p>
             </div>
@@ -235,8 +235,8 @@ const Dashboard = () => {
         <div className="card">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-medium text-slate-600 dark:text-slate-400">Bank Balance</h3>
-              <p className="text-2xl font-semibold text-slate-900 dark:text-slate-100">
+              <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">Bank Balance</h3>
+              <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
                 ₹{accountSummary.bankBalance.toLocaleString()}
               </p>
             </div>
@@ -249,8 +249,8 @@ const Dashboard = () => {
         <div className="card">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-medium text-slate-600 dark:text-slate-400">Receivables</h3>
-              <p className="text-2xl font-semibold text-slate-900 dark:text-slate-100">
+              <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">Receivables</h3>
+              <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
                 ₹{accountSummary.totalReceivables.toLocaleString()}
               </p>
             </div>
@@ -263,8 +263,8 @@ const Dashboard = () => {
         <div className="card">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-medium text-slate-600 dark:text-slate-400">Payables</h3>
-              <p className="text-2xl font-semibold text-slate-900 dark:text-slate-100">
+              <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">Payables</h3>
+              <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
                 ₹{accountSummary.totalPayables.toLocaleString()}
               </p>
             </div>
@@ -278,7 +278,7 @@ const Dashboard = () => {
       {/* Recent Activity */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6">
         <div className="card">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
+          <h2 className="text-lg font-normal text-slate-900 dark:text-slate-100 mb-4">
             Recent Collections
           </h2>
           <div className="space-y-3">
@@ -292,10 +292,10 @@ const Dashboard = () => {
                 className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-700 rounded-lg"
               >
                 <div>
-                  <p className="font-medium text-slate-900 dark:text-slate-100">{item.customer}</p>
+                  <p className="font-normal text-slate-900 dark:text-slate-100">{item.customer}</p>
                   <p className="text-sm text-slate-600 dark:text-slate-400">{item.time}</p>
                 </div>
-                <span className="font-semibold text-primary-600 dark:text-primary-400">
+                <span className="font-normal text-primary-600 dark:text-primary-400">
                   {item.qty}
                 </span>
               </div>
@@ -304,7 +304,7 @@ const Dashboard = () => {
         </div>
 
         <div className="card">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
+          <h2 className="text-lg font-normal text-slate-900 dark:text-slate-100 mb-4">
             Recent Income
           </h2>
           <div className="space-y-3">
@@ -314,10 +314,10 @@ const Dashboard = () => {
                 className="flex items-center justify-between p-3 bg-green-50 dark:bg-green-900/10 rounded-lg"
               >
                 <div>
-                  <p className="font-medium text-slate-900 dark:text-slate-100">{item.category}</p>
+                  <p className="font-normal text-slate-900 dark:text-slate-100">{item.category}</p>
                   <p className="text-sm text-slate-600 dark:text-slate-400">{item.description}</p>
                 </div>
-                <span className="font-semibold text-green-600 dark:text-green-400">
+                <span className="font-normal text-green-600 dark:text-green-400">
                   +₹{item.amount.toLocaleString()}
                 </span>
               </div>
@@ -326,7 +326,7 @@ const Dashboard = () => {
         </div>
 
         <div className="card">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
+          <h2 className="text-lg font-normal text-slate-900 dark:text-slate-100 mb-4">
             Recent Expenses
           </h2>
           <div className="space-y-3">
@@ -336,10 +336,10 @@ const Dashboard = () => {
                 className="flex items-center justify-between p-3 bg-red-50 dark:bg-red-900/10 rounded-lg"
               >
                 <div>
-                  <p className="font-medium text-slate-900 dark:text-slate-100">{item.category}</p>
+                  <p className="font-normal text-slate-900 dark:text-slate-100">{item.category}</p>
                   <p className="text-sm text-slate-600 dark:text-slate-400">{item.vendor || item.description}</p>
                 </div>
-                <span className="font-semibold text-red-600 dark:text-red-400">
+                <span className="font-normal text-red-600 dark:text-red-400">
                   -₹{item.amount.toLocaleString()}
                 </span>
               </div>
@@ -350,7 +350,7 @@ const Dashboard = () => {
 
       {/* Active Batches */}
       <div className="card">
-        <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
+        <h2 className="text-lg font-normal text-slate-900 dark:text-slate-100 mb-4">
           Active Batches
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -363,7 +363,7 @@ const Dashboard = () => {
               className="p-4 bg-slate-50 dark:bg-slate-700 rounded-lg"
             >
               <div className="flex items-center justify-between mb-3">
-                <p className="font-medium text-slate-900 dark:text-slate-100">{item.batch}</p>
+                <p className="font-normal text-slate-900 dark:text-slate-100">{item.batch}</p>
                 <span className="text-sm text-slate-600 dark:text-slate-400">{item.qty}</span>
               </div>
               <div className="w-full bg-slate-200 dark:bg-slate-600 rounded-full h-2 mb-2">

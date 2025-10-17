@@ -403,5 +403,75 @@ export const expenseAPI = {
   },
 };
 
+// Settings API
+export const settingsAPI = {
+  // Profile
+  getProfile: async () => {
+    return Promise.resolve({
+      data: {
+        fullName: 'Admin User',
+        email: 'admin@wostore.com',
+        phone: '+91 9876543210',
+        storeName: 'Cardamom Processing Center',
+        address: 'Idukki, Kerala, India',
+      },
+    });
+  },
+  updateProfile: async (data) => {
+    return Promise.resolve({ data: { message: 'Profile updated successfully', ...data } });
+  },
+  
+  // Password
+  updatePassword: async (currentPassword, newPassword) => {
+    return Promise.resolve({ data: { message: 'Password updated successfully' } });
+  },
+  
+  // Drying Price
+  getDryingPrice: async () => {
+    return Promise.resolve({
+      data: { pricePerKg: 10, currency: 'INR' },
+    });
+  },
+  updateDryingPrice: async (data) => {
+    return Promise.resolve({ data: { message: 'Drying price updated successfully', ...data } });
+  },
+  
+  // Places
+  getPlaces: async () => {
+    return Promise.resolve({
+      data: [
+        { id: 1, name: 'Idukki', active: true },
+        { id: 2, name: 'Munnar', active: true },
+        { id: 3, name: 'Thekkady', active: true },
+        { id: 4, name: 'Kumily', active: true },
+      ],
+    });
+  },
+  createPlace: async (data) => {
+    return Promise.resolve({ data: { id: Date.now(), ...data, active: true } });
+  },
+  updatePlace: async (id, data) => {
+    return Promise.resolve({ data: { id, ...data } });
+  },
+  deletePlace: async (id) => {
+    return Promise.resolve({ data: { message: 'Place deleted successfully' } });
+  },
+  
+  // General Settings
+  getGeneralSettings: async () => {
+    return Promise.resolve({
+      data: {
+        dateFormat: 'DD/MM/YYYY',
+        timeZone: 'IST (GMT+5:30)',
+        language: 'English',
+        emailNotifications: true,
+      },
+    });
+  },
+  updateGeneralSettings: async (data) => {
+    return Promise.resolve({ data: { message: 'Settings updated successfully', ...data } });
+  },
+};
+
 export default api;
 

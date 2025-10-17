@@ -95,7 +95,7 @@ const Navbar = ({ onMenuClick, user, sidebarOpen }) => {
 
           {/* Settings */}
           <button 
-            onClick={() => toast.success('Settings page coming soon!')}
+            onClick={() => handleNavigation('/settings')}
             className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
             aria-label="Settings"
             title="Settings"
@@ -119,7 +119,7 @@ const Navbar = ({ onMenuClick, user, sidebarOpen }) => {
           {/* User Menu */}
           <div className="flex items-center gap-3 pl-3 border-l border-slate-200 dark:border-slate-700">
             <div className="hidden md:block text-right">
-              <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
+              <p className="text-sm font-normal text-slate-900 dark:text-slate-100">
                 {user?.name || 'Admin User'}
               </p>
               <p className="text-xs text-slate-500 dark:text-slate-400">Administrator</p>

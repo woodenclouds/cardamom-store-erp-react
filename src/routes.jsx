@@ -13,7 +13,8 @@ import Income from './pages/Income';
 import Expenses from './pages/Expenses';
 import IncomeCategories from './pages/IncomeCategories';
 import ExpenseCategories from './pages/ExpenseCategories';
-import OrderManagement from './pages/OrderManagement';
+import StoreManagement from './pages/StoreManagement';
+import Settings from './pages/Settings';
 
 // Protected Route wrapper
 export const ProtectedRoute = ({ children }) => {
@@ -59,12 +60,16 @@ const routes = [
     ),
   },
   {
-    path: '/order-management',
+    path: '/store-management',
     element: (
       <ProtectedRoute>
-        <OrderManagement />
+        <StoreManagement />
       </ProtectedRoute>
     ),
+  },
+  {
+    path: '/order-management',
+    element: <Navigate to="/store-management" replace />,
   },
   {
     path: '/collection',
@@ -151,6 +156,14 @@ const routes = [
     element: (
       <ProtectedRoute>
         <ExpenseCategories />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/settings',
+    element: (
+      <ProtectedRoute>
+        <Settings />
       </ProtectedRoute>
     ),
   },
