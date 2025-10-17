@@ -15,6 +15,8 @@ import IncomeCategories from './pages/IncomeCategories';
 import ExpenseCategories from './pages/ExpenseCategories';
 import StoreManagement from './pages/StoreManagement';
 import FinancialReport from './pages/FinancialReport';
+import Employees from './pages/Employees';
+import Payrolls from './pages/Payrolls';
 import Settings from './pages/Settings';
 
 // Protected Route wrapper
@@ -165,6 +167,22 @@ const routes = [
     element: (
       <ProtectedRoute>
         <FinancialReport />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/employees',
+    element: (
+      <ProtectedRoute>
+        <Employees />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/payrolls',
+    element: (
+      <ProtectedRoute>
+        <Payrolls />
       </ProtectedRoute>
     ),
   },

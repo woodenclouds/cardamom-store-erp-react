@@ -33,7 +33,7 @@ const ModalForm = ({
     xl: 'max-w-4xl',
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e, field) => {
     const { name, value } = e.target;
     if (!setFormData || typeof setFormData !== 'function') {
       console.error('setFormData is not available');
@@ -43,6 +43,11 @@ const ModalForm = ({
       ...prev,
       [name]: value,
     }));
+    
+    // Call custom onChange handler if provided
+    if (field.onChange && typeof field.onChange === 'function') {
+      field.onChange(value);
+    }
   };
 
   const renderField = (field) => {
@@ -55,9 +60,12 @@ const ModalForm = ({
       id: field.name,
       name: field.name,
       value: formData?.[field.name] || '',
-      onChange: handleChange,
+      onChange: (e) => handleChange(e, field),
       required: field.required,
-      className: 'w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-primary-500 focus:border-transparent',
+      disabled: field.disabled || false,
+      className: `w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
+        field.disabled ? 'opacity-60 cursor-not-allowed' : ''
+      }`,
     };
 
     switch (field.type) {

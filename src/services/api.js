@@ -403,6 +403,204 @@ export const expenseAPI = {
   },
 };
 
+// Employee API
+export const employeeAPI = {
+  getAll: async () => {
+    return Promise.resolve({
+      data: [
+        {
+          id: 1,
+          fullName: 'Rajesh Kumar',
+          email: 'rajesh.kumar@wostore.com',
+          phone: '+91 9876543210',
+          position: 'Processing Manager',
+          department: 'Operations',
+          joiningDate: '2024-01-15',
+          salary: 35000,
+          payrollType: 'monthly',
+          status: 'active',
+        },
+        {
+          id: 2,
+          fullName: 'Priya Sharma',
+          email: 'priya.sharma@wostore.com',
+          phone: '+91 9876543211',
+          position: 'Accounts Manager',
+          department: 'Finance',
+          joiningDate: '2024-02-01',
+          salary: 40000,
+          payrollType: 'monthly',
+          status: 'active',
+        },
+        {
+          id: 3,
+          fullName: 'Suresh Nair',
+          email: 'suresh.nair@wostore.com',
+          phone: '+91 9876543212',
+          position: 'Drying Supervisor',
+          department: 'Operations',
+          joiningDate: '2024-03-10',
+          salary: 8000,
+          payrollType: 'weekly',
+          status: 'active',
+        },
+        {
+          id: 4,
+          fullName: 'Anita Patel',
+          email: 'anita.patel@wostore.com',
+          phone: '+91 9876543213',
+          position: 'Quality Inspector',
+          department: 'Quality Control',
+          joiningDate: '2024-04-05',
+          salary: 7500,
+          payrollType: 'weekly',
+          status: 'active',
+        },
+        {
+          id: 5,
+          fullName: 'Vijay Singh',
+          email: 'vijay.singh@wostore.com',
+          phone: '+91 9876543214',
+          position: 'Warehouse Assistant',
+          department: 'Warehouse',
+          joiningDate: '2024-05-20',
+          salary: 25000,
+          payrollType: 'monthly',
+          status: 'active',
+        },
+      ],
+    });
+  },
+  create: async (data) => {
+    return Promise.resolve({ data: { id: Date.now(), ...data } });
+  },
+  update: async (id, data) => {
+    return Promise.resolve({ data: { id, ...data } });
+  },
+  delete: async (id) => {
+    return Promise.resolve({ data: { message: 'Deleted successfully' } });
+  },
+  getActive: async () => {
+    return Promise.resolve({
+      data: [
+        { id: 1, fullName: 'Rajesh Kumar', salary: 35000, payrollType: 'monthly' },
+        { id: 2, fullName: 'Priya Sharma', salary: 40000, payrollType: 'monthly' },
+        { id: 3, fullName: 'Suresh Nair', salary: 8000, payrollType: 'weekly' },
+        { id: 4, fullName: 'Anita Patel', salary: 7500, payrollType: 'weekly' },
+        { id: 5, fullName: 'Vijay Singh', salary: 25000, payrollType: 'monthly' },
+      ],
+    });
+  },
+};
+
+// Payroll API
+export const payrollAPI = {
+  getAll: async () => {
+    return Promise.resolve({
+      data: [
+        {
+          id: 1,
+          employeeId: 1,
+          employeeName: 'Rajesh Kumar',
+          payrollType: 'monthly',
+          periodStart: '2025-10-01',
+          periodEnd: '2025-10-31',
+          basicSalary: 35000,
+          allowances: 5000,
+          deductions: 2000,
+          netSalary: 38000,
+          paymentDate: '2025-10-31',
+          paymentMode: 'Bank Transfer',
+          status: 'paid',
+          remarks: 'Regular monthly salary',
+        },
+        {
+          id: 2,
+          employeeId: 2,
+          employeeName: 'Priya Sharma',
+          payrollType: 'monthly',
+          periodStart: '2025-10-01',
+          periodEnd: '2025-10-31',
+          basicSalary: 40000,
+          allowances: 6000,
+          deductions: 2500,
+          netSalary: 43500,
+          paymentDate: '2025-10-31',
+          paymentMode: 'Bank Transfer',
+          status: 'paid',
+          remarks: 'Regular monthly salary',
+        },
+        {
+          id: 3,
+          employeeId: 3,
+          employeeName: 'Suresh Nair',
+          payrollType: 'weekly',
+          periodStart: '2025-10-11',
+          periodEnd: '2025-10-17',
+          basicSalary: 8000,
+          allowances: 1000,
+          deductions: 500,
+          netSalary: 8500,
+          paymentDate: '2025-10-18',
+          paymentMode: 'Cash',
+          status: 'paid',
+          remarks: 'Weekly payment - Week 3',
+        },
+        {
+          id: 4,
+          employeeId: 4,
+          employeeName: 'Anita Patel',
+          payrollType: 'weekly',
+          periodStart: '2025-10-11',
+          periodEnd: '2025-10-17',
+          basicSalary: 7500,
+          allowances: 800,
+          deductions: 400,
+          netSalary: 7900,
+          paymentDate: '2025-10-18',
+          paymentMode: 'Cash',
+          status: 'pending',
+          remarks: 'Weekly payment - Week 3',
+        },
+        {
+          id: 5,
+          employeeId: 5,
+          employeeName: 'Vijay Singh',
+          payrollType: 'monthly',
+          periodStart: '2025-10-01',
+          periodEnd: '2025-10-31',
+          basicSalary: 25000,
+          allowances: 3000,
+          deductions: 1500,
+          netSalary: 26500,
+          paymentDate: '2025-10-31',
+          paymentMode: 'Bank Transfer',
+          status: 'pending',
+          remarks: 'Regular monthly salary',
+        },
+      ],
+    });
+  },
+  create: async (data) => {
+    return Promise.resolve({ data: { id: Date.now(), ...data } });
+  },
+  update: async (id, data) => {
+    return Promise.resolve({ data: { id, ...data } });
+  },
+  delete: async (id) => {
+    return Promise.resolve({ data: { message: 'Deleted successfully' } });
+  },
+  getSummary: async () => {
+    return Promise.resolve({
+      data: {
+        totalPaid: 81900,
+        totalPending: 34400,
+        totalPayrolls: 5,
+      },
+    });
+  },
+};
+
 // Settings API
 export const settingsAPI = {
   // Profile
