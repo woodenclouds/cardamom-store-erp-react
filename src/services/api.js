@@ -764,6 +764,176 @@ export const debtAPI = {
   },
 };
 
+// Vendor API
+export const vendorAPI = {
+  getAll: async () => {
+    return Promise.resolve({
+      data: [
+        {
+          id: 1,
+          vendorName: 'Kerala Spices Ltd',
+          contactPerson: 'Rajesh Kumar',
+          email: 'contact@keralaspices.com',
+          phone: '+91 9876543210',
+          address: 'Idukki, Kerala',
+          gstNumber: '29AABCU9603R1ZM',
+          status: 'active',
+          createdAt: '2024-01-15',
+        },
+        {
+          id: 2,
+          vendorName: 'Green Valley Traders',
+          contactPerson: 'Suresh Nair',
+          email: 'info@greenvalley.com',
+          phone: '+91 9876543211',
+          address: 'Munnar, Kerala',
+          gstNumber: '29AABCU9604R1ZN',
+          status: 'active',
+          createdAt: '2024-02-20',
+        },
+        {
+          id: 3,
+          vendorName: 'Mountain Fresh Supplies',
+          contactPerson: 'Mahesh Singh',
+          email: 'sales@mountainfresh.com',
+          phone: '+91 9876543212',
+          address: 'Thekkady, Kerala',
+          gstNumber: '29AABCU9605R1ZO',
+          status: 'active',
+          createdAt: '2024-03-10',
+        },
+        {
+          id: 4,
+          vendorName: 'Spice Garden Co.',
+          contactPerson: 'Priya Sharma',
+          email: 'contact@spicegarden.com',
+          phone: '+91 9876543213',
+          address: 'Kumily, Kerala',
+          gstNumber: '29AABCU9606R1ZP',
+          status: 'inactive',
+          createdAt: '2024-04-05',
+        },
+      ],
+    });
+  },
+  create: async (data) => {
+    return Promise.resolve({ data: { id: Date.now(), ...data } });
+  },
+  update: async (id, data) => {
+    return Promise.resolve({ data: { id, ...data } });
+  },
+  delete: async (id) => {
+    return Promise.resolve({ data: { message: 'Vendor deleted successfully' } });
+  },
+  getActive: async () => {
+    return Promise.resolve({
+      data: [
+        { id: 1, vendorName: 'Kerala Spices Ltd' },
+        { id: 2, vendorName: 'Green Valley Traders' },
+        { id: 3, vendorName: 'Mountain Fresh Supplies' },
+      ],
+    });
+  },
+};
+
+// Purchase API
+export const purchaseAPI = {
+  getAll: async () => {
+    return Promise.resolve({
+      data: [
+        {
+          id: 1,
+          date: '2025-10-15',
+          vendorId: 1,
+          vendorName: 'Kerala Spices Ltd',
+          itemDescription: 'Raw Cardamom',
+          quantity: 500,
+          unit: 'kg',
+          ratePerUnit: 850,
+          amount: 425000,
+          paymentMode: 'Bank Transfer',
+          invoiceNumber: 'INV-2025-001',
+          remarks: 'Grade A quality',
+        },
+        {
+          id: 2,
+          date: '2025-10-14',
+          vendorId: 2,
+          vendorName: 'Green Valley Traders',
+          itemDescription: 'Raw Cardamom',
+          quantity: 300,
+          unit: 'kg',
+          ratePerUnit: 820,
+          amount: 246000,
+          paymentMode: 'Cash',
+          invoiceNumber: 'INV-2025-002',
+          remarks: 'Grade B quality',
+        },
+        {
+          id: 3,
+          date: '2025-10-13',
+          vendorId: 3,
+          vendorName: 'Mountain Fresh Supplies',
+          itemDescription: 'Raw Cardamom',
+          quantity: 400,
+          unit: 'kg',
+          ratePerUnit: 830,
+          amount: 332000,
+          paymentMode: 'Bank Transfer',
+          invoiceNumber: 'INV-2025-003',
+          remarks: 'Premium quality',
+        },
+        {
+          id: 4,
+          date: '2025-10-12',
+          vendorId: 1,
+          vendorName: 'Kerala Spices Ltd',
+          itemDescription: 'Packaging Materials',
+          quantity: 1000,
+          unit: 'pieces',
+          ratePerUnit: 15,
+          amount: 15000,
+          paymentMode: 'UPI',
+          invoiceNumber: 'INV-2025-004',
+          remarks: 'Cardboard boxes',
+        },
+        {
+          id: 5,
+          date: '2025-10-11',
+          vendorId: 4,
+          vendorName: 'Spice Garden Co.',
+          itemDescription: 'Raw Cardamom',
+          quantity: 250,
+          unit: 'kg',
+          ratePerUnit: 840,
+          amount: 210000,
+          paymentMode: 'Cheque',
+          invoiceNumber: 'INV-2025-005',
+          remarks: 'Mixed grade',
+        },
+      ],
+    });
+  },
+  create: async (data) => {
+    return Promise.resolve({ data: { id: Date.now(), ...data } });
+  },
+  update: async (id, data) => {
+    return Promise.resolve({ data: { id, ...data } });
+  },
+  delete: async (id) => {
+    return Promise.resolve({ data: { message: 'Purchase record deleted successfully' } });
+  },
+  getSummary: async () => {
+    return Promise.resolve({
+      data: {
+        totalPurchases: 1228000,
+        totalQuantity: 2450,
+        averageRate: 501.22,
+      },
+    });
+  },
+};
+
 // Settings API
 export const settingsAPI = {
   // Profile

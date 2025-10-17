@@ -22,6 +22,8 @@ import {
   UserCog,
   Receipt,
   CreditCard,
+  Building2,
+  ShoppingCart,
 } from 'lucide-react';
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -32,6 +34,7 @@ const Sidebar = ({ isOpen, onClose }) => {
   const [isOperationsOpen, setIsOperationsOpen] = useState(false);
   const [isReportsOpen, setIsReportsOpen] = useState(false);
   const [isHROpen, setIsHROpen] = useState(false);
+  const [isPurchaseOpen, setIsPurchaseOpen] = useState(false);
 
   const menuItems = [
     { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -48,6 +51,11 @@ const Sidebar = ({ isOpen, onClose }) => {
   const hrMenuItems = [
     { path: '/employees', icon: UserCog, label: 'Employees' },
     { path: '/payrolls', icon: Receipt, label: 'Payrolls' },
+  ];
+
+  const purchaseMenuItems = [
+    { path: '/vendors', icon: Building2, label: 'Vendors' },
+    { path: '/purchases', icon: ShoppingCart, label: 'Purchases' },
   ];
 
   const accountsMenuItems = [
@@ -227,6 +235,52 @@ const Sidebar = ({ isOpen, onClose }) => {
                   >
                     <ul className="mt-2 space-y-1 pl-4">
                       {operationsMenuItems.map((item) => (
+                        <li key={item.path}>
+                          <NavLink
+                            to={item.path}
+                            onClick={onClose}
+                            className={({ isActive }) =>
+                              `flex items-center gap-3 px-4 py-2 rounded-lg transition-colors ${
+                                isActive
+                                  ? 'bg-primary-600 text-white'
+                                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700'
+                              }`
+                            }
+                          >
+                            <item.icon className="w-4 h-4" />
+                            <span className="text-sm font-normal">{item.label}</span>
+                          </NavLink>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </li>
+
+                {/* Purchase Dropdown Menu */}
+                <li>
+                  <button
+                    onClick={() => setIsPurchaseOpen(!isPurchaseOpen)}
+                    className="flex items-center justify-between w-full gap-3 px-4 py-3 rounded-lg transition-colors text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
+                  >
+                    <div className="flex items-center gap-3">
+                      <ShoppingCart className="w-5 h-5" />
+                      <span className="font-normal">Purchase</span>
+                    </div>
+                    <ChevronDown
+                      className={`w-4 h-4 transition-transform duration-200 ${
+                        isPurchaseOpen ? 'rotate-180' : ''
+                      }`}
+                    />
+                  </button>
+                  
+                  {/* Submenu Items */}
+                  <div
+                    className={`overflow-hidden transition-all duration-200 ${
+                      isPurchaseOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                    }`}
+                  >
+                    <ul className="mt-2 space-y-1 pl-4">
+                      {purchaseMenuItems.map((item) => (
                         <li key={item.path}>
                           <NavLink
                             to={item.path}

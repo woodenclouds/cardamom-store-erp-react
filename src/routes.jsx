@@ -5,6 +5,8 @@ import Dashboard from './pages/Dashboard';
 import Collection from './pages/Collection';
 import DryingBatch from './pages/DryingBatch';
 import Customers from './pages/Customers';
+import Vendors from './pages/Vendors';
+import Purchases from './pages/Purchases';
 import Return from './pages/Return';
 import Payments from './pages/Payments';
 import Ledger from './pages/Ledger';
@@ -96,6 +98,22 @@ const routes = [
     element: (
       <ProtectedRoute>
         <Customers />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/vendors',
+    element: (
+      <ProtectedRoute>
+        <Vendors />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/purchases',
+    element: (
+      <ProtectedRoute>
+        <Purchases />
       </ProtectedRoute>
     ),
   },
