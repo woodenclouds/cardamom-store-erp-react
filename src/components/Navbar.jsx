@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, Sun, Moon, LogOut, User, Bell } from 'lucide-react';
+import { Menu, Sun, Moon, LogOut, User, Bell, DollarSign, CreditCard, Users, Settings } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
@@ -26,6 +26,10 @@ const Navbar = ({ onMenuClick, user, sidebarOpen }) => {
     navigate('/login');
   };
 
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
+
   return (
     <nav className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-4 py-3 fixed-header">
       <div className="flex items-center justify-between">
@@ -50,6 +54,36 @@ const Navbar = ({ onMenuClick, user, sidebarOpen }) => {
 
         {/* Right Section */}
         <div className="flex items-center gap-2">
+          {/* Income Management */}
+          <button 
+            onClick={() => handleNavigation('/income')}
+            className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+            aria-label="Income Management"
+            title="Income Management"
+          >
+            <DollarSign className="w-5 h-5 text-green-600 dark:text-green-400" />
+          </button>
+
+          {/* Expenses Management */}
+          <button 
+            onClick={() => handleNavigation('/expenses')}
+            className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+            aria-label="Expenses Management"
+            title="Expenses Management"
+          >
+            <CreditCard className="w-5 h-5 text-red-600 dark:text-red-400" />
+          </button>
+
+          {/* Customers */}
+          <button 
+            onClick={() => handleNavigation('/customers')}
+            className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+            aria-label="Customers"
+            title="Customers"
+          >
+            <Users className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+          </button>
+
           {/* Notifications */}
           <button 
             className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors relative"
@@ -57,6 +91,16 @@ const Navbar = ({ onMenuClick, user, sidebarOpen }) => {
           >
             <Bell className="w-5 h-5 text-slate-600 dark:text-slate-400" />
             <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+          </button>
+
+          {/* Settings */}
+          <button 
+            onClick={() => toast.success('Settings page coming soon!')}
+            className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+            aria-label="Settings"
+            title="Settings"
+          >
+            <Settings className="w-5 h-5 text-slate-600 dark:text-slate-400" />
           </button>
 
           {/* Dark Mode Toggle */}

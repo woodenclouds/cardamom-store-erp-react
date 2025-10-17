@@ -184,6 +184,53 @@ export const dashboardAPI = {
       ],
     });
   },
+  getFinancialMetrics: async () => {
+    return Promise.resolve({
+      data: {
+        totalRevenue: 425000,
+        totalIncome: 190000,
+        totalExpenses: 135500,
+        netProfit: 54500,
+      },
+    });
+  },
+  getFinancialTrends: async () => {
+    return Promise.resolve({
+      data: [
+        { date: '2025-10-10', income: 45000, expenses: 25000, profit: 20000 },
+        { date: '2025-10-11', income: 55000, expenses: 30000, profit: 25000 },
+        { date: '2025-10-12', income: 35000, expenses: 22000, profit: 13000 },
+        { date: '2025-10-13', income: 40000, expenses: 28000, profit: 12000 },
+        { date: '2025-10-14', income: 60000, expenses: 35000, profit: 25000 },
+        { date: '2025-10-15', income: 65000, expenses: 40000, profit: 25000 },
+        { date: '2025-10-16', income: 45000, expenses: 25000, profit: 20000 },
+      ],
+    });
+  },
+  getAccountSummary: async () => {
+    return Promise.resolve({
+      data: {
+        cashBalance: 125000,
+        bankBalance: 350000,
+        totalReceivables: 197400,
+        totalPayables: 45000,
+      },
+    });
+  },
+  getRecentTransactions: async () => {
+    return Promise.resolve({
+      data: {
+        recentIncome: [
+          { id: 1, date: '2025-10-16', category: 'Product Sales', amount: 65000, description: 'Cardamom sales' },
+          { id: 2, date: '2025-10-15', amount: 25000, category: 'Service Income', description: 'Processing fees' },
+        ],
+        recentExpenses: [
+          { id: 1, date: '2025-10-16', category: 'Raw Materials', amount: 40000, vendor: 'Kerala Spices' },
+          { id: 2, date: '2025-10-15', amount: 35000, category: 'Salaries', description: 'Monthly salaries' },
+        ],
+      },
+    });
+  },
 };
 
 // Customer search/autocomplete
