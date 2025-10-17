@@ -1,0 +1,157 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-50;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary-600 hover:bg-primary-700 text-white font-medium px-4 py-2 rounded-lg transition-colors duration-200;
+  }
+  
+  .btn-secondary {
+    @apply bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-900 dark:text-slate-100 font-medium px-4 py-2 rounded-lg transition-colors duration-200;
+  }
+  
+  .card {
+    @apply bg-white dark:bg-slate-800 rounded-lg shadow-md p-6;
+  }
+  
+  .input-field {
+    @apply w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100;
+  }
+  
+  .label {
+    @apply block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2;
+  }
+}
+
+@layer utilities {
+  /* Ensure sidebar is properly fixed and scrollable */
+  .sidebar-fixed {
+    position: fixed !important;
+    top: 4rem;
+    left: 0;
+    bottom: 0;
+    width: 16rem;
+    z-index: 40;
+  }
+  
+  /* Smooth scrolling for sidebar navigation */
+  .sidebar-nav {
+    scroll-behavior: smooth;
+    /* Custom scrollbar styling */
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 #f1f5f9;
+    /* Ensure proper overflow behavior */
+    overflow-y: auto !important;
+    overflow-x: hidden;
+    /* Force scroll behavior */
+    max-height: 100%;
+    min-height: 0;
+  }
+  
+  .sidebar-nav::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .sidebar-nav::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 3px;
+  }
+  
+  .sidebar-nav::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+  }
+  
+  .sidebar-nav::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+  
+  /* Ensure main content doesn't overlap with fixed sidebar on desktop */
+  @media (min-width: 1024px) {
+    .main-content {
+      margin-left: 16rem;
+    }
+  }
+  
+  /* Fix for header movement */
+  .fixed-header {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+  }
+  
+  /* Ensure proper spacing for fixed header */
+  .content-with-header {
+    padding-top: 4rem;
+  }
+  
+  /* Improve main content scrolling */
+  .main-content {
+    scroll-behavior: smooth;
+  }
+  
+  /* Custom scrollbar for main content */
+  .main-content::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .main-content::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
+  }
+  
+  .main-content::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+  }
+  
+  .main-content::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+  
+  /* Dark mode scrollbars */
+  .dark .main-content::-webkit-scrollbar-track {
+    background: #1e293b;
+  }
+  
+  .dark .main-content::-webkit-scrollbar-thumb {
+    background: #475569;
+  }
+  
+  .dark .main-content::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+  }
+  
+  .dark .sidebar-nav::-webkit-scrollbar-track {
+    background: #1e293b;
+  }
+  
+  .dark .sidebar-nav::-webkit-scrollbar-thumb {
+    background: #475569;
+  }
+  
+  .dark .sidebar-nav::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+  }
+  
+  /* Sidebar container height fix */
+  .sidebar-container {
+    height: calc(100vh - 4rem);
+    max-height: calc(100vh - 4rem);
+    overflow: hidden;
+  }
+  
+  .sidebar-nav-container {
+    height: 100%;
+    overflow: hidden;
+  }
+}
