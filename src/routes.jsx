@@ -14,6 +14,7 @@ import Expenses from './pages/Expenses';
 import IncomeCategories from './pages/IncomeCategories';
 import ExpenseCategories from './pages/ExpenseCategories';
 import StoreManagement from './pages/StoreManagement';
+import FinancialReport from './pages/FinancialReport';
 import Settings from './pages/Settings';
 
 // Protected Route wrapper
@@ -156,6 +157,14 @@ const routes = [
     element: (
       <ProtectedRoute>
         <ExpenseCategories />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/financial-report',
+    element: (
+      <ProtectedRoute>
+        <FinancialReport />
       </ProtectedRoute>
     ),
   },

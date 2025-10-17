@@ -18,6 +18,7 @@ import {
   ChevronDown,
   DollarSign,
   Store,
+  FileText,
 } from 'lucide-react';
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -26,14 +27,13 @@ const Sidebar = ({ isOpen, onClose }) => {
   const [showScrollBottom, setShowScrollBottom] = useState(false);
   const [isAccountsOpen, setIsAccountsOpen] = useState(false);
   const [isOperationsOpen, setIsOperationsOpen] = useState(false);
+  const [isReportsOpen, setIsReportsOpen] = useState(false);
 
   const menuItems = [
     { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
     { path: '/store-management', icon: Workflow, label: 'Store Management' },
     { path: '/customers', icon: Users, label: 'Customers' },
     { path: '/payments', icon: Wallet, label: 'Payments' },
-    { path: '/ledger', icon: BookOpen, label: 'Ledger' },
-    { path: '/reports', icon: BarChart3, label: 'Reports' },
   ];
 
   const operationsMenuItems = [
@@ -45,6 +45,12 @@ const Sidebar = ({ isOpen, onClose }) => {
   const accountsMenuItems = [
     { path: '/income', icon: TrendingUp, label: 'Income' },
     { path: '/expenses', icon: TrendingDown, label: 'Expenses' },
+  ];
+
+  const reportsMenuItems = [
+    { path: '/ledger', icon: BookOpen, label: 'Customer Ledger' },
+    { path: '/reports', icon: BarChart3, label: 'Store Report' },
+    { path: '/financial-report', icon: TrendingUp, label: 'Financial Report' },
   ];
 
   // Close sidebar when clicking outside on mobile
@@ -257,6 +263,52 @@ const Sidebar = ({ isOpen, onClose }) => {
                   >
                     <ul className="mt-2 space-y-1 pl-4">
                       {accountsMenuItems.map((item) => (
+                        <li key={item.path}>
+                          <NavLink
+                            to={item.path}
+                            onClick={onClose}
+                            className={({ isActive }) =>
+                              `flex items-center gap-3 px-4 py-2 rounded-lg transition-colors ${
+                                isActive
+                                  ? 'bg-primary-600 text-white'
+                                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700'
+                              }`
+                            }
+                          >
+                            <item.icon className="w-4 h-4" />
+                            <span className="text-sm font-normal">{item.label}</span>
+                          </NavLink>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </li>
+
+                {/* Reports Dropdown Menu */}
+                <li>
+                  <button
+                    onClick={() => setIsReportsOpen(!isReportsOpen)}
+                    className="flex items-center justify-between w-full gap-3 px-4 py-3 rounded-lg transition-colors text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
+                  >
+                    <div className="flex items-center gap-3">
+                      <FileText className="w-5 h-5" />
+                      <span className="font-normal">Reports</span>
+                    </div>
+                    <ChevronDown
+                      className={`w-4 h-4 transition-transform duration-200 ${
+                        isReportsOpen ? 'rotate-180' : ''
+                      }`}
+                    />
+                  </button>
+                  
+                  {/* Submenu Items */}
+                  <div
+                    className={`overflow-hidden transition-all duration-200 ${
+                      isReportsOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                    }`}
+                  >
+                    <ul className="mt-2 space-y-1 pl-4">
+                      {reportsMenuItems.map((item) => (
                         <li key={item.path}>
                           <NavLink
                             to={item.path}
