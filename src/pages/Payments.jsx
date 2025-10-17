@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, TrendingUp, TrendingDown } from 'lucide-react';
+import { Plus, TrendingUp, TrendingDown, Banknote, Wallet } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import DataTable from '../components/DataTable';
 import ModalForm from '../components/ModalForm';
 import Card from '../components/Card';
-import { paymentAPI, customerAPI } from '../services/api';
+import { paymentAPI, customerAPI, dashboardAPI } from '../services/api';
 import toast from 'react-hot-toast';
 
 const schema = yup.object().shape({
@@ -20,6 +20,12 @@ const schema = yup.object().shape({
 const Payments = () => {
   const [payments, setPayments] = useState([]);
   const [summary, setSummary] = useState({ totalReceived: 0, totalPending: 0 });
+  const [accountSummary, setAccountSummary] = useState({
+    cashBalance: 0,
+    bankBalance: 0,
+    totalReceivables: 0,
+    totalPayables: 0,
+  });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [customers, setCustomers] = useState([]);
 
@@ -38,6 +44,7 @@ const Payments = () => {
   useEffect(() => {
     fetchPayments();
     fetchSummary();
+    fetchAccountSummary();
   }, []);
 
   const fetchPayments = async () => {
@@ -55,6 +62,15 @@ const Payments = () => {
       setSummary(response.data);
     } catch (error) {
       console.error('Failed to fetch summary');
+    }
+  };
+
+  const fetchAccountSummary = async () => {
+    try {
+      const response = await dashboardAPI.getAccountSummary();
+      setAccountSummary(response.data);
+    } catch (error) {
+      console.error('Failed to fetch account summary');
     }
   };
 
@@ -119,7 +135,66 @@ const Payments = () => {
         </button>
       </div>
 
-      {/* Summary Cards */}
+      {/* Financial Summary Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div className="card">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">Cash Balance</h3>
+              <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
+                ₹{accountSummary.cashBalance.toLocaleString()}
+              </p>
+            </div>
+            <div className="p-3 bg-green-100 dark:bg-green-900/20 rounded-lg">
+              <Banknote className="w-6 h-6 text-green-600 dark:text-green-400" />
+            </div>
+          </div>
+        </div>
+
+        <div className="card">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">Bank Balance</h3>
+              <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
+                ₹{accountSummary.bankBalance.toLocaleString()}
+              </p>
+            </div>
+            <div className="p-3 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
+              <Wallet className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+            </div>
+          </div>
+        </div>
+
+        <div className="card">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">Receivables</h3>
+              <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
+                ₹{accountSummary.totalReceivables.toLocaleString()}
+              </p>
+            </div>
+            <div className="p-3 bg-orange-100 dark:bg-orange-900/20 rounded-lg">
+              <TrendingUp className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+            </div>
+          </div>
+        </div>
+
+        <div className="card">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">Payables</h3>
+              <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
+                ₹{accountSummary.totalPayables.toLocaleString()}
+              </p>
+            </div>
+            <div className="p-3 bg-red-100 dark:bg-red-900/20 rounded-lg">
+              <TrendingDown className="w-6 h-6 text-red-600 dark:text-red-400" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Payment Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card
           title="Total Received"
