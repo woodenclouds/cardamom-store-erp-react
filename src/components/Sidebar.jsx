@@ -37,7 +37,6 @@ const Sidebar = ({ isOpen, onClose }) => {
     { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
     { path: '/store-management', icon: Workflow, label: 'Store Management' },
     { path: '/customers', icon: Users, label: 'Customers' },
-    { path: '/payments', icon: Wallet, label: 'Payments' },
   ];
 
   const operationsMenuItems = [
@@ -52,6 +51,7 @@ const Sidebar = ({ isOpen, onClose }) => {
   ];
 
   const accountsMenuItems = [
+    { path: '/payments', icon: Wallet, label: 'Payments' },
     { path: '/income', icon: TrendingUp, label: 'Income' },
     { path: '/expenses', icon: TrendingDown, label: 'Expenses' },
     { path: '/debt-management', icon: CreditCard, label: 'Debt Management' },
@@ -386,25 +386,23 @@ const Sidebar = ({ isOpen, onClose }) => {
                   </div>
                 </li>
 
-                {/* Rest of the menu items */}
-                {menuItems.slice(2).map((item) => (
-                  <li key={item.path}>
-                    <NavLink
-                      to={item.path}
-                      onClick={onClose}
-                      className={({ isActive }) =>
-                        `flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                          isActive
-                            ? 'bg-primary-600 text-white'
-                            : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
-                        }`
-                      }
-                    >
-                      <item.icon className="w-5 h-5" />
-                      <span className="font-normal">{item.label}</span>
-                    </NavLink>
-                  </li>
-                ))}
+                {/* Customers */}
+                <li>
+                  <NavLink
+                    to="/customers"
+                    onClick={onClose}
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                        isActive
+                          ? 'bg-primary-600 text-white'
+                          : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
+                      }`
+                    }
+                  >
+                    <Users className="w-5 h-5" />
+                    <span className="font-normal">Customers</span>
+                  </NavLink>
+                </li>
               </ul>
             </nav>
           </div>

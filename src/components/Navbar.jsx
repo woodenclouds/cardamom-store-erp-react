@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, Sun, Moon, LogOut, User, Bell, DollarSign, CreditCard, Users, Settings } from 'lucide-react';
+import { Menu, Sun, Moon, LogOut, User, Bell, Settings } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
@@ -54,36 +54,6 @@ const Navbar = ({ onMenuClick, user, sidebarOpen }) => {
 
         {/* Right Section */}
         <div className="flex items-center gap-2">
-          {/* Income Management */}
-          <button 
-            onClick={() => handleNavigation('/income')}
-            className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
-            aria-label="Income Management"
-            title="Income Management"
-          >
-            <DollarSign className="w-5 h-5 text-green-600 dark:text-green-400" />
-          </button>
-
-          {/* Expenses Management */}
-          <button 
-            onClick={() => handleNavigation('/expenses')}
-            className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
-            aria-label="Expenses Management"
-            title="Expenses Management"
-          >
-            <CreditCard className="w-5 h-5 text-red-600 dark:text-red-400" />
-          </button>
-
-          {/* Customers */}
-          <button 
-            onClick={() => handleNavigation('/customers')}
-            className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
-            aria-label="Customers"
-            title="Customers"
-          >
-            <Users className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-          </button>
-
           {/* Notifications */}
           <button 
             className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors relative"
