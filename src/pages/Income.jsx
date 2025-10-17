@@ -226,19 +226,19 @@ const Income = () => {
       </div>
 
       {/* Summary Card */}
-      <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl p-6 mb-6 text-white shadow-lg">
+      <div className="card mb-6">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-green-100 text-sm font-medium">Total Income</p>
-            <h2 className="text-3xl font-bold mt-1">
+            <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">Total Income</h3>
+            <p className="text-3xl font-normal text-slate-900 dark:text-slate-100 mt-1">
               ₹{totalIncome.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
-            </h2>
-            <p className="text-green-100 text-sm mt-1">
+            </p>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
               {filteredIncomes.length} transaction{filteredIncomes.length !== 1 ? 's' : ''}
             </p>
           </div>
-          <div className="bg-white/20 p-4 rounded-full">
-            <TrendingUp className="w-8 h-8" />
+          <div className="p-4 bg-green-100 dark:bg-green-900/20 rounded-lg">
+            <TrendingUp className="w-8 h-8 text-green-600 dark:text-green-400" />
           </div>
         </div>
       </div>

@@ -21,6 +21,7 @@ import {
   FileText,
   UserCog,
   Receipt,
+  CreditCard,
 } from 'lucide-react';
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -53,6 +54,7 @@ const Sidebar = ({ isOpen, onClose }) => {
   const accountsMenuItems = [
     { path: '/income', icon: TrendingUp, label: 'Income' },
     { path: '/expenses', icon: TrendingDown, label: 'Expenses' },
+    { path: '/debt-management', icon: CreditCard, label: 'Debt Management' },
   ];
 
   const reportsMenuItems = [

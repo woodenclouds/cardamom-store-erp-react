@@ -601,6 +601,169 @@ export const payrollAPI = {
   },
 };
 
+// Debt Management API
+export const debtAPI = {
+  // Debt records
+  getAllDebts: async () => {
+    return Promise.resolve({
+      data: [
+        {
+          id: 1,
+          date: '2025-10-01',
+          customerName: 'Rajesh Kumar',
+          amount: 50000,
+          repaid: 20000,
+          outstanding: 30000,
+          dueDate: '2025-11-30',
+          status: 'active',
+          reason: 'Business expansion loan',
+          interestRate: 2,
+          paymentMode: 'Bank Transfer',
+          reference: 'DEBT001',
+        },
+        {
+          id: 2,
+          date: '2025-09-15',
+          customerName: 'Suresh Nair',
+          amount: 30000,
+          repaid: 30000,
+          outstanding: 0,
+          dueDate: '2025-10-15',
+          status: 'completed',
+          reason: 'Emergency medical expenses',
+          interestRate: 0,
+          paymentMode: 'Cash',
+          reference: 'DEBT002',
+        },
+        {
+          id: 3,
+          date: '2025-08-20',
+          customerName: 'Mahesh Singh',
+          amount: 75000,
+          repaid: 25000,
+          outstanding: 50000,
+          dueDate: '2025-10-10',
+          status: 'overdue',
+          reason: 'Purchase raw materials',
+          interestRate: 3,
+          paymentMode: 'Bank Transfer',
+          reference: 'DEBT003',
+        },
+        {
+          id: 4,
+          date: '2025-10-10',
+          customerName: 'Dinesh Reddy',
+          amount: 40000,
+          repaid: 10000,
+          outstanding: 30000,
+          dueDate: '2025-12-10',
+          status: 'active',
+          reason: 'Equipment purchase',
+          interestRate: 2.5,
+          paymentMode: 'Cheque',
+          reference: 'DEBT004',
+        },
+      ],
+    });
+  },
+  createDebt: async (data) => {
+    return Promise.resolve({ 
+      data: { 
+        id: Date.now(), 
+        ...data,
+        repaid: 0,
+        outstanding: parseFloat(data.amount),
+        status: 'active',
+      } 
+    });
+  },
+  updateDebt: async (id, data) => {
+    return Promise.resolve({ data: { id, ...data } });
+  },
+  deleteDebt: async (id) => {
+    return Promise.resolve({ data: { message: 'Debt record deleted successfully' } });
+  },
+
+  // Repayment records
+  getAllRepayments: async () => {
+    return Promise.resolve({
+      data: [
+        {
+          id: 1,
+          date: '2025-10-05',
+          debtId: 1,
+          customerName: 'Rajesh Kumar',
+          amount: 10000,
+          paymentMode: 'Bank Transfer',
+          reference: 'REP001',
+          remarks: 'First installment',
+        },
+        {
+          id: 2,
+          date: '2025-10-10',
+          debtId: 1,
+          customerName: 'Rajesh Kumar',
+          amount: 10000,
+          paymentMode: 'Bank Transfer',
+          reference: 'REP002',
+          remarks: 'Second installment',
+        },
+        {
+          id: 3,
+          date: '2025-10-15',
+          debtId: 2,
+          customerName: 'Suresh Nair',
+          amount: 30000,
+          paymentMode: 'Cash',
+          reference: 'REP003',
+          remarks: 'Full payment',
+        },
+        {
+          id: 4,
+          date: '2025-09-01',
+          debtId: 3,
+          customerName: 'Mahesh Singh',
+          amount: 25000,
+          paymentMode: 'UPI',
+          reference: 'REP004',
+          remarks: 'Partial payment',
+        },
+        {
+          id: 5,
+          date: '2025-10-15',
+          debtId: 4,
+          customerName: 'Dinesh Reddy',
+          amount: 10000,
+          paymentMode: 'Cheque',
+          reference: 'REP005',
+          remarks: 'Initial payment',
+        },
+      ],
+    });
+  },
+  createRepayment: async (data) => {
+    return Promise.resolve({ data: { id: Date.now(), ...data } });
+  },
+  updateRepayment: async (id, data) => {
+    return Promise.resolve({ data: { id, ...data } });
+  },
+  deleteRepayment: async (id) => {
+    return Promise.resolve({ data: { message: 'Repayment record deleted successfully' } });
+  },
+
+  // Summary
+  getSummary: async () => {
+    return Promise.resolve({
+      data: {
+        totalDebtGiven: 195000,
+        totalOutstanding: 110000,
+        totalRepaid: 85000,
+        activeDebts: 3,
+      },
+    });
+  },
+};
+
 // Settings API
 export const settingsAPI = {
   // Profile

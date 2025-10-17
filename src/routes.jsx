@@ -17,6 +17,7 @@ import StoreManagement from './pages/StoreManagement';
 import FinancialReport from './pages/FinancialReport';
 import Employees from './pages/Employees';
 import Payrolls from './pages/Payrolls';
+import DebtManagement from './pages/DebtManagement';
 import Settings from './pages/Settings';
 
 // Protected Route wrapper
@@ -183,6 +184,14 @@ const routes = [
     element: (
       <ProtectedRoute>
         <Payrolls />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/debt-management',
+    element: (
+      <ProtectedRoute>
+        <DebtManagement />
       </ProtectedRoute>
     ),
   },

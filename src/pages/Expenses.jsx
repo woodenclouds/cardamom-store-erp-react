@@ -236,19 +236,19 @@ const Expenses = () => {
       </div>
 
       {/* Summary Card */}
-      <div className="bg-gradient-to-r from-red-500 to-pink-600 rounded-xl p-6 mb-6 text-white shadow-lg">
+      <div className="card mb-6">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-red-100 text-sm font-medium">Total Expenses</p>
-            <h2 className="text-3xl font-bold mt-1">
+            <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">Total Expenses</h3>
+            <p className="text-3xl font-normal text-slate-900 dark:text-slate-100 mt-1">
               ₹{totalExpense.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
-            </h2>
-            <p className="text-red-100 text-sm mt-1">
+            </p>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
               {filteredExpenses.length} transaction{filteredExpenses.length !== 1 ? 's' : ''}
             </p>
           </div>
-          <div className="bg-white/20 p-4 rounded-full">
-            <TrendingDown className="w-8 h-8" />
+          <div className="p-4 bg-red-100 dark:bg-red-900/20 rounded-lg">
+            <TrendingDown className="w-8 h-8 text-red-600 dark:text-red-400" />
           </div>
         </div>
       </div>
