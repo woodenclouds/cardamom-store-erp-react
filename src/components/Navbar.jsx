@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, Sun, Moon, LogOut, User, Bell, Settings } from 'lucide-react';
+import { Menu, Sun, Moon, LogOut, User, HelpCircle, Settings } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
@@ -54,13 +54,13 @@ const Navbar = ({ onMenuClick, user, sidebarOpen }) => {
 
         {/* Right Section */}
         <div className="flex items-center gap-2">
-          {/* Notifications */}
+          {/* Support */}
           <button 
-            className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors relative"
-            aria-label="Notifications"
+            className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+            aria-label="Support"
+            title="Help & Support"
           >
-            <Bell className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-            <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+            <HelpCircle className="w-5 h-5 text-slate-600 dark:text-slate-400" />
           </button>
 
           {/* Settings */}
