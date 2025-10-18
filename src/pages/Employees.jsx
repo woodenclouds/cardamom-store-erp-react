@@ -14,8 +14,9 @@ const Employees = () => {
     fullName: '',
     email: '',
     phone: '',
-    position: '',
-    department: '',
+    jobRole: '',
+    address: '',
+    adharNumber: '',
     joiningDate: '',
     salary: '',
     payrollType: 'monthly',
@@ -30,8 +31,9 @@ const Employees = () => {
         fullName: 'Rajesh Kumar',
         email: 'rajesh.kumar@wostore.com',
         phone: '+91 9876543210',
-        position: 'Processing Manager',
-        department: 'Operations',
+        jobRole: 'Store Manager',
+        address: '123, MG Road, Mumbai, Maharashtra 400001',
+        adharNumber: '1234 5678 9012',
         joiningDate: '2024-01-15',
         salary: 35000,
         payrollType: 'monthly',
@@ -42,8 +44,9 @@ const Employees = () => {
         fullName: 'Priya Sharma',
         email: 'priya.sharma@wostore.com',
         phone: '+91 9876543211',
-        position: 'Accounts Manager',
-        department: 'Finance',
+        jobRole: 'Staff',
+        address: '456, Park Street, Kolkata, West Bengal 700016',
+        adharNumber: '2345 6789 0123',
         joiningDate: '2024-02-01',
         salary: 40000,
         payrollType: 'monthly',
@@ -52,10 +55,11 @@ const Employees = () => {
       {
         id: 3,
         fullName: 'Suresh Nair',
-        email: 'suresh.nair@wostore.com',
+        email: '',
         phone: '+91 9876543212',
-        position: 'Drying Supervisor',
-        department: 'Operations',
+        jobRole: 'Supervisor',
+        address: '789, Beach Road, Chennai, Tamil Nadu 600001',
+        adharNumber: '',
         joiningDate: '2024-03-10',
         salary: 8000,
         payrollType: 'weekly',
@@ -66,8 +70,9 @@ const Employees = () => {
         fullName: 'Anita Patel',
         email: 'anita.patel@wostore.com',
         phone: '+91 9876543213',
-        position: 'Quality Inspector',
-        department: 'Quality Control',
+        jobRole: 'Staff',
+        address: '321, Ring Road, Ahmedabad, Gujarat 380015',
+        adharNumber: '3456 7890 1234',
         joiningDate: '2024-04-05',
         salary: 7500,
         payrollType: 'weekly',
@@ -76,10 +81,11 @@ const Employees = () => {
       {
         id: 5,
         fullName: 'Vijay Singh',
-        email: 'vijay.singh@wostore.com',
+        email: '',
         phone: '+91 9876543214',
-        position: 'Warehouse Assistant',
-        department: 'Warehouse',
+        jobRole: 'Assistant Manager',
+        address: '654, Civil Lines, Delhi 110054',
+        adharNumber: '',
         joiningDate: '2024-05-20',
         salary: 25000,
         payrollType: 'monthly',
@@ -102,7 +108,7 @@ const Employees = () => {
           </div>
           <div>
             <div className="font-medium text-slate-900 dark:text-slate-100">{value}</div>
-            <div className="text-sm text-slate-500 dark:text-slate-400">{row.position}</div>
+            <div className="text-sm text-slate-500 dark:text-slate-400">{row.jobRole}</div>
           </div>
         </div>
       ),
@@ -113,7 +119,7 @@ const Employees = () => {
       render: (value) => (
         <div className="flex items-center space-x-2">
           <Mail className="w-4 h-4 text-slate-400" />
-          <span className="text-sm text-slate-600 dark:text-slate-300">{value}</span>
+          <span className="text-sm text-slate-600 dark:text-slate-300">{value || 'N/A'}</span>
         </div>
       ),
     },
@@ -128,8 +134,8 @@ const Employees = () => {
       ),
     },
     {
-      key: 'department',
-      label: t('employees.department'),
+      key: 'jobRole',
+      label: t('employees.jobRole'),
       render: (value) => (
         <div className="flex items-center space-x-2">
           <Briefcase className="w-4 h-4 text-slate-400" />
@@ -188,8 +194,9 @@ const Employees = () => {
       fullName: '',
       email: '',
       phone: '',
-      position: '',
-      department: '',
+      jobRole: '',
+      address: '',
+      adharNumber: '',
       joiningDate: '',
       salary: '',
       payrollType: 'monthly',
@@ -204,8 +211,9 @@ const Employees = () => {
       fullName: employee.fullName,
       email: employee.email,
       phone: employee.phone,
-      position: employee.position,
-      department: employee.department,
+      jobRole: employee.jobRole,
+      address: employee.address,
+      adharNumber: employee.adharNumber,
       joiningDate: employee.joiningDate,
       salary: employee.salary,
       payrollType: employee.payrollType,
@@ -248,51 +256,59 @@ const Employees = () => {
   const formFields = [
     {
       name: 'fullName',
-      label: 'Full Name',
+      label: 'Name',
       type: 'text',
       required: true,
       placeholder: 'Enter employee full name',
     },
     {
-      name: 'email',
-      label: 'Email',
-      type: 'email',
-      required: true,
-      placeholder: 'employee@wostore.com',
-    },
-    {
       name: 'phone',
-      label: 'Phone Number',
+      label: 'Phone',
       type: 'tel',
       required: true,
       placeholder: '+91 9876543210',
     },
     {
-      name: 'position',
-      label: 'Position',
-      type: 'text',
-      required: true,
-      placeholder: 'e.g., Processing Manager',
+      name: 'email',
+      label: 'Email (Optional)',
+      type: 'email',
+      required: false,
+      placeholder: 'employee@wostore.com',
     },
     {
-      name: 'department',
-      label: 'Department',
-      type: 'select',
+      name: 'salary',
+      label: 'Salary',
+      type: 'number',
       required: true,
-      options: [
-        { value: 'Operations', label: 'Operations' },
-        { value: 'Finance', label: 'Finance' },
-        { value: 'Quality Control', label: 'Quality Control' },
-        { value: 'Warehouse', label: 'Warehouse' },
-        { value: 'Administration', label: 'Administration' },
-        { value: 'Sales', label: 'Sales' },
-      ],
+      placeholder: 'Enter salary amount',
+      step: '0.01',
+    },
+    {
+      name: 'address',
+      label: 'Address',
+      type: 'textarea',
+      required: true,
+      placeholder: 'Enter complete address',
+    },
+    {
+      name: 'adharNumber',
+      label: 'Adhar Number (Optional)',
+      type: 'text',
+      required: false,
+      placeholder: '1234 5678 9012',
     },
     {
       name: 'joiningDate',
       label: 'Joining Date',
       type: 'date',
       required: true,
+    },
+    {
+      name: 'jobRole',
+      label: 'Job Role',
+      type: 'text',
+      required: true,
+      placeholder: 'e.g., Store Manager, Staff, Supervisor',
     },
     {
       name: 'payrollType',
@@ -303,14 +319,6 @@ const Employees = () => {
         { value: 'weekly', label: 'Weekly' },
         { value: 'monthly', label: 'Monthly' },
       ],
-    },
-    {
-      name: 'salary',
-      label: 'Salary Amount (₹)',
-      type: 'number',
-      required: true,
-      placeholder: 'Enter salary amount',
-      step: '0.01',
     },
     {
       name: 'status',
