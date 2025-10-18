@@ -1,19 +1,112 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, ArrowRight, Package, Droplet, CheckCircle2, Truck, Search, X } from 'lucide-react';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
 import ModalForm from '../components/ModalForm';
-import { collectionAPI, customerAPI } from '../services/api';
+import AddCollectionModal from '../components/AddCollectionModal';
+import { collectionAPI } from '../services/api';
 import toast from 'react-hot-toast';
 import { useLanguage } from '../contexts/LanguageContext';
 
-const schema = yup.object().shape({
-  customerName: yup.string().required('Customer name is required'),
-  date: yup.string().required('Date is required'),
-  quantity: yup.number().positive('Must be positive').required('Quantity is required'),
-  rate: yup.number().positive('Must be positive').required('Rate is required'),
-});
+// StatusColumn component moved outside to prevent re-creation on every render
+const StatusColumn = ({ title, icon: Icon, color, orders, actionButton, searchKey, searchValue, onSearchChange, onClearSearch, t }) => (
+  <div className="flex-1 min-w-[280px]">
+    <div className={`${color} rounded-t-lg p-4`}>
+      <div className="flex items-center gap-2 mb-3">
+        <Icon className="w-5 h-5" />
+        <h2 className="font-normal text-lg">{title}</h2>
+        <span className="ml-auto bg-white dark:bg-slate-800 px-2.5 py-0.5 rounded-full text-sm font-medium text-slate-900 dark:text-slate-100">
+          {orders.length}
+        </span>
+      </div>
+      
+      {/* Search Input */}
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
+        <input
+          type="text"
+          placeholder={t('common.search')}
+          value={searchValue || ''}
+          onChange={(e) => {
+            const value = e.target.value;
+            onSearchChange(searchKey, value);
+          }}
+          className="w-full pl-10 pr-8 py-2 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-lg text-sm border border-white/20 focus:border-white/40 focus:outline-none"
+        />
+        {searchValue && searchValue.length > 0 && (
+          <button
+            onClick={() => onClearSearch(searchKey)}
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-colors"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        )}
+      </div>
+    </div>
+    <div className="bg-slate-50 dark:bg-slate-800/50 min-h-[calc(100vh-280px)] p-3 space-y-3 rounded-b-lg">
+      {orders.length === 0 ? (
+        <div className="text-center py-8 text-slate-400">
+          <p className="text-sm">{t('common.noData')}</p>
+        </div>
+      ) : (
+        orders.map(order => (
+          <div 
+            key={order.id} 
+            className="bg-white dark:bg-slate-800 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow border border-slate-200 dark:border-slate-700"
+          >
+            <div className="flex justify-between items-start mb-2">
+              <h3 className="font-normal text-slate-900 dark:text-slate-100">
+                {order.customerName}
+              </h3>
+              {order.batchNo && (
+                <span className="text-xs bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 px-2 py-1 rounded">
+                  {order.batchNo}
+                </span>
+              )}
+            </div>
+            
+            <div className="space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
+              <div className="flex justify-between">
+                <span>{t('common.date')}:</span>
+                <span className="font-medium">{order.date}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>{t('collection.quantity')}:</span>
+                <span className="font-medium">{order.quantity} kg</span>
+              </div>
+              {order.dryQty > 0 && order.status !== 'drying' && (
+                <div className="flex justify-between">
+                  <span>{t('dryingBatch.dryWeight')}:</span>
+                  <span className="font-medium text-green-600 dark:text-green-400">{order.dryQty} kg</span>
+                </div>
+              )}
+              {order.drierNo && (
+                <div className="flex justify-between">
+                  <span>Drier:</span>
+                  <span className="font-medium text-blue-600 dark:text-blue-400">#{order.drierNo}</span>
+                </div>
+              )}
+              <div className="flex justify-between pt-1 border-t border-slate-200 dark:border-slate-700">
+                <span>{t('common.amount')}:</span>
+                <span className="font-normal text-slate-900 dark:text-slate-100">
+                  ₹{order.amount?.toLocaleString() || (order.quantity * order.rate).toLocaleString()}
+                </span>
+              </div>
+            </div>
+
+            {actionButton && (
+              <button
+                onClick={() => actionButton.action(order)}
+                className={`mt-3 w-full ${actionButton.className} flex items-center justify-center gap-2 text-sm font-medium py-2 rounded-lg transition-colors`}
+              >
+                {actionButton.icon}
+                {actionButton.label}
+              </button>
+            )}
+          </div>
+        ))
+      )}
+    </div>
+  </div>
+);
 
 const StoreManagement = () => {
   const { t } = useLanguage();
@@ -21,39 +114,21 @@ const StoreManagement = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDrierModalOpen, setIsDrierModalOpen] = useState(false);
   const [isCompleteModalOpen, setIsCompleteModalOpen] = useState(false);
+  const [isReturnModalOpen, setIsReturnModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const [customers, setCustomers] = useState([]);
   const [drierNumber, setDrierNumber] = useState('');
   const [dryQuantity, setDryQuantity] = useState('');
+  const [amountBalance, setAmountBalance] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState('');
   const [searchTerms, setSearchTerms] = useState({
     pending: '',
     drying: '',
     completed: '',
   });
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    watch,
-    setValue,
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
-
-  const quantity = watch('quantity');
-  const rate = watch('rate');
-
   useEffect(() => {
     fetchOrders();
   }, []);
-
-  useEffect(() => {
-    if (quantity && rate) {
-      setValue('amount', quantity * rate);
-    }
-  }, [quantity, rate, setValue]);
 
   const fetchOrders = async () => {
     try {
@@ -61,32 +136,6 @@ const StoreManagement = () => {
       setOrders(response.data);
     } catch (error) {
       toast.error('Failed to fetch orders');
-    }
-  };
-
-  const searchCustomers = async (query) => {
-    try {
-      const response = await customerAPI.search(query);
-      setCustomers(response.data);
-    } catch (error) {
-      console.error('Failed to search customers');
-    }
-  };
-
-  const onSubmit = async (data) => {
-    try {
-      const newOrder = {
-        ...data,
-        status: 'pending',
-        drierNo: null,
-        dryQty: 0,
-      };
-      await collectionAPI.create(newOrder);
-      toast.success('Collection added successfully');
-      fetchOrders();
-      handleCloseModal();
-    } catch (error) {
-      toast.error('Failed to add collection');
     }
   };
 
@@ -135,14 +184,41 @@ const StoreManagement = () => {
   };
 
   const handleMarkReturned = (order) => {
+    setSelectedOrder(order);
+    setAmountBalance('');
+    setPaymentMethod('');
+    setIsReturnModalOpen(true);
+  };
+
+  const handleConfirmReturn = () => {
+    if (!amountBalance || amountBalance <= 0) {
+      toast.error('Please enter a valid paid amount');
+      return;
+    }
+    
+    if (!paymentMethod) {
+      toast.error('Please select a payment method');
+      return;
+    }
+    
     // Remove from orders completely when returned
-    setOrders(orders.filter(o => o.id !== order.id));
-    toast.success('Order completed and removed from tracking');
+    setOrders(orders.filter(o => o.id !== selectedOrder.id));
+    toast.success('Order returned to customer successfully');
+    setIsReturnModalOpen(false);
+    setAmountBalance('');
+    setPaymentMethod('');
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    reset({});
+  };
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleSuccess = () => {
+    fetchOrders();
   };
 
   const handleSearchChange = (column, value) => {
@@ -192,107 +268,6 @@ const StoreManagement = () => {
     searchTerms.completed
   );
 
-  const StatusColumn = ({ title, icon: Icon, color, orders, actionButton, searchKey }) => (
-    <div className="flex-1 min-w-[280px]">
-      <div className={`${color} rounded-t-lg p-4`}>
-        <div className="flex items-center gap-2 mb-3">
-          <Icon className="w-5 h-5" />
-          <h2 className="font-normal text-lg">{title}</h2>
-          <span className="ml-auto bg-white dark:bg-slate-800 px-2.5 py-0.5 rounded-full text-sm font-medium text-slate-900 dark:text-slate-100">
-            {orders.length}
-          </span>
-        </div>
-        
-        {/* Search Input */}
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
-          <input
-            type="text"
-            placeholder={t('common.search')}
-            value={searchTerms[searchKey] || ''}
-            onChange={(e) => {
-              const value = e.target.value;
-              handleSearchChange(searchKey, value);
-            }}
-            className="w-full pl-10 pr-8 py-2 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-lg text-sm border border-white/20 focus:border-white/40 focus:outline-none"
-          />
-          {searchTerms[searchKey] && searchTerms[searchKey].length > 0 && (
-            <button
-              onClick={() => clearSearch(searchKey)}
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-colors"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          )}
-        </div>
-      </div>
-      <div className="bg-slate-50 dark:bg-slate-800/50 min-h-[calc(100vh-280px)] p-3 space-y-3 rounded-b-lg">
-        {orders.length === 0 ? (
-          <div className="text-center py-8 text-slate-400">
-            <p className="text-sm">{t('common.noData')}</p>
-          </div>
-        ) : (
-          orders.map(order => (
-            <div 
-              key={order.id} 
-              className="bg-white dark:bg-slate-800 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow border border-slate-200 dark:border-slate-700"
-            >
-              <div className="flex justify-between items-start mb-2">
-                <h3 className="font-normal text-slate-900 dark:text-slate-100">
-                  {order.customerName}
-                </h3>
-                {order.batchNo && (
-                  <span className="text-xs bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 px-2 py-1 rounded">
-                    {order.batchNo}
-                  </span>
-                )}
-              </div>
-              
-              <div className="space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
-                <div className="flex justify-between">
-                  <span>{t('common.date')}:</span>
-                  <span className="font-medium">{order.date}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>{t('collection.quantity')}:</span>
-                  <span className="font-medium">{order.quantity} kg</span>
-                </div>
-                {order.dryQty > 0 && (
-                  <div className="flex justify-between">
-                    <span>{t('dryingBatch.dryWeight')}:</span>
-                    <span className="font-medium text-green-600 dark:text-green-400">{order.dryQty} kg</span>
-                  </div>
-                )}
-                {order.drierNo && (
-                  <div className="flex justify-between">
-                    <span>Drier:</span>
-                    <span className="font-medium text-blue-600 dark:text-blue-400">#{order.drierNo}</span>
-                  </div>
-                )}
-                <div className="flex justify-between pt-1 border-t border-slate-200 dark:border-slate-700">
-                  <span>{t('common.amount')}:</span>
-                  <span className="font-normal text-slate-900 dark:text-slate-100">
-                    ₹{order.amount?.toLocaleString() || (order.quantity * order.rate).toLocaleString()}
-                  </span>
-                </div>
-              </div>
-
-              {actionButton && (
-                <button
-                  onClick={() => actionButton.action(order)}
-                  className={`mt-3 w-full ${actionButton.className} flex items-center justify-center gap-2 text-sm font-medium py-2 rounded-lg transition-colors`}
-                >
-                  {actionButton.icon}
-                  {actionButton.label}
-                </button>
-              )}
-            </div>
-          ))
-        )}
-      </div>
-    </div>
-  );
-
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -306,7 +281,7 @@ const StoreManagement = () => {
           </p>
         </div>
         <button
-          onClick={() => setIsModalOpen(true)}
+          onClick={handleOpenModal}
           className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm sm:text-base"
         >
           <Plus className="w-5 h-5" />
@@ -322,6 +297,10 @@ const StoreManagement = () => {
           color="bg-slate-600 dark:bg-slate-700 text-white"
           orders={pendingOrders}
           searchKey="pending"
+          searchValue={searchTerms.pending}
+          onSearchChange={handleSearchChange}
+          onClearSearch={clearSearch}
+          t={t}
           actionButton={{
             label: 'Add to Drier',
             icon: <ArrowRight className="w-4 h-4" />,
@@ -336,6 +315,10 @@ const StoreManagement = () => {
           color="bg-blue-600 dark:bg-blue-700 text-white"
           orders={dryingOrders}
           searchKey="drying"
+          searchValue={searchTerms.drying}
+          onSearchChange={handleSearchChange}
+          onClearSearch={clearSearch}
+          t={t}
           actionButton={{
             label: 'Mark Completed',
             icon: <CheckCircle2 className="w-4 h-4" />,
@@ -350,8 +333,12 @@ const StoreManagement = () => {
           color="bg-green-600 dark:bg-green-700 text-white"
           orders={completedOrders}
           searchKey="completed"
+          searchValue={searchTerms.completed}
+          onSearchChange={handleSearchChange}
+          onClearSearch={clearSearch}
+          t={t}
           actionButton={{
-            label: 'Complete & Remove',
+            label: 'Return to Customer',
             icon: <Truck className="w-4 h-4" />,
             action: handleMarkReturned,
             className: 'bg-purple-600 hover:bg-purple-700 text-white',
@@ -360,123 +347,13 @@ const StoreManagement = () => {
       </div>
 
       {/* Add Collection Modal */}
-      <ModalForm
+      <AddCollectionModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
+        onSuccess={handleSuccess}
+        collections={orders}
         title={t('collection.addNewCollection')}
-      >
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div>
-            <label htmlFor="customerName" className="label">
-              {t('collection.customer')}
-            </label>
-            <input
-              id="customerName"
-              type="text"
-              {...register('customerName')}
-              onChange={(e) => searchCustomers(e.target.value)}
-              className="input-field"
-              placeholder="Start typing to search..."
-              list="customers"
-            />
-            <datalist id="customers">
-              {customers.map((customer, idx) => (
-                <option key={idx} value={customer} />
-              ))}
-            </datalist>
-            {errors.customerName && (
-              <p className="mt-1 text-xs text-red-600">{errors.customerName.message}</p>
-            )}
-          </div>
-
-          <div>
-            <label htmlFor="date" className="label">
-              {t('common.date')}
-            </label>
-            <input
-              id="date"
-              type="date"
-              {...register('date')}
-              className="input-field"
-            />
-            {errors.date && (
-              <p className="mt-1 text-xs text-red-600">{errors.date.message}</p>
-            )}
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="quantity" className="label">
-                {t('collection.quantity')} (kg)
-              </label>
-              <input
-                id="quantity"
-                type="number"
-                step="0.01"
-                {...register('quantity')}
-                className="input-field"
-                placeholder="0"
-              />
-              {errors.quantity && (
-                <p className="mt-1 text-xs text-red-600">{errors.quantity.message}</p>
-              )}
-            </div>
-
-            <div>
-              <label htmlFor="rate" className="label">
-                {t('collection.pricePerKg')} (₹)
-              </label>
-              <input
-                id="rate"
-                type="number"
-                step="0.01"
-                {...register('rate')}
-                className="input-field"
-                placeholder="0"
-              />
-              {errors.rate && (
-                <p className="mt-1 text-xs text-red-600">{errors.rate.message}</p>
-              )}
-            </div>
-          </div>
-
-          <div>
-            <label className="label">{t('common.amount')} (₹)</label>
-            <input
-              type="text"
-              value={quantity && rate ? `₹${(quantity * rate).toLocaleString()}` : '₹0'}
-              className="input-field bg-slate-100 dark:bg-slate-700"
-              disabled
-            />
-          </div>
-
-          <div>
-            <label htmlFor="batchNo" className="label">
-              Batch No (Optional)
-            </label>
-            <input
-              id="batchNo"
-              type="text"
-              {...register('batchNo')}
-              className="input-field"
-              placeholder="e.g., B001"
-            />
-          </div>
-
-          <div className="flex gap-3 pt-4">
-            <button type="submit" className="btn-primary flex-1">
-              {t('collection.addCollection')}
-            </button>
-            <button
-              type="button"
-              onClick={handleCloseModal}
-              className="btn-secondary flex-1"
-            >
-              {t('common.cancel')}
-            </button>
-          </div>
-        </form>
-      </ModalForm>
+      />
 
       {/* Assign Drier Modal */}
       <ModalForm
@@ -518,16 +395,16 @@ const StoreManagement = () => {
 
           <div className="flex gap-3 pt-4">
             <button
-              onClick={handleAssignDrier}
-              className="btn-primary flex-1"
-            >
-              {t('common.submit')}
-            </button>
-            <button
               onClick={() => setIsDrierModalOpen(false)}
               className="btn-secondary flex-1"
             >
               {t('common.cancel')}
+            </button>
+            <button
+              onClick={handleAssignDrier}
+              className="btn-primary flex-1"
+            >
+              Assign to Drier
             </button>
           </div>
         </div>
@@ -573,20 +450,121 @@ const StoreManagement = () => {
 
           <div className="flex gap-3 pt-4">
             <button
-              onClick={handleConfirmCompleted}
-              className="btn-primary flex-1"
-            >
-              {t('common.submit')}
-            </button>
-            <button
               onClick={() => setIsCompleteModalOpen(false)}
               className="btn-secondary flex-1"
             >
               {t('common.cancel')}
             </button>
+            <button
+              onClick={handleConfirmCompleted}
+              className="btn-primary flex-1"
+            >
+              Mark Completed
+            </button>
           </div>
         </div>
       </ModalForm>
+
+      {/* Return to Customer Modal */}
+      <ModalForm
+        isOpen={isReturnModalOpen}
+        onClose={() => setIsReturnModalOpen(false)}
+        title="Return to Customer"
+      >
+        <div className="space-y-4">
+          {selectedOrder && (
+            <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-4">
+              <h3 className="font-normal text-slate-900 dark:text-slate-100 mb-2">
+                {selectedOrder.customerName}
+              </h3>
+              <div className="text-sm text-slate-600 dark:text-slate-400 space-y-1">
+                <p>Batch: {selectedOrder.batchNo || 'N/A'}</p>
+                <p>Quantity: {selectedOrder.quantity} kg</p>
+                {selectedOrder.dryQty > 0 && (
+                  <p>Dry Weight: {selectedOrder.dryQty} kg</p>
+                )}
+                <p>Drier: #{selectedOrder.drierNo}</p>
+              </div>
+            </div>
+          )}
+
+          <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
+            <div className="flex justify-between items-center">
+              <span className="text-sm font-medium text-blue-900 dark:text-blue-100">
+                Pending Amount:
+              </span>
+              <span className="text-lg font-semibold text-blue-900 dark:text-blue-100">
+                ₹{selectedOrder?.amount?.toLocaleString() || (selectedOrder?.quantity * selectedOrder?.rate)?.toLocaleString() || '0'}
+              </span>
+            </div>
+          </div>
+
+          <div>
+            <label htmlFor="amountBalance" className="label">
+              Customer Paid Amount
+            </label>
+            <input
+              id="amountBalance"
+              type="number"
+              step="0.01"
+              value={amountBalance}
+              onChange={(e) => setAmountBalance(e.target.value)}
+              className="input-field"
+              placeholder="Enter paid amount"
+            />
+            {amountBalance && selectedOrder && (
+              <div className="mt-2 p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-600 dark:text-slate-400">Pending Amount:</span>
+                  <span className="font-medium">₹{selectedOrder?.amount?.toLocaleString() || (selectedOrder?.quantity * selectedOrder?.rate)?.toLocaleString() || '0'}</span>
+                </div>
+                <div className="flex justify-between text-sm mt-1">
+                  <span className="text-slate-600 dark:text-slate-400">Paid Amount:</span>
+                  <span className="font-medium text-green-600 dark:text-green-400">₹{parseFloat(amountBalance || 0).toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between text-sm mt-1 pt-1 border-t border-slate-200 dark:border-slate-700">
+                  <span className="text-slate-600 dark:text-slate-400">Balance:</span>
+                  <span className={`font-medium ${(selectedOrder?.amount || (selectedOrder?.quantity * selectedOrder?.rate) || 0) - parseFloat(amountBalance || 0) > 0 ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`}>
+                    ₹{((selectedOrder?.amount || (selectedOrder?.quantity * selectedOrder?.rate) || 0) - parseFloat(amountBalance || 0)).toLocaleString()}
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div>
+            <label htmlFor="paymentMethod" className="label">
+              Payment Method
+            </label>
+            <select
+              id="paymentMethod"
+              value={paymentMethod}
+              onChange={(e) => setPaymentMethod(e.target.value)}
+              className="input-field"
+            >
+              <option value="">Select Payment Method</option>
+              <option value="cash">Cash</option>
+              <option value="online">Online</option>
+            </select>
+          </div>
+
+          <div className="flex gap-3 pt-4">
+            <button
+              onClick={() => setIsReturnModalOpen(false)}
+              className="btn-secondary flex-1"
+            >
+              {t('common.cancel')}
+            </button>
+            <button
+              onClick={handleConfirmReturn}
+              className="btn-primary flex-1"
+            >
+              Return to Customer
+            </button>
+          </div>
+        </div>
+      </ModalForm>
+
     </div>
   );
 };
