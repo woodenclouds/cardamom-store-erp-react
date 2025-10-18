@@ -4,8 +4,10 @@ import { Plus, Edit, Trash2, TrendingDown, Filter } from 'lucide-react';
 import DataTable from '../components/DataTable';
 import ModalForm from '../components/ModalForm';
 import { expenseAPI, expenseCategoryAPI } from '../services/api';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const Expenses = () => {
+  const { t } = useLanguage();
   const [expenses, setExpenses] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -112,10 +114,10 @@ const Expenses = () => {
   const totalExpense = filteredExpenses.reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
 
   const columns = [
-    { key: 'date', label: 'Date' },
+    { key: 'date', label: t('common.date') },
     { 
       key: 'categoryName',
-      label: 'Category',
+      label: t('expenses.category'),
       render: (value) => (
         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
           {value || 'N/A'}
@@ -124,20 +126,20 @@ const Expenses = () => {
     },
     { 
       key: 'amount',
-      label: 'Amount',
+      label: t('common.amount'),
       render: (value) => (
         <span className="font-semibold text-red-600">
           ₹{parseFloat(value || 0).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
         </span>
       ),
     },
-    { key: 'vendor', label: 'Vendor' },
-    { key: 'description', label: 'Description' },
-    { key: 'paymentMode', label: 'Payment Mode' },
-    { key: 'reference', label: 'Reference' },
+    { key: 'vendor', label: t('purchases.vendor') },
+    { key: 'description', label: t('common.description') },
+    { key: 'paymentMode', label: t('payments.paymentMethod') },
+    { key: 'reference', label: t('common.reference') },
     {
       key: 'id',
-      label: 'Actions',
+      label: t('common.actions'),
       render: (value, row) => (
         <div className="flex gap-2">
           <button
@@ -220,10 +222,10 @@ const Expenses = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div>
           <h1 className="text-lg sm:text-2xl font-normal text-slate-900 dark:text-slate-100 mb-1 sm:mb-2">
-            Expense Management
+            {t('expenses.title')}
           </h1>
           <p className="text-slate-600 dark:text-slate-400">
-            Track and manage all expense transactions
+            {t('expenses.subtitle')}
           </p>
         </div>
         <button
@@ -231,7 +233,7 @@ const Expenses = () => {
           className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm sm:text-base"
         >
           <Plus className="w-5 h-5" />
-          <span>Add Expense</span>
+          <span>{t('expenses.addExpense')}</span>
         </button>
       </div>
 
@@ -239,7 +241,7 @@ const Expenses = () => {
       <div className="card mb-6">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">Total Expenses</h3>
+            <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">{t('expenses.totalExpenses')}</h3>
             <p className="text-3xl font-normal text-slate-900 dark:text-slate-100 mt-1">
               ₹{totalExpense.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
             </p>
@@ -279,7 +281,7 @@ const Expenses = () => {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onSubmit={handleSubmit}
-        title={editingExpense ? 'Edit Expense Record' : 'Add Expense Record'}
+        title={editingExpense ? t('expenses.editExpense') : t('expenses.addNewExpense')}
         fields={formFields}
         formData={formData}
         setFormData={setFormData}

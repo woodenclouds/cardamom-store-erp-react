@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Plus, DollarSign, Calendar, User, Wallet } from 'lucide-react';
 import DataTable from '../components/DataTable';
 import ModalForm from '../components/ModalForm';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const Payrolls = () => {
+  const { t } = useLanguage();
   const [payrolls, setPayrolls] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -75,7 +77,7 @@ const Payrolls = () => {
   const columns = [
     {
       key: 'employeeName',
-      label: 'Employee Name',
+      label: t('employees.employeeName'),
       render: (value) => (
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
@@ -89,7 +91,7 @@ const Payrolls = () => {
     },
     {
       key: 'salary',
-      label: 'Salary Paid',
+      label: t('payrolls.salaryPaid'),
       render: (value) => (
         <div className="flex items-center space-x-2">
           <DollarSign className="w-4 h-4 text-green-600 dark:text-green-400" />
@@ -101,7 +103,7 @@ const Payrolls = () => {
     },
     {
       key: 'paymentDate',
-      label: 'Payment Date',
+      label: t('payrolls.paymentDate'),
       render: (value) => (
         <div className="flex items-center space-x-2">
           <Calendar className="w-4 h-4 text-slate-400" />
@@ -113,7 +115,7 @@ const Payrolls = () => {
     },
     {
       key: 'paymentMode',
-      label: 'Payment Mode',
+      label: t('payments.paymentMethod'),
       render: (value) => (
         <div className="flex items-center space-x-2">
           <Wallet className="w-4 h-4 text-slate-400" />
@@ -123,7 +125,7 @@ const Payrolls = () => {
     },
     {
       key: 'remarks',
-      label: 'Remarks',
+      label: t('common.remarks'),
       render: (value) => (
         <span className="text-sm text-slate-500 dark:text-slate-400">
           {value || '-'}
@@ -159,7 +161,7 @@ const Payrolls = () => {
   };
 
   const handleDeletePayroll = (payroll) => {
-    if (window.confirm(`Are you sure you want to delete salary payment for ${payroll.employeeName}?`)) {
+    if (window.confirm(t('payrolls.confirmDelete'))) {
       setPayrolls(payrolls.filter(p => p.id !== payroll.id));
     }
   };
@@ -211,7 +213,7 @@ const Payrolls = () => {
   const formFields = [
     {
       name: 'employeeId',
-      label: 'Employee Name',
+      label: t('employees.employeeName'),
       type: 'select',
       required: true,
       options: employees
@@ -224,21 +226,21 @@ const Payrolls = () => {
     },
     {
       name: 'salary',
-      label: 'Salary Amount (₹)',
+      label: t('payrolls.salaryAmount'),
       type: 'number',
       required: true,
       step: '0.01',
-      placeholder: 'Enter salary amount',
+      placeholder: t('payrolls.enterSalaryAmount'),
     },
     {
       name: 'paymentDate',
-      label: 'Payment Date',
+      label: t('payrolls.paymentDate'),
       type: 'date',
       required: true,
     },
     {
       name: 'paymentMode',
-      label: 'Payment Mode',
+      label: t('payments.paymentMethod'),
       type: 'select',
       required: true,
       options: [
@@ -250,9 +252,9 @@ const Payrolls = () => {
     },
     {
       name: 'remarks',
-      label: 'Remarks',
+      label: t('common.remarks'),
       type: 'textarea',
-      placeholder: 'e.g., October salary, bonus payment...',
+      placeholder: t('payrolls.remarksPlaceholder'),
     },
   ];
 
@@ -277,9 +279,9 @@ const Payrolls = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div>
-          <h1 className="text-lg sm:text-2xl font-normal text-slate-900 dark:text-slate-100 mb-1 sm:mb-2">Salary Payments</h1>
+          <h1 className="text-lg sm:text-2xl font-normal text-slate-900 dark:text-slate-100 mb-1 sm:mb-2">{t('payrolls.title')}</h1>
           <p className="text-slate-600 dark:text-slate-400">
-            Track employee salary payments
+            {t('payrolls.subtitle')}
           </p>
         </div>
         <button
@@ -287,7 +289,7 @@ const Payrolls = () => {
           className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm sm:text-base"
         >
           <Plus className="w-4 h-4" />
-          <span>Add Payment</span>
+          <span>{t('payrolls.addPayment')}</span>
         </button>
       </div>
 
@@ -299,7 +301,7 @@ const Payrolls = () => {
               <Wallet className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Total Payments</p>
+              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">{t('payrolls.totalPayments')}</p>
               <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">{totalPayments}</p>
             </div>
           </div>
@@ -311,7 +313,7 @@ const Payrolls = () => {
               <DollarSign className="w-6 h-6 text-green-600 dark:text-green-400" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Total Paid</p>
+              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">{t('payrolls.totalPaid')}</p>
               <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
                 ₹{totalPaid.toLocaleString()}
               </p>
@@ -325,7 +327,7 @@ const Payrolls = () => {
               <Calendar className="w-6 h-6 text-purple-600 dark:text-purple-400" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">This Month</p>
+              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">{t('payrolls.thisMonth')}</p>
               <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
                 ₹{thisMonthTotal.toLocaleString()}
               </p>
@@ -345,7 +347,7 @@ const Payrolls = () => {
           searchable={true}
           pagination={true}
           itemsPerPage={10}
-          emptyMessage="No salary payments found. Add one to get started."
+          emptyMessage={t('payrolls.noPaymentsFound')}
         />
       </div>
 
@@ -354,11 +356,11 @@ const Payrolls = () => {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onSubmit={handleSavePayroll}
-        title={editingPayroll ? 'Edit Salary Payment' : 'Add Salary Payment'}
+        title={editingPayroll ? t('payrolls.editPayment') : t('payrolls.addPayment')}
         fields={formFields}
         formData={formData}
         setFormData={setFormData}
-        submitText={editingPayroll ? 'Update Payment' : 'Add Payment'}
+        submitText={editingPayroll ? t('payrolls.updatePayment') : t('payrolls.addPayment')}
       />
     </div>
   );

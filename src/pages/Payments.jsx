@@ -8,6 +8,7 @@ import ModalForm from '../components/ModalForm';
 import Card from '../components/Card';
 import { paymentAPI, customerAPI, dashboardAPI } from '../services/api';
 import toast from 'react-hot-toast';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const schema = yup.object().shape({
   date: yup.string().required('Date is required'),
@@ -18,6 +19,7 @@ const schema = yup.object().shape({
 });
 
 const Payments = () => {
+  const { t } = useLanguage();
   const [payments, setPayments] = useState([]);
   const [summary, setSummary] = useState({ totalReceived: 0, totalPending: 0 });
   const [accountSummary, setAccountSummary] = useState({
@@ -103,15 +105,15 @@ const Payments = () => {
   };
 
   const columns = [
-    { key: 'date', label: 'Date' },
-    { key: 'customerName', label: 'Customer Name' },
+    { key: 'date', label: t('common.date') },
+    { key: 'customerName', label: t('collection.customer') },
     {
       key: 'amount',
-      label: 'Amount',
+      label: t('common.amount'),
       render: (value) => `₹${value.toLocaleString()}`,
     },
-    { key: 'mode', label: 'Payment Mode' },
-    { key: 'remarks', label: 'Remarks', render: (value) => value || '-' },
+    { key: 'mode', label: t('payments.paymentMethod') },
+    { key: 'remarks', label: t('common.description'), render: (value) => value || '-' },
   ];
 
   return (
@@ -120,10 +122,10 @@ const Payments = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div>
           <h1 className="text-lg sm:text-2xl font-normal text-slate-900 dark:text-slate-100 mb-1 sm:mb-2">
-            Payments
+            {t('payments.title')}
           </h1>
           <p className="text-slate-600 dark:text-slate-400">
-            Track customer payments
+            {t('payments.subtitle')}
           </p>
         </div>
         <button
@@ -131,7 +133,7 @@ const Payments = () => {
           className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm sm:text-base"
         >
           <Plus className="w-5 h-5" />
-          <span>Add Payment</span>
+          <span>{t('payments.addPayment')}</span>
         </button>
       </div>
 
@@ -140,7 +142,7 @@ const Payments = () => {
         <div className="card">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">Cash Balance</h3>
+              <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">{t('payments.cashBalance')}</h3>
               <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
                 ₹{accountSummary.cashBalance.toLocaleString()}
               </p>
@@ -154,7 +156,7 @@ const Payments = () => {
         <div className="card">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">Bank Balance</h3>
+              <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">{t('payments.bankBalance')}</h3>
               <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
                 ₹{accountSummary.bankBalance.toLocaleString()}
               </p>
@@ -168,7 +170,7 @@ const Payments = () => {
         <div className="card">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">Receivables</h3>
+              <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">{t('payments.receivables')}</h3>
               <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
                 ₹{accountSummary.totalReceivables.toLocaleString()}
               </p>
@@ -182,7 +184,7 @@ const Payments = () => {
         <div className="card">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">Payables</h3>
+              <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">{t('payments.payables')}</h3>
               <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
                 ₹{accountSummary.totalPayables.toLocaleString()}
               </p>
@@ -197,13 +199,13 @@ const Payments = () => {
       {/* Payment Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card
-          title="Total Received"
+          title={t('payments.totalReceived')}
           value={`₹${summary.totalReceived.toLocaleString()}`}
           icon={TrendingUp}
           className="border-l-4 border-green-500"
         />
         <Card
-          title="Total Pending"
+          title={t('payments.totalPending')}
           value={`₹${summary.totalPending.toLocaleString()}`}
           icon={TrendingDown}
           className="border-l-4 border-yellow-500"

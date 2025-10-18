@@ -4,8 +4,10 @@ import { Plus, Edit, Trash2, TrendingUp, Filter } from 'lucide-react';
 import DataTable from '../components/DataTable';
 import ModalForm from '../components/ModalForm';
 import { incomeAPI, incomeCategoryAPI } from '../services/api';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const Income = () => {
+  const { t } = useLanguage();
   const [incomes, setIncomes] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -109,10 +111,10 @@ const Income = () => {
   const totalIncome = filteredIncomes.reduce((sum, income) => sum + parseFloat(income.amount), 0);
 
   const columns = [
-    { key: 'date', label: 'Date' },
+    { key: 'date', label: t('common.date') },
     { 
       key: 'categoryName',
-      label: 'Category',
+      label: t('income.category'),
       render: (value) => (
         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
           {value || 'N/A'}
@@ -121,19 +123,19 @@ const Income = () => {
     },
     { 
       key: 'amount',
-      label: 'Amount',
+      label: t('common.amount'),
       render: (value) => (
         <span className="font-semibold text-green-600">
           ₹{parseFloat(value || 0).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
         </span>
       ),
     },
-    { key: 'description', label: 'Description' },
-    { key: 'paymentMode', label: 'Payment Mode' },
-    { key: 'reference', label: 'Reference' },
+    { key: 'description', label: t('common.description') },
+    { key: 'paymentMode', label: t('payments.paymentMethod') },
+    { key: 'reference', label: t('common.reference') },
     {
       key: 'id',
-      label: 'Actions',
+      label: t('common.actions'),
       render: (value, row) => (
         <div className="flex gap-2">
           <button
@@ -210,10 +212,10 @@ const Income = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div>
           <h1 className="text-lg sm:text-2xl font-normal text-slate-900 dark:text-slate-100 mb-1 sm:mb-2">
-            Income Management
+            {t('income.title')}
           </h1>
           <p className="text-slate-600 dark:text-slate-400">
-            Track and manage all income transactions
+            {t('income.subtitle')}
           </p>
         </div>
         <button
@@ -221,7 +223,7 @@ const Income = () => {
           className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm sm:text-base"
         >
           <Plus className="w-5 h-5" />
-          <span>Add Income</span>
+          <span>{t('income.addIncome')}</span>
         </button>
       </div>
 
@@ -229,7 +231,7 @@ const Income = () => {
       <div className="card mb-6">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">Total Income</h3>
+            <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">{t('income.totalIncome')}</h3>
             <p className="text-3xl font-normal text-slate-900 dark:text-slate-100 mt-1">
               ₹{totalIncome.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
             </p>
@@ -269,7 +271,7 @@ const Income = () => {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onSubmit={handleSubmit}
-        title={editingIncome ? 'Edit Income Record' : 'Add Income Record'}
+        title={editingIncome ? t('income.editIncome') : t('income.addNewIncome')}
         fields={formFields}
         formData={formData}
         setFormData={setFormData}

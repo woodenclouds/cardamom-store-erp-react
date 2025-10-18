@@ -3,8 +3,10 @@ import { Download, Search } from 'lucide-react';
 import DataTable from '../components/DataTable';
 import { ledgerAPI, customerAPI } from '../services/api';
 import toast from 'react-hot-toast';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const Ledger = () => {
+  const { t } = useLanguage();
   const [ledgerData, setLedgerData] = useState([]);
   const [customers, setCustomers] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState('');
@@ -48,25 +50,25 @@ const Ledger = () => {
   };
 
   const columns = [
-    { key: 'date', label: 'Date' },
-    { key: 'type', label: 'Type' },
-    { key: 'reference', label: 'Reference' },
+    { key: 'date', label: t('common.date') },
+    { key: 'type', label: t('ledger.type') },
+    { key: 'reference', label: t('common.reference') },
     {
       key: 'debit',
-      label: 'Debit',
+      label: t('ledger.debit'),
       render: (value) => value ? `₹${value.toLocaleString()}` : '-',
     },
     {
       key: 'credit',
-      label: 'Credit',
+      label: t('ledger.credit'),
       render: (value) => value ? `₹${value.toLocaleString()}` : '-',
     },
     {
       key: 'balance',
-      label: 'Balance',
+      label: t('ledger.balance'),
       render: (value) => `₹${value.toLocaleString()}`,
     },
-    { key: 'remarks', label: 'Remarks', render: (value) => value || '-' },
+    { key: 'remarks', label: t('common.remarks'), render: (value) => value || '-' },
   ];
 
   return (
@@ -74,10 +76,10 @@ const Ledger = () => {
       {/* Header */}
       <div>
           <h1 className="text-lg sm:text-2xl font-normal text-slate-900 dark:text-slate-100 mb-1 sm:mb-2">
-          Customer Ledger
+          {t('ledger.title')}
         </h1>
         <p className="text-slate-600 dark:text-slate-400">
-          View customer account statements
+          {t('ledger.subtitle')}
         </p>
       </div>
 
@@ -86,7 +88,7 @@ const Ledger = () => {
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1">
             <label htmlFor="customerSearch" className="label">
-              Select Customer
+              {t('ledger.selectCustomer')}
             </label>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
@@ -99,7 +101,7 @@ const Ledger = () => {
                 }}
                 className="input-field pl-10"
               >
-                <option value="">Choose a customer...</option>
+                <option value="">{t('ledger.chooseCustomer')}</option>
                 {customers.map((customer, idx) => (
                   <option key={idx} value={customer}>
                     {customer}
@@ -116,7 +118,7 @@ const Ledger = () => {
               className="btn-secondary flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Download className="w-4 h-4" />
-              <span>Export PDF</span>
+              <span>{t('ledger.exportPDF')}</span>
             </button>
             <button
               onClick={() => handleExport('excel')}
@@ -124,7 +126,7 @@ const Ledger = () => {
               className="btn-secondary flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Download className="w-4 h-4" />
-              <span>Export Excel</span>
+              <span>{t('ledger.exportExcel')}</span>
             </button>
           </div>
         </div>
@@ -135,13 +137,13 @@ const Ledger = () => {
         <div className="card">
           <div className="mb-4">
             <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
-              Ledger for {selectedCustomer}
+              {t('ledger.ledgerFor')} {selectedCustomer}
             </h2>
           </div>
           {loading ? (
             <div className="py-12 text-center">
               <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
-              <p className="mt-2 text-slate-600 dark:text-slate-400">Loading...</p>
+              <p className="mt-2 text-slate-600 dark:text-slate-400">{t('common.loading')}</p>
             </div>
           ) : (
             <DataTable columns={columns} data={ledgerData} searchable={false} />
@@ -153,7 +155,7 @@ const Ledger = () => {
         <div className="card">
           <div className="py-12 text-center text-slate-500 dark:text-slate-400">
             <Search className="w-12 h-12 mx-auto mb-4 opacity-50" />
-            <p>Select a customer to view their ledger</p>
+            <p>{t('ledger.selectCustomerPrompt')}</p>
           </div>
         </div>
       )}

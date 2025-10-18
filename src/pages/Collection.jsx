@@ -7,6 +7,7 @@ import DataTable from '../components/DataTable';
 import ModalForm from '../components/ModalForm';
 import { collectionAPI, customerAPI } from '../services/api';
 import toast from 'react-hot-toast';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const schema = yup.object().shape({
   customerName: yup.string().required('Customer name is required'),
@@ -17,6 +18,7 @@ const schema = yup.object().shape({
 });
 
 const Collection = () => {
+  const { t } = useLanguage();
   const [collections, setCollections] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
@@ -113,20 +115,20 @@ const Collection = () => {
   };
 
   const columns = [
-    { key: 'customerName', label: 'Customer Name' },
-    { key: 'date', label: 'Date' },
-    { key: 'quantity', label: 'Quantity (kg)' },
+    { key: 'customerName', label: t('collection.customer') },
+    { key: 'date', label: t('common.date') },
+    { key: 'quantity', label: t('collection.quantity') + ' (kg)' },
     {
       key: 'rate',
-      label: 'Rate/kg',
+      label: t('collection.pricePerKg'),
       render: (value) => `₹${value}`,
     },
     {
       key: 'amount',
-      label: 'Amount',
+      label: t('common.amount'),
       render: (value) => `₹${value.toLocaleString()}`,
     },
-    { key: 'batchNo', label: 'Batch No' },
+    { key: 'batchNo', label: t('dryingBatch.batchNumber') },
   ];
 
   return (
@@ -135,10 +137,10 @@ const Collection = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div>
           <h1 className="text-lg sm:text-2xl font-normal text-slate-900 dark:text-slate-100 mb-1 sm:mb-2">
-            Collections
+            {t('collection.title')}
           </h1>
           <p className="text-slate-600 dark:text-slate-400">
-            Manage raw cardamom collections
+            {t('collection.subtitle')}
           </p>
         </div>
         <button
@@ -146,7 +148,7 @@ const Collection = () => {
           className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm sm:text-base"
         >
           <Plus className="w-5 h-5" />
-          <span>Add Collection</span>
+          <span>{t('collection.addCollection')}</span>
         </button>
       </div>
 
@@ -164,12 +166,12 @@ const Collection = () => {
       <ModalForm
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        title={editingItem ? 'Edit Collection' : 'Add Collection'}
+        title={editingItem ? t('collection.editCollection') : t('collection.addNewCollection')}
       >
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label htmlFor="customerName" className="label">
-              Customer Name
+              {t('collection.customer')}
             </label>
             <input
               id="customerName"
@@ -192,7 +194,7 @@ const Collection = () => {
 
           <div>
             <label htmlFor="date" className="label">
-              Date
+              {t('common.date')}
             </label>
             <input
               id="date"
@@ -208,7 +210,7 @@ const Collection = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label htmlFor="quantity" className="label">
-                Quantity (kg)
+                {t('collection.quantity')} (kg)
               </label>
               <input
                 id="quantity"
@@ -225,7 +227,7 @@ const Collection = () => {
 
             <div>
               <label htmlFor="rate" className="label">
-                Rate/kg (₹)
+                {t('collection.pricePerKg')} (₹)
               </label>
               <input
                 id="rate"
@@ -242,7 +244,7 @@ const Collection = () => {
           </div>
 
           <div>
-            <label className="label">Amount (₹)</label>
+            <label className="label">{t('common.amount')} (₹)</label>
             <input
               type="text"
               value={quantity && rate ? `₹${(quantity * rate).toLocaleString()}` : '₹0'}
@@ -253,7 +255,7 @@ const Collection = () => {
 
           <div>
             <label htmlFor="batchNo" className="label">
-              Batch No (Optional)
+              {t('dryingBatch.batchNumber')} (Optional)
             </label>
             <input
               id="batchNo"
@@ -266,14 +268,14 @@ const Collection = () => {
 
           <div className="flex gap-3 pt-4">
             <button type="submit" className="btn-primary flex-1">
-              {editingItem ? 'Update' : 'Save'}
+              {editingItem ? t('common.update') : t('common.save')}
             </button>
             <button
               type="button"
               onClick={handleCloseModal}
               className="btn-secondary flex-1"
             >
-              Cancel
+              {t('common.cancel')}
             </button>
           </div>
         </form>

@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Building2, Phone, Mail, MapPin, User } from 'lucide-react';
 import DataTable from '../components/DataTable';
 import ModalForm from '../components/ModalForm';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const Vendors = () => {
+  const { t } = useLanguage();
   const [vendors, setVendors] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingVendor, setEditingVendor] = useState(null);
@@ -74,7 +76,7 @@ const Vendors = () => {
   const columns = [
     {
       key: 'vendorName',
-      label: 'Vendor Name',
+      label: t('vendors.vendorName'),
       render: (value, row) => (
         <div className="flex items-center space-x-3">
           <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center">
@@ -89,7 +91,7 @@ const Vendors = () => {
     },
     {
       key: 'contactPerson',
-      label: 'Contact Person',
+      label: t('vendors.contactPerson'),
       render: (value) => (
         <div className="flex items-center space-x-2">
           <User className="w-4 h-4 text-slate-400" />
@@ -99,7 +101,7 @@ const Vendors = () => {
     },
     {
       key: 'phone',
-      label: 'Phone',
+      label: t('common.phone'),
       render: (value) => (
         <div className="flex items-center space-x-2">
           <Phone className="w-4 h-4 text-slate-400" />
@@ -109,7 +111,7 @@ const Vendors = () => {
     },
     {
       key: 'email',
-      label: 'Email',
+      label: t('common.email'),
       render: (value) => (
         <div className="flex items-center space-x-2">
           <Mail className="w-4 h-4 text-slate-400" />
@@ -119,7 +121,7 @@ const Vendors = () => {
     },
     {
       key: 'address',
-      label: 'Address',
+      label: t('common.address'),
       render: (value) => (
         <div className="flex items-center space-x-2">
           <MapPin className="w-4 h-4 text-slate-400" />
@@ -129,7 +131,7 @@ const Vendors = () => {
     },
     {
       key: 'status',
-      label: 'Status',
+      label: t('common.status'),
       render: (value) => (
         <span
           className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
@@ -276,9 +278,9 @@ const Vendors = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div>
-          <h1 className="text-lg sm:text-2xl font-normal text-slate-900 dark:text-slate-100 mb-1 sm:mb-2">Vendors</h1>
+          <h1 className="text-lg sm:text-2xl font-normal text-slate-900 dark:text-slate-100 mb-1 sm:mb-2">{t('vendors.title')}</h1>
           <p className="text-slate-600 dark:text-slate-400">
-            Manage your vendor information and supplier details
+            {t('vendors.subtitle')}
           </p>
         </div>
         <button
@@ -286,19 +288,19 @@ const Vendors = () => {
           className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm sm:text-base"
         >
           <Plus className="w-4 h-4" />
-          <span>Add Vendor</span>
+          <span>{t('vendors.addVendor')}</span>
         </button>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
           <div className="flex items-center">
             <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
               <Building2 className="w-6 h-6 text-purple-600 dark:text-purple-400" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Total Vendors</p>
+              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">{t('vendors.totalVendors')}</p>
               <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">{vendors.length}</p>
             </div>
           </div>
@@ -310,23 +312,9 @@ const Vendors = () => {
               <Building2 className="w-6 h-6 text-green-600 dark:text-green-400" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Active Vendors</p>
+              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">{t('vendors.activeVendors')}</p>
               <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
                 {activeVendorsCount}
-              </p>
-            </div>
-          </div>
-        </div>
-        
-        <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
-          <div className="flex items-center">
-            <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-              <MapPin className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Locations</p>
-              <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
-                {new Set(vendors.map(v => v.address.split(',')[0])).size}
               </p>
             </div>
           </div>

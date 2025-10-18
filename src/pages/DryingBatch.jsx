@@ -7,6 +7,7 @@ import DataTable from '../components/DataTable';
 import ModalForm from '../components/ModalForm';
 import { batchAPI } from '../services/api';
 import toast from 'react-hot-toast';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const schema = yup.object().shape({
   batchNo: yup.string().required('Batch number is required'),
@@ -19,6 +20,7 @@ const schema = yup.object().shape({
 });
 
 const DryingBatch = () => {
+  const { t } = useLanguage();
   const [batches, setBatches] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
@@ -103,11 +105,11 @@ const DryingBatch = () => {
   };
 
   const columns = [
-    { key: 'batchNo', label: 'Batch No' },
-    { key: 'startDate', label: 'Start Date' },
-    { key: 'endDate', label: 'End Date', render: (value) => value || '-' },
-    { key: 'rawQty', label: 'Raw Qty (kg)' },
-    { key: 'dryQty', label: 'Dry Qty (kg)' },
+    { key: 'batchNo', label: t('dryingBatch.batchNumber') },
+    { key: 'startDate', label: t('dryingBatch.startDate') },
+    { key: 'endDate', label: t('dryingBatch.endDate'), render: (value) => value || '-' },
+    { key: 'rawQty', label: t('dryingBatch.wetWeight') + ' (kg)' },
+    { key: 'dryQty', label: t('dryingBatch.dryWeight') + ' (kg)' },
     {
       key: 'loss',
       label: 'Loss %',
@@ -116,7 +118,7 @@ const DryingBatch = () => {
     { key: 'grade', label: 'Grade' },
     {
       key: 'status',
-      label: 'Status',
+      label: t('common.status'),
       render: (value) => (
         <span
           className={`px-2 py-1 text-xs font-semibold rounded-full ${
@@ -137,10 +139,10 @@ const DryingBatch = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div>
           <h1 className="text-lg sm:text-2xl font-normal text-slate-900 dark:text-slate-100 mb-1 sm:mb-2">
-            Drying Batches
+            {t('dryingBatch.title')}
           </h1>
           <p className="text-slate-600 dark:text-slate-400">
-            Manage cardamom drying batches
+            {t('dryingBatch.subtitle')}
           </p>
         </div>
         <button
@@ -148,7 +150,7 @@ const DryingBatch = () => {
           className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm sm:text-base"
         >
           <Plus className="w-5 h-5" />
-          <span>Add Batch</span>
+          <span>{t('dryingBatch.addBatch')}</span>
         </button>
       </div>
 
