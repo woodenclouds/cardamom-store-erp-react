@@ -168,6 +168,15 @@ const translations = {
       weeklyPayroll: 'Weekly Salary',
       monthlyPayroll: 'Monthly Salary',
       noEmployeesFound: 'No employees found. Add one to get started.',
+      optional: 'Optional',
+      adharNumber: 'Adhar Number',
+      payrollType: 'Payroll Type',
+      weekly: 'Weekly',
+      monthly: 'Monthly',
+      enterFullName: 'Enter employee full name',
+      enterSalaryAmount: 'Enter salary amount',
+      enterCompleteAddress: 'Enter complete address',
+      jobRolePlaceholder: 'e.g., Store Manager, Staff, Supervisor',
     },
     // Collection
     collection: {
@@ -669,6 +678,15 @@ const translations = {
       weeklyPayroll: 'ആഴ്ചയിലെ ശമ്പളം',
       monthlyPayroll: 'മാസ ശമ്പളം',
       noEmployeesFound: 'ജീവനക്കാരെ കണ്ടെത്തിയില്ല. ആരംഭിക്കാൻ ഒന്ന് ചേർക്കുക.',
+      optional: 'ഓപ്ഷണൽ',
+      adharNumber: 'ആധാർ നമ്പർ',
+      payrollType: 'ശമ്പള തരം',
+      weekly: 'ആഴ്ചയിൽ',
+      monthly: 'മാസത്തിൽ',
+      enterFullName: 'ജീവനക്കാരന്റെ മുഴുവൻ പേര് നൽകുക',
+      enterSalaryAmount: 'ശമ്പള തുക നൽകുക',
+      enterCompleteAddress: 'പൂർണ്ണ വിലാസം നൽകുക',
+      jobRolePlaceholder: 'ഉദാ., സ്റ്റോർ മാനേജർ, സ്റ്റാഫ്, സൂപ്പർവൈസർ',
     },
     // Collection
     collection: {

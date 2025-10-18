@@ -256,78 +256,78 @@ const Employees = () => {
   const formFields = [
     {
       name: 'fullName',
-      label: 'Name',
+      label: t('common.name'),
       type: 'text',
       required: true,
-      placeholder: 'Enter employee full name',
+      placeholder: t('employees.enterFullName'),
     },
     {
       name: 'phone',
-      label: 'Phone',
+      label: t('common.phone'),
       type: 'tel',
       required: true,
       placeholder: '+91 9876543210',
     },
     {
       name: 'email',
-      label: 'Email (Optional)',
+      label: t('common.email') + ' (' + t('employees.optional') + ')',
       type: 'email',
       required: false,
       placeholder: 'employee@wostore.com',
     },
     {
       name: 'salary',
-      label: 'Salary',
+      label: t('employees.salary'),
       type: 'number',
       required: true,
-      placeholder: 'Enter salary amount',
+      placeholder: t('employees.enterSalaryAmount'),
       step: '0.01',
     },
     {
       name: 'address',
-      label: 'Address',
+      label: t('common.address'),
       type: 'textarea',
       required: true,
-      placeholder: 'Enter complete address',
+      placeholder: t('employees.enterCompleteAddress'),
     },
     {
       name: 'adharNumber',
-      label: 'Adhar Number (Optional)',
+      label: t('employees.adharNumber') + ' (' + t('employees.optional') + ')',
       type: 'text',
       required: false,
       placeholder: '1234 5678 9012',
     },
     {
       name: 'joiningDate',
-      label: 'Joining Date',
+      label: t('employees.joinDate'),
       type: 'date',
       required: true,
     },
     {
       name: 'jobRole',
-      label: 'Job Role',
+      label: t('employees.jobRole'),
       type: 'text',
       required: true,
-      placeholder: 'e.g., Store Manager, Staff, Supervisor',
+      placeholder: t('employees.jobRolePlaceholder'),
     },
     {
       name: 'payrollType',
-      label: 'Payroll Type',
+      label: t('employees.payrollType'),
       type: 'select',
       required: true,
       options: [
-        { value: 'weekly', label: 'Weekly' },
-        { value: 'monthly', label: 'Monthly' },
+        { value: 'weekly', label: t('employees.weekly') },
+        { value: 'monthly', label: t('employees.monthly') },
       ],
     },
     {
       name: 'status',
-      label: 'Status',
+      label: t('common.status'),
       type: 'select',
       required: true,
       options: [
-        { value: 'active', label: 'Active' },
-        { value: 'inactive', label: 'Inactive' },
+        { value: 'active', label: t('common.active') },
+        { value: 'inactive', label: t('common.inactive') },
       ],
     },
   ];
@@ -436,11 +436,11 @@ const Employees = () => {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onSubmit={handleSaveEmployee}
-        title={editingEmployee ? 'Edit Employee' : 'Add New Employee'}
+        title={editingEmployee ? t('employees.editEmployee') : t('employees.addNewEmployee')}
         fields={formFields}
         formData={formData}
         setFormData={setFormData}
-        submitText={editingEmployee ? 'Update Employee' : 'Add Employee'}
+        submitText={editingEmployee ? t('employees.updateEmployee') : t('employees.addEmployee')}
       />
     </div>
   );
