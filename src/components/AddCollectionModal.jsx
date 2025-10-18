@@ -39,7 +39,7 @@ const AddCollectionModal = ({
 
   // Fixed rate and batch number generation
   const FIXED_RATE = 12;
-  const [nextBatchNumber, setNextBatchNumber] = useState('B001');
+  const [nextBatchNumber, setNextBatchNumber] = useState('#B0001');
 
   const {
     register,
@@ -72,13 +72,17 @@ const AddCollectionModal = ({
     // Find the highest batch number from existing collections
     const batchNumbers = collectionsData
       .map(c => c.batchNo)
-      .filter(batchNo => batchNo && batchNo.startsWith('B'))
-      .map(batchNo => parseInt(batchNo.substring(1)))
+      .filter(batchNo => batchNo && (batchNo.startsWith('#B') || batchNo.startsWith('B')))
+      .map(batchNo => {
+        // Handle both #B format and B format
+        const cleanBatchNo = batchNo.startsWith('#') ? batchNo.substring(2) : batchNo.substring(1);
+        return parseInt(cleanBatchNo);
+      })
       .filter(num => !isNaN(num));
     
     const maxBatchNumber = batchNumbers.length > 0 ? Math.max(...batchNumbers) : 0;
     const nextNumber = maxBatchNumber + 1;
-    const newBatchNumber = `B${nextNumber.toString().padStart(3, '0')}`;
+    const newBatchNumber = `#B${nextNumber.toString().padStart(4, '0')}`;
     setNextBatchNumber(newBatchNumber);
     return newBatchNumber;
   };
@@ -196,6 +200,19 @@ const AddCollectionModal = ({
       >
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
+            <label htmlFor="batchNo" className="label">
+              {t('dryingBatch.batchNumber')}
+            </label>
+            <input
+              id="batchNo"
+              type="text"
+              {...register('batchNo')}
+              className="input-field bg-slate-100 dark:bg-slate-700"
+              disabled
+            />
+          </div>
+
+          <div>
             <label htmlFor="customerName" className="label">
               {t('collection.customer')}
             </label>
@@ -254,44 +271,33 @@ const AddCollectionModal = ({
             </div>
           </div>
 
-          <div>
-            <label className="label">{t('common.amount')} (₹)</label>
-            <input
-              type="text"
-              value={quantity ? `₹${(quantity * FIXED_RATE).toLocaleString()}` : '₹0'}
-              className="input-field bg-slate-100 dark:bg-slate-700"
-              disabled
-            />
-          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="label">{t('common.amount')} (₹)</label>
+              <input
+                type="text"
+                value={quantity ? `₹${(quantity * FIXED_RATE).toLocaleString()}` : '₹0'}
+                className="input-field bg-slate-100 dark:bg-slate-700"
+                disabled
+              />
+            </div>
 
-          <div>
-            <label htmlFor="advanceAmount" className="label">
-              Advance Amount (₹)
-            </label>
-            <input
-              id="advanceAmount"
-              type="number"
-              step="0.01"
-              {...register('advanceAmount')}
-              className="input-field"
-              placeholder="0"
-            />
-            {errors.advanceAmount && (
-              <p className="mt-1 text-xs text-red-600">{errors.advanceAmount.message}</p>
-            )}
-          </div>
-
-          <div>
-            <label htmlFor="batchNo" className="label">
-              {t('dryingBatch.batchNumber')}
-            </label>
-            <input
-              id="batchNo"
-              type="text"
-              {...register('batchNo')}
-              className="input-field bg-slate-100 dark:bg-slate-700"
-              disabled
-            />
+            <div>
+              <label htmlFor="advanceAmount" className="label">
+                Advance Amount (₹)
+              </label>
+              <input
+                id="advanceAmount"
+                type="number"
+                step="0.01"
+                {...register('advanceAmount')}
+                className="input-field"
+                placeholder="0"
+              />
+              {errors.advanceAmount && (
+                <p className="mt-1 text-xs text-red-600">{errors.advanceAmount.message}</p>
+              )}
+            </div>
           </div>
 
           <div className="flex gap-3 pt-4">
