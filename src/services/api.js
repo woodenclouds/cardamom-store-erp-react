@@ -236,9 +236,24 @@ export const dashboardAPI = {
 // Customer search/autocomplete
 export const customerAPI = {
   search: async (query) => {
-    const customers = ['Rajesh Kumar', 'Suresh Nair', 'Mahesh Singh', 'Ramesh Patel', 'Dinesh Reddy'];
+    // Sample customer data - in a real app, this would come from an API
+    const customers = [
+      { id: 1, fullName: 'Rajesh Kumar', location: 'Downtown', houseName: 'Kumar Villa', phone: '+91 98765 43210' },
+      { id: 2, fullName: 'Suresh Nair', location: 'Uptown', houseName: 'Nair House', phone: '+91 98765 43211' },
+      { id: 3, fullName: 'Mahesh Singh', location: 'Suburbs', houseName: 'Singh Palace', phone: '+91 98765 43212' },
+      { id: 4, fullName: 'Ramesh Patel', location: 'East Side', houseName: 'Patel Mansion', phone: '+91 98765 43213' },
+      { id: 5, fullName: 'Dinesh Reddy', location: 'West Side', houseName: 'Reddy Villa', phone: '+91 98765 43214' },
+    ];
+    
+    if (!query || query.trim() === '') {
+      return Promise.resolve({ data: customers.map(c => c.fullName) });
+    }
+    
+    const filtered = customers.filter(c => 
+      c.fullName.toLowerCase().includes(query.toLowerCase())
+    );
     return Promise.resolve({
-      data: customers.filter(c => c.toLowerCase().includes(query.toLowerCase())),
+      data: filtered.map(c => c.fullName),
     });
   },
 };

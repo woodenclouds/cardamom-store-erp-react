@@ -1,19 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, ArrowRight, Package, Droplet, CheckCircle2, Truck, Search, X } from 'lucide-react';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
 import ModalForm from '../components/ModalForm';
-import { collectionAPI, customerAPI } from '../services/api';
+import AddCollectionModal from '../components/AddCollectionModal';
+import { collectionAPI } from '../services/api';
 import toast from 'react-hot-toast';
 import { useLanguage } from '../contexts/LanguageContext';
-
-const schema = yup.object().shape({
-  customerName: yup.string().required('Customer name is required'),
-  date: yup.string().required('Date is required'),
-  quantity: yup.number().positive('Must be positive').required('Quantity is required'),
-  rate: yup.number().positive('Must be positive').required('Rate is required'),
-});
 
 const StoreManagement = () => {
   const { t } = useLanguage();
@@ -22,7 +13,6 @@ const StoreManagement = () => {
   const [isDrierModalOpen, setIsDrierModalOpen] = useState(false);
   const [isCompleteModalOpen, setIsCompleteModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const [customers, setCustomers] = useState([]);
   const [drierNumber, setDrierNumber] = useState('');
   const [dryQuantity, setDryQuantity] = useState('');
   const [searchTerms, setSearchTerms] = useState({
@@ -31,29 +21,9 @@ const StoreManagement = () => {
     completed: '',
   });
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    watch,
-    setValue,
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
-
-  const quantity = watch('quantity');
-  const rate = watch('rate');
-
   useEffect(() => {
     fetchOrders();
   }, []);
-
-  useEffect(() => {
-    if (quantity && rate) {
-      setValue('amount', quantity * rate);
-    }
-  }, [quantity, rate, setValue]);
 
   const fetchOrders = async () => {
     try {
@@ -61,32 +31,6 @@ const StoreManagement = () => {
       setOrders(response.data);
     } catch (error) {
       toast.error('Failed to fetch orders');
-    }
-  };
-
-  const searchCustomers = async (query) => {
-    try {
-      const response = await customerAPI.search(query);
-      setCustomers(response.data);
-    } catch (error) {
-      console.error('Failed to search customers');
-    }
-  };
-
-  const onSubmit = async (data) => {
-    try {
-      const newOrder = {
-        ...data,
-        status: 'pending',
-        drierNo: null,
-        dryQty: 0,
-      };
-      await collectionAPI.create(newOrder);
-      toast.success('Collection added successfully');
-      fetchOrders();
-      handleCloseModal();
-    } catch (error) {
-      toast.error('Failed to add collection');
     }
   };
 
@@ -142,7 +86,14 @@ const StoreManagement = () => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    reset({});
+  };
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleSuccess = () => {
+    fetchOrders();
   };
 
   const handleSearchChange = (column, value) => {
@@ -306,7 +257,7 @@ const StoreManagement = () => {
           </p>
         </div>
         <button
-          onClick={() => setIsModalOpen(true)}
+          onClick={handleOpenModal}
           className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm sm:text-base"
         >
           <Plus className="w-5 h-5" />
@@ -360,123 +311,13 @@ const StoreManagement = () => {
       </div>
 
       {/* Add Collection Modal */}
-      <ModalForm
+      <AddCollectionModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
+        onSuccess={handleSuccess}
+        collections={orders}
         title={t('collection.addNewCollection')}
-      >
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div>
-            <label htmlFor="customerName" className="label">
-              {t('collection.customer')}
-            </label>
-            <input
-              id="customerName"
-              type="text"
-              {...register('customerName')}
-              onChange={(e) => searchCustomers(e.target.value)}
-              className="input-field"
-              placeholder="Start typing to search..."
-              list="customers"
-            />
-            <datalist id="customers">
-              {customers.map((customer, idx) => (
-                <option key={idx} value={customer} />
-              ))}
-            </datalist>
-            {errors.customerName && (
-              <p className="mt-1 text-xs text-red-600">{errors.customerName.message}</p>
-            )}
-          </div>
-
-          <div>
-            <label htmlFor="date" className="label">
-              {t('common.date')}
-            </label>
-            <input
-              id="date"
-              type="date"
-              {...register('date')}
-              className="input-field"
-            />
-            {errors.date && (
-              <p className="mt-1 text-xs text-red-600">{errors.date.message}</p>
-            )}
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="quantity" className="label">
-                {t('collection.quantity')} (kg)
-              </label>
-              <input
-                id="quantity"
-                type="number"
-                step="0.01"
-                {...register('quantity')}
-                className="input-field"
-                placeholder="0"
-              />
-              {errors.quantity && (
-                <p className="mt-1 text-xs text-red-600">{errors.quantity.message}</p>
-              )}
-            </div>
-
-            <div>
-              <label htmlFor="rate" className="label">
-                {t('collection.pricePerKg')} (₹)
-              </label>
-              <input
-                id="rate"
-                type="number"
-                step="0.01"
-                {...register('rate')}
-                className="input-field"
-                placeholder="0"
-              />
-              {errors.rate && (
-                <p className="mt-1 text-xs text-red-600">{errors.rate.message}</p>
-              )}
-            </div>
-          </div>
-
-          <div>
-            <label className="label">{t('common.amount')} (₹)</label>
-            <input
-              type="text"
-              value={quantity && rate ? `₹${(quantity * rate).toLocaleString()}` : '₹0'}
-              className="input-field bg-slate-100 dark:bg-slate-700"
-              disabled
-            />
-          </div>
-
-          <div>
-            <label htmlFor="batchNo" className="label">
-              Batch No (Optional)
-            </label>
-            <input
-              id="batchNo"
-              type="text"
-              {...register('batchNo')}
-              className="input-field"
-              placeholder="e.g., B001"
-            />
-          </div>
-
-          <div className="flex gap-3 pt-4">
-            <button type="submit" className="btn-primary flex-1">
-              {t('collection.addCollection')}
-            </button>
-            <button
-              type="button"
-              onClick={handleCloseModal}
-              className="btn-secondary flex-1"
-            >
-              {t('common.cancel')}
-            </button>
-          </div>
-        </form>
-      </ModalForm>
+      />
 
       {/* Assign Drier Modal */}
       <ModalForm
@@ -587,6 +428,7 @@ const StoreManagement = () => {
           </div>
         </div>
       </ModalForm>
+
     </div>
   );
 };
