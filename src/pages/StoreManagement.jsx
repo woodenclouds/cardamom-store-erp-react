@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import ModalForm from '../components/ModalForm';
 import { collectionAPI, customerAPI } from '../services/api';
 import toast from 'react-hot-toast';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const schema = yup.object().shape({
   customerName: yup.string().required('Customer name is required'),
@@ -15,6 +16,7 @@ const schema = yup.object().shape({
 });
 
 const StoreManagement = () => {
+  const { t } = useLanguage();
   const [orders, setOrders] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDrierModalOpen, setIsDrierModalOpen] = useState(false);
@@ -206,7 +208,7 @@ const StoreManagement = () => {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
           <input
             type="text"
-            placeholder="Search orders..."
+            placeholder={t('common.search')}
             value={searchTerms[searchKey] || ''}
             onChange={(e) => {
               const value = e.target.value;
@@ -227,7 +229,7 @@ const StoreManagement = () => {
       <div className="bg-slate-50 dark:bg-slate-800/50 min-h-[calc(100vh-280px)] p-3 space-y-3 rounded-b-lg">
         {orders.length === 0 ? (
           <div className="text-center py-8 text-slate-400">
-            <p className="text-sm">No items</p>
+            <p className="text-sm">{t('common.noData')}</p>
           </div>
         ) : (
           orders.map(order => (
@@ -248,16 +250,16 @@ const StoreManagement = () => {
               
               <div className="space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
                 <div className="flex justify-between">
-                  <span>Date:</span>
+                  <span>{t('common.date')}:</span>
                   <span className="font-medium">{order.date}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Raw Qty:</span>
+                  <span>{t('collection.quantity')}:</span>
                   <span className="font-medium">{order.quantity} kg</span>
                 </div>
                 {order.dryQty > 0 && (
                   <div className="flex justify-between">
-                    <span>Dry Qty:</span>
+                    <span>{t('dryingBatch.dryWeight')}:</span>
                     <span className="font-medium text-green-600 dark:text-green-400">{order.dryQty} kg</span>
                   </div>
                 )}
@@ -268,7 +270,7 @@ const StoreManagement = () => {
                   </div>
                 )}
                 <div className="flex justify-between pt-1 border-t border-slate-200 dark:border-slate-700">
-                  <span>Amount:</span>
+                  <span>{t('common.amount')}:</span>
                   <span className="font-normal text-slate-900 dark:text-slate-100">
                     ₹{order.amount?.toLocaleString() || (order.quantity * order.rate).toLocaleString()}
                   </span>
@@ -297,10 +299,10 @@ const StoreManagement = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div>
           <h1 className="text-lg sm:text-2xl font-normal text-slate-900 dark:text-slate-100 mb-1 sm:mb-2">
-            Store Management
+            {t('storeManagement.title')}
           </h1>
           <p className="text-slate-600 dark:text-slate-400">
-            Track orders from collection to return
+            {t('storeManagement.subtitle')}
           </p>
         </div>
         <button
@@ -308,7 +310,7 @@ const StoreManagement = () => {
           className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm sm:text-base"
         >
           <Plus className="w-5 h-5" />
-          <span>New Collection</span>
+          <span>{t('collection.addCollection')}</span>
         </button>
       </div>
 
@@ -361,12 +363,12 @@ const StoreManagement = () => {
       <ModalForm
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        title="Add New Collection"
+        title={t('collection.addNewCollection')}
       >
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label htmlFor="customerName" className="label">
-              Customer Name
+              {t('collection.customer')}
             </label>
             <input
               id="customerName"
@@ -389,7 +391,7 @@ const StoreManagement = () => {
 
           <div>
             <label htmlFor="date" className="label">
-              Date
+              {t('common.date')}
             </label>
             <input
               id="date"
@@ -405,7 +407,7 @@ const StoreManagement = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label htmlFor="quantity" className="label">
-                Quantity (kg)
+                {t('collection.quantity')} (kg)
               </label>
               <input
                 id="quantity"
@@ -422,7 +424,7 @@ const StoreManagement = () => {
 
             <div>
               <label htmlFor="rate" className="label">
-                Rate/kg (₹)
+                {t('collection.pricePerKg')} (₹)
               </label>
               <input
                 id="rate"
@@ -439,7 +441,7 @@ const StoreManagement = () => {
           </div>
 
           <div>
-            <label className="label">Amount (₹)</label>
+            <label className="label">{t('common.amount')} (₹)</label>
             <input
               type="text"
               value={quantity && rate ? `₹${(quantity * rate).toLocaleString()}` : '₹0'}
@@ -463,14 +465,14 @@ const StoreManagement = () => {
 
           <div className="flex gap-3 pt-4">
             <button type="submit" className="btn-primary flex-1">
-              Add Collection
+              {t('collection.addCollection')}
             </button>
             <button
               type="button"
               onClick={handleCloseModal}
               className="btn-secondary flex-1"
             >
-              Cancel
+              {t('common.cancel')}
             </button>
           </div>
         </form>
@@ -519,13 +521,13 @@ const StoreManagement = () => {
               onClick={handleAssignDrier}
               className="btn-primary flex-1"
             >
-              Assign Drier
+              {t('common.submit')}
             </button>
             <button
               onClick={() => setIsDrierModalOpen(false)}
               className="btn-secondary flex-1"
             >
-              Cancel
+              {t('common.cancel')}
             </button>
           </div>
         </div>
@@ -574,13 +576,13 @@ const StoreManagement = () => {
               onClick={handleConfirmCompleted}
               className="btn-primary flex-1"
             >
-              Mark Completed
+              {t('common.submit')}
             </button>
             <button
               onClick={() => setIsCompleteModalOpen(false)}
               className="btn-secondary flex-1"
             >
-              Cancel
+              {t('common.cancel')}
             </button>
           </div>
         </div>

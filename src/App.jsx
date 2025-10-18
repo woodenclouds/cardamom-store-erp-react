@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import { LanguageProvider } from './contexts/LanguageContext';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import ScrollToTop from './components/ScrollToTop';
@@ -129,45 +130,47 @@ const Layout = ({ children }) => {
 function App() {
   return (
     <ErrorBoundary>
-      <Router>
-        <Layout>
-          <Routes>
-            {routes.map((route, index) => (
-              <Route 
-                key={`${route.path}-${index}`} 
-                path={route.path} 
-                element={
-                  <ErrorBoundary>
-                    {route.element}
-                  </ErrorBoundary>
-                } 
-              />
-            ))}
-          </Routes>
-        </Layout>
-        <Toaster
-          position="top-right"
-          toastOptions={{
-            duration: 3000,
-            style: {
-              background: '#333',
-              color: '#fff',
-            },
-            success: {
-              iconTheme: {
-                primary: '#22c55e',
-                secondary: '#fff',
+      <LanguageProvider>
+        <Router>
+          <Layout>
+            <Routes>
+              {routes.map((route, index) => (
+                <Route 
+                  key={`${route.path}-${index}`} 
+                  path={route.path} 
+                  element={
+                    <ErrorBoundary>
+                      {route.element}
+                    </ErrorBoundary>
+                  } 
+                />
+              ))}
+            </Routes>
+          </Layout>
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              duration: 3000,
+              style: {
+                background: '#333',
+                color: '#fff',
               },
-            },
-            error: {
-              iconTheme: {
-                primary: '#ef4444',
-                secondary: '#fff',
+              success: {
+                iconTheme: {
+                  primary: '#22c55e',
+                  secondary: '#fff',
+                },
               },
-            },
-          }}
-        />
-      </Router>
+              error: {
+                iconTheme: {
+                  primary: '#ef4444',
+                  secondary: '#fff',
+                },
+              },
+            }}
+          />
+        </Router>
+      </LanguageProvider>
     </ErrorBoundary>
   );
 }

@@ -3,8 +3,10 @@ import { Package, Flame, Wallet, Activity, DollarSign, TrendingUp, TrendingDown,
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, BarChart, Bar } from 'recharts';
 import Card from '../components/Card';
 import { dashboardAPI } from '../services/api';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const Dashboard = () => {
+  const { t } = useLanguage();
   const [metrics, setMetrics] = useState({
     totalCollections: 0,
     totalDried: 0,
@@ -53,38 +55,38 @@ const Dashboard = () => {
     <div className="space-y-6">
       <div>
           <h1 className="text-lg sm:text-2xl font-normal text-slate-900 dark:text-slate-100 mb-1 sm:mb-2">
-          Dashboard
+          {t('dashboard.title')}
         </h1>
         <p className="text-slate-600 dark:text-slate-400">
-          Welcome back! Here's what's happening today.
+          {t('dashboard.welcomeBack')}
         </p>
       </div>
 
       {/* Metrics Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         <Card
-          title="Total Collections"
+          title={t('dashboard.totalCollections')}
           value={`${metrics.totalCollections} kg`}
           icon={Package}
           trend="up"
           trendValue="12%"
         />
         <Card
-          title="Total Dried"
+          title={t('dashboard.totalDried')}
           value={`${metrics.totalDried} kg`}
           icon={Flame}
           trend="up"
           trendValue="8%"
         />
         <Card
-          title="Pending Payments"
+          title={t('dashboard.pendingPayments')}
           value={`₹${metrics.pendingPayments.toLocaleString()}`}
           icon={Wallet}
           trend="down"
           trendValue="5%"
         />
         <Card
-          title="Active Batches"
+          title={t('dashboard.activeBatches')}
           value={metrics.activeBatches}
           icon={Activity}
         />
@@ -93,7 +95,7 @@ const Dashboard = () => {
       {/* Collection Trends Chart */}
       <div className="card">
         <h2 className="text-lg font-normal text-slate-900 dark:text-slate-100 mb-4">
-          Daily Collection Trends (Last 7 Days)
+          {t('dashboard.dailyCollectionTrends')}
         </h2>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={chartData}>
@@ -125,7 +127,7 @@ const Dashboard = () => {
       {/* Financial Metrics Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         <Card
-          title="Total Revenue"
+          title={t('dashboard.totalRevenue')}
           value={`₹${financialMetrics.totalRevenue.toLocaleString()}`}
           icon={DollarSign}
           trend="up"
@@ -133,7 +135,7 @@ const Dashboard = () => {
           iconColor="text-green-600"
         />
         <Card
-          title="Total Income"
+          title={t('dashboard.totalIncome')}
           value={`₹${financialMetrics.totalIncome.toLocaleString()}`}
           icon={TrendingUp}
           trend="up"
@@ -141,7 +143,7 @@ const Dashboard = () => {
           iconColor="text-blue-600"
         />
         <Card
-          title="Total Expenses"
+          title={t('dashboard.totalExpenses')}
           value={`₹${financialMetrics.totalExpenses.toLocaleString()}`}
           icon={TrendingDown}
           trend="down"
@@ -149,7 +151,7 @@ const Dashboard = () => {
           iconColor="text-red-600"
         />
         <Card
-          title="Net Profit"
+          title={t('dashboard.netProfit')}
           value={`₹${financialMetrics.netProfit.toLocaleString()}`}
           icon={Banknote}
           trend="up"
@@ -161,7 +163,7 @@ const Dashboard = () => {
       {/* Financial Trends Chart */}
       <div className="card">
         <h2 className="text-lg font-normal text-slate-900 dark:text-slate-100 mb-4">
-          Revenue vs Expenses Trends (Last 7 Days)
+          {t('dashboard.revenueExpensesTrends')}
         </h2>
         <ResponsiveContainer width="100%" height={300}>
           <AreaChart data={financialChartData}>

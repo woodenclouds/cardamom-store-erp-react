@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Users, MapPin, Phone, Home } from 'lucide-react';
 import DataTable from '../components/DataTable';
 import ModalForm from '../components/ModalForm';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const Customers = () => {
+  const { t } = useLanguage();
   const [customers, setCustomers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCustomer, setEditingCustomer] = useState(null);
@@ -60,7 +62,7 @@ const Customers = () => {
   const columns = [
     {
       key: 'fullName',
-      label: 'Full Name',
+      label: t('customers.fullName'),
       render: (value, row) => (
         <div className="flex items-center space-x-3">
           <div className="w-8 h-8 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
@@ -75,7 +77,7 @@ const Customers = () => {
     },
     {
       key: 'location',
-      label: 'Location',
+      label: t('customers.location'),
       render: (value) => (
         <div className="flex items-center space-x-2">
           <MapPin className="w-4 h-4 text-slate-400" />
@@ -85,7 +87,7 @@ const Customers = () => {
     },
     {
       key: 'houseName',
-      label: 'House Name',
+      label: t('customers.houseName'),
       render: (value) => (
         <div className="flex items-center space-x-2">
           <Home className="w-4 h-4 text-slate-400" />
@@ -95,7 +97,7 @@ const Customers = () => {
     },
     {
       key: 'phone',
-      label: 'Phone',
+      label: t('common.phone'),
       render: (value) => (
         <div className="flex items-center space-x-2">
           <Phone className="w-4 h-4 text-slate-400" />
@@ -105,7 +107,7 @@ const Customers = () => {
     },
     {
       key: 'createdAt',
-      label: 'Added Date',
+      label: t('customers.addedDate'),
       render: (value) => (
         <span className="text-sm text-slate-500 dark:text-slate-400">
           {new Date(value).toLocaleDateString()}
@@ -137,7 +139,7 @@ const Customers = () => {
   };
 
   const handleDeleteCustomer = (customer) => {
-    if (window.confirm(`Are you sure you want to delete ${customer.fullName}?`)) {
+    if (window.confirm(`${t('common.confirmDelete')} ${customer.fullName}?`)) {
       setCustomers(customers.filter(c => c.id !== customer.id));
     }
   };
@@ -178,14 +180,14 @@ const Customers = () => {
   const formFields = [
     {
       name: 'fullName',
-      label: 'Full Name',
+      label: t('customers.fullName'),
       type: 'text',
       required: true,
-      placeholder: 'Enter customer full name',
+      placeholder: t('customers.enterFullName'),
     },
     {
       name: 'location',
-      label: 'Location',
+      label: t('customers.location'),
       type: 'select',
       required: true,
       options: [
@@ -200,17 +202,17 @@ const Customers = () => {
     },
     {
       name: 'houseName',
-      label: 'House Name',
+      label: t('customers.houseName'),
       type: 'text',
       required: true,
-      placeholder: 'Enter house name',
+      placeholder: t('customers.enterHouseName'),
     },
     {
       name: 'phone',
-      label: 'Phone Number',
+      label: t('customers.phoneNumber'),
       type: 'tel',
       required: true,
-      placeholder: 'Enter phone number',
+      placeholder: t('customers.enterPhoneNumber'),
     },
   ];
 
@@ -219,9 +221,9 @@ const Customers = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div>
-          <h1 className="text-lg sm:text-2xl font-normal text-slate-900 dark:text-slate-100 mb-1 sm:mb-2">Customers</h1>
+          <h1 className="text-lg sm:text-2xl font-normal text-slate-900 dark:text-slate-100 mb-1 sm:mb-2">{t('customers.title')}</h1>
           <p className="text-slate-600 dark:text-slate-400">
-            Manage your customer information and contact details
+            {t('customers.subtitle')}
           </p>
         </div>
         <button
@@ -229,7 +231,7 @@ const Customers = () => {
           className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm sm:text-base"
         >
           <Plus className="w-4 h-4" />
-          <span>Add Customer</span>
+          <span>{t('customers.addCustomer')}</span>
         </button>
       </div>
 
@@ -241,7 +243,7 @@ const Customers = () => {
               <Users className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Total Customers</p>
+              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">{t('customers.totalCustomers')}</p>
               <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">{customers.length}</p>
             </div>
           </div>
@@ -253,7 +255,7 @@ const Customers = () => {
               <MapPin className="w-6 h-6 text-green-600 dark:text-green-400" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Locations</p>
+              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">{t('customers.locations')}</p>
               <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
                 {new Set(customers.map(c => c.location)).size}
               </p>
@@ -267,7 +269,7 @@ const Customers = () => {
               <Home className="w-6 h-6 text-purple-600 dark:text-purple-400" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Houses</p>
+              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">{t('customers.houses')}</p>
               <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
                 {customers.filter(c => c.houseName).length}
               </p>
@@ -287,7 +289,7 @@ const Customers = () => {
           searchable={true}
           pagination={true}
           itemsPerPage={10}
-          emptyMessage="No customers found. Add one to get started."
+          emptyMessage={t('customers.noCustomersFound')}
         />
       </div>
 
@@ -296,11 +298,11 @@ const Customers = () => {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onSubmit={handleSaveCustomer}
-        title={editingCustomer ? 'Edit Customer' : 'Add New Customer'}
+        title={editingCustomer ? t('customers.editCustomer') : t('customers.addNewCustomer')}
         fields={formFields}
         formData={formData}
         setFormData={setFormData}
-        submitText={editingCustomer ? 'Update Customer' : 'Add Customer'}
+        submitText={editingCustomer ? t('customers.updateCustomer') : t('customers.addCustomer')}
       />
     </div>
   );

@@ -6,15 +6,17 @@ import * as yup from 'yup';
 import { authAPI } from '../services/api';
 import toast from 'react-hot-toast';
 import { Loader2 } from 'lucide-react';
-
-const schema = yup.object().shape({
-  username: yup.string().required('Username is required'),
-  password: yup.string().required('Password is required').min(6, 'Password must be at least 6 characters'),
-});
+import { useLanguage } from '../contexts/LanguageContext';
 
 const Login = () => {
+  const { t } = useLanguage();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  
+  const schema = yup.object().shape({
+    username: yup.string().required(t('login.usernameRequired')),
+    password: yup.string().required(t('login.passwordRequired')).min(6, t('login.passwordMinLength')),
+  });
 
   const {
     register,
@@ -30,10 +32,10 @@ const Login = () => {
       const response = await authAPI.login(data.username, data.password);
       localStorage.setItem('authToken', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
-      toast.success('Login successful!');
+      toast.success(t('login.loginSuccess'));
       navigate('/dashboard');
     } catch (error) {
-      toast.error(error.message || 'Invalid credentials');
+      toast.error(error.message || t('login.invalidCredentials'));
     } finally {
       setLoading(false);
     }
@@ -48,10 +50,10 @@ const Login = () => {
             <span className="text-3xl">🌿</span>
           </div>
           <h1 className="text-lg sm:text-2xl font-normal text-slate-900 dark:text-slate-100 mb-1 sm:mb-2">
-            Cardamom Dry Center
+            {t('login.title')}
           </h1>
           <p className="text-sm text-slate-600 dark:text-slate-400">
-            Management System
+            {t('login.managementSystem')}
           </p>
         </div>
 
@@ -59,14 +61,14 @@ const Login = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label htmlFor="username" className="label">
-              Username
+              {t('login.username')}
             </label>
             <input
               id="username"
               type="text"
               {...register('username')}
               className="input-field"
-              placeholder="Enter your username"
+              placeholder={t('login.enterUsername')}
             />
             {errors.username && (
               <p className="mt-1 text-xs text-red-600 dark:text-red-400">
@@ -77,14 +79,14 @@ const Login = () => {
 
           <div>
             <label htmlFor="password" className="label">
-              Password
+              {t('login.password')}
             </label>
             <input
               id="password"
               type="password"
               {...register('password')}
               className="input-field"
-              placeholder="Enter your password"
+              placeholder={t('login.enterPassword')}
             />
             {errors.password && (
               <p className="mt-1 text-xs text-red-600 dark:text-red-400">
@@ -99,14 +101,14 @@ const Login = () => {
             className="w-full inline-flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm sm:text-base"
           >
             {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-            {loading ? 'Logging in...' : 'Login'}
+            {loading ? t('login.loggingIn') : t('login.loginButton')}
           </button>
         </form>
 
         {/* Demo Credentials */}
         <div className="mt-6 p-4 bg-slate-100 dark:bg-slate-700 rounded-lg">
           <p className="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2">
-            Demo Credentials:
+            {t('login.demoCredentials')}
           </p>
           <p className="text-xs text-slate-600 dark:text-slate-400">
             Username: <span className="font-medium">admin</span>

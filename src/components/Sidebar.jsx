@@ -25,6 +25,7 @@ import {
   Building2,
   ShoppingCart,
 } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const Sidebar = ({ isOpen, onClose }) => {
   const navRef = useRef(null);
@@ -34,36 +35,31 @@ const Sidebar = ({ isOpen, onClose }) => {
   const [isOperationsOpen, setIsOperationsOpen] = useState(false);
   const [isReportsOpen, setIsReportsOpen] = useState(false);
   const [isPurchaseOpen, setIsPurchaseOpen] = useState(false);
-
-  const menuItems = [
-    { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-    { path: '/store-management', icon: Workflow, label: 'Store Management' },
-    { path: '/customers', icon: Users, label: 'Customers' },
-  ];
+  const { t } = useLanguage();
 
   const operationsMenuItems = [
-    { path: '/collection', icon: Package, label: 'Collections' },
-    { path: '/drying-batch', icon: Flame, label: 'Drying Batches' },
-    { path: '/return', icon: Send, label: 'Returns' },
+    { path: '/collection', icon: Package, labelKey: 'sidebar.collections' },
+    { path: '/drying-batch', icon: Flame, labelKey: 'sidebar.dryingBatch' },
+    { path: '/return', icon: Send, labelKey: 'sidebar.return' },
   ];
 
   const purchaseMenuItems = [
-    { path: '/vendors', icon: Building2, label: 'Vendors' },
-    { path: '/purchases', icon: ShoppingCart, label: 'Purchases' },
+    { path: '/vendors', icon: Building2, labelKey: 'sidebar.vendors' },
+    { path: '/purchases', icon: ShoppingCart, labelKey: 'sidebar.purchases' },
   ];
 
   const accountsMenuItems = [
-    { path: '/payments', icon: Wallet, label: 'Payments' },
-    { path: '/income', icon: TrendingUp, label: 'Income' },
-    { path: '/expenses', icon: TrendingDown, label: 'Expenses' },
-    { path: '/payrolls', icon: Receipt, label: 'Salary Payments' },
-    { path: '/debt-management', icon: CreditCard, label: 'Debt Management' },
+    { path: '/payments', icon: Wallet, labelKey: 'sidebar.payments' },
+    { path: '/income', icon: TrendingUp, labelKey: 'sidebar.income' },
+    { path: '/expenses', icon: TrendingDown, labelKey: 'sidebar.expenses' },
+    { path: '/payrolls', icon: Receipt, labelKey: 'sidebar.salaryPayments' },
+    { path: '/debt-management', icon: CreditCard, labelKey: 'sidebar.debtManagement' },
   ];
 
   const reportsMenuItems = [
-    { path: '/ledger', icon: BookOpen, label: 'Customer Ledger' },
-    { path: '/reports', icon: BarChart3, label: 'Store Report' },
-    { path: '/financial-report', icon: TrendingUp, label: 'Financial Report' },
+    { path: '/ledger', icon: BookOpen, labelKey: 'sidebar.customerLedger' },
+    { path: '/reports', icon: BarChart3, labelKey: 'sidebar.storeReport' },
+    { path: '/financial-report', icon: TrendingUp, labelKey: 'sidebar.financialReport' },
   ];
 
   // Close sidebar when clicking outside on mobile
@@ -147,7 +143,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         <div className="h-full flex flex-col sidebar-container">
           {/* Close Button (Mobile) */}
           <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700 lg:hidden">
-            <h2 className="text-lg font-normal text-slate-900 dark:text-slate-100">Menu</h2>
+            <h2 className="text-lg font-normal text-slate-900 dark:text-slate-100">{t('sidebar.menu')}</h2>
             <button
               onClick={onClose}
               className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
@@ -183,7 +179,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                     }
                   >
                     <LayoutDashboard className="w-5 h-5" />
-                    <span className="font-normal">Dashboard</span>
+                    <span className="font-normal">{t('sidebar.dashboard')}</span>
                   </NavLink>
                 </li>
 
@@ -201,7 +197,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                     }
                   >
                     <Workflow className="w-5 h-5" />
-                    <span className="font-normal">Store Management</span>
+                    <span className="font-normal">{t('sidebar.storeManagement')}</span>
                   </NavLink>
                 </li>
 
@@ -213,7 +209,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                   >
                     <div className="flex items-center gap-3">
                       <Store className="w-5 h-5" />
-                      <span className="font-normal">Store</span>
+                      <span className="font-normal">{t('sidebar.store')}</span>
                     </div>
                     <ChevronDown
                       className={`w-4 h-4 transition-transform duration-200 ${
@@ -243,7 +239,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                             }
                           >
                             <item.icon className="w-4 h-4" />
-                            <span className="text-sm font-normal">{item.label}</span>
+                            <span className="text-sm font-normal">{t(item.labelKey)}</span>
                           </NavLink>
                         </li>
                       ))}
@@ -259,7 +255,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                   >
                     <div className="flex items-center gap-3">
                       <ShoppingCart className="w-5 h-5" />
-                      <span className="font-normal">Purchase</span>
+                      <span className="font-normal">{t('sidebar.purchase')}</span>
                     </div>
                     <ChevronDown
                       className={`w-4 h-4 transition-transform duration-200 ${
@@ -289,7 +285,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                             }
                           >
                             <item.icon className="w-4 h-4" />
-                            <span className="text-sm font-normal">{item.label}</span>
+                            <span className="text-sm font-normal">{t(item.labelKey)}</span>
                           </NavLink>
                         </li>
                       ))}
@@ -305,7 +301,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                   >
                     <div className="flex items-center gap-3">
                       <DollarSign className="w-5 h-5" />
-                      <span className="font-normal">Accounts</span>
+                      <span className="font-normal">{t('sidebar.accounts')}</span>
                     </div>
                     <ChevronDown
                       className={`w-4 h-4 transition-transform duration-200 ${
@@ -335,7 +331,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                             }
                           >
                             <item.icon className="w-4 h-4" />
-                            <span className="text-sm font-normal">{item.label}</span>
+                            <span className="text-sm font-normal">{t(item.labelKey)}</span>
                           </NavLink>
                         </li>
                       ))}
@@ -351,7 +347,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                   >
                     <div className="flex items-center gap-3">
                       <FileText className="w-5 h-5" />
-                      <span className="font-normal">Reports</span>
+                      <span className="font-normal">{t('sidebar.reports')}</span>
                     </div>
                     <ChevronDown
                       className={`w-4 h-4 transition-transform duration-200 ${
@@ -381,7 +377,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                             }
                           >
                             <item.icon className="w-4 h-4" />
-                            <span className="text-sm font-normal">{item.label}</span>
+                            <span className="text-sm font-normal">{t(item.labelKey)}</span>
                           </NavLink>
                         </li>
                       ))}
@@ -403,7 +399,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                     }
                   >
                     <Users className="w-5 h-5" />
-                    <span className="font-normal">Customers</span>
+                    <span className="font-normal">{t('sidebar.customers')}</span>
                   </NavLink>
                 </li>
 
@@ -421,7 +417,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                     }
                   >
                     <UserCog className="w-5 h-5" />
-                    <span className="font-normal">Employees</span>
+                    <span className="font-normal">{t('sidebar.employees')}</span>
                   </NavLink>
                 </li>
               </ul>
@@ -432,10 +428,10 @@ const Sidebar = ({ isOpen, onClose }) => {
           <div className="p-4 border-t border-slate-200 dark:border-slate-700">
             <div className="bg-primary-50 dark:bg-primary-900/20 rounded-lg p-4">
               <p className="text-xs font-normal text-primary-900 dark:text-primary-100 mb-1">
-                Version 1.0.0
+                {t('sidebar.version')}
               </p>
               <p className="text-xs text-primary-700 dark:text-primary-300">
-                © 2025 Cardamom Center
+                {t('sidebar.copyright')}
               </p>
             </div>
           </div>

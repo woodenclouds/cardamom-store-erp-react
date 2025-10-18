@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Menu, Sun, Moon, LogOut, User, HelpCircle, Settings } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { useLanguage } from '../contexts/LanguageContext';
+import LanguageSwitch from './LanguageSwitch';
 
 const Navbar = ({ onMenuClick, user, sidebarOpen }) => {
   const [darkMode, setDarkMode] = useState(() => {
@@ -9,6 +11,7 @@ const Navbar = ({ onMenuClick, user, sidebarOpen }) => {
     return saved ? JSON.parse(saved) : false;
   });
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (darkMode) {
@@ -22,7 +25,7 @@ const Navbar = ({ onMenuClick, user, sidebarOpen }) => {
   const handleLogout = () => {
     localStorage.removeItem('authToken');
     localStorage.removeItem('user');
-    toast.success('Logged out successfully');
+    toast.success(t('navbar.logout'));
     navigate('/login');
   };
 
@@ -47,18 +50,21 @@ const Navbar = ({ onMenuClick, user, sidebarOpen }) => {
               <span className="text-white font-normal text-sm">🌿</span>
             </div>
             <h1 className="text-lg font-normal text-slate-900 dark:text-slate-100 hidden sm:block">
-              Cardamom Dry Center
+              {t('navbar.title')}
             </h1>
           </div>
         </div>
 
         {/* Right Section */}
         <div className="flex items-center gap-2">
+          {/* Language Switch */}
+          <LanguageSwitch />
+
           {/* Support */}
           <button 
             className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
             aria-label="Support"
-            title="Help & Support"
+            title={t('navbar.support')}
           >
             <HelpCircle className="w-5 h-5 text-slate-600 dark:text-slate-400" />
           </button>
@@ -68,7 +74,7 @@ const Navbar = ({ onMenuClick, user, sidebarOpen }) => {
             onClick={() => handleNavigation('/settings')}
             className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
             aria-label="Settings"
-            title="Settings"
+            title={t('navbar.settings')}
           >
             <Settings className="w-5 h-5 text-slate-600 dark:text-slate-400" />
           </button>
@@ -92,7 +98,7 @@ const Navbar = ({ onMenuClick, user, sidebarOpen }) => {
               <p className="text-sm font-normal text-slate-900 dark:text-slate-100">
                 {user?.name || 'Admin User'}
               </p>
-              <p className="text-xs text-slate-500 dark:text-slate-400">Administrator</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">{t('navbar.administrator')}</p>
             </div>
             <div className="relative group">
               <button className="p-2 bg-primary-100 dark:bg-primary-900/20 rounded-lg">
@@ -105,7 +111,7 @@ const Navbar = ({ onMenuClick, user, sidebarOpen }) => {
                   className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
                 >
                   <LogOut className="w-4 h-4" />
-                  Logout
+                  {t('navbar.logout')}
                 </button>
               </div>
             </div>
