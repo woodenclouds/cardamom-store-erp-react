@@ -6,6 +6,108 @@ import { collectionAPI } from '../services/api';
 import toast from 'react-hot-toast';
 import { useLanguage } from '../contexts/LanguageContext';
 
+// StatusColumn component moved outside to prevent re-creation on every render
+const StatusColumn = ({ title, icon: Icon, color, orders, actionButton, searchKey, searchValue, onSearchChange, onClearSearch, t }) => (
+  <div className="flex-1 min-w-[280px]">
+    <div className={`${color} rounded-t-lg p-4`}>
+      <div className="flex items-center gap-2 mb-3">
+        <Icon className="w-5 h-5" />
+        <h2 className="font-normal text-lg">{title}</h2>
+        <span className="ml-auto bg-white dark:bg-slate-800 px-2.5 py-0.5 rounded-full text-sm font-medium text-slate-900 dark:text-slate-100">
+          {orders.length}
+        </span>
+      </div>
+      
+      {/* Search Input */}
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
+        <input
+          type="text"
+          placeholder={t('common.search')}
+          value={searchValue || ''}
+          onChange={(e) => {
+            const value = e.target.value;
+            onSearchChange(searchKey, value);
+          }}
+          className="w-full pl-10 pr-8 py-2 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-lg text-sm border border-white/20 focus:border-white/40 focus:outline-none"
+        />
+        {searchValue && searchValue.length > 0 && (
+          <button
+            onClick={() => onClearSearch(searchKey)}
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-colors"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        )}
+      </div>
+    </div>
+    <div className="bg-slate-50 dark:bg-slate-800/50 min-h-[calc(100vh-280px)] p-3 space-y-3 rounded-b-lg">
+      {orders.length === 0 ? (
+        <div className="text-center py-8 text-slate-400">
+          <p className="text-sm">{t('common.noData')}</p>
+        </div>
+      ) : (
+        orders.map(order => (
+          <div 
+            key={order.id} 
+            className="bg-white dark:bg-slate-800 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow border border-slate-200 dark:border-slate-700"
+          >
+            <div className="flex justify-between items-start mb-2">
+              <h3 className="font-normal text-slate-900 dark:text-slate-100">
+                {order.customerName}
+              </h3>
+              {order.batchNo && (
+                <span className="text-xs bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 px-2 py-1 rounded">
+                  {order.batchNo}
+                </span>
+              )}
+            </div>
+            
+            <div className="space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
+              <div className="flex justify-between">
+                <span>{t('common.date')}:</span>
+                <span className="font-medium">{order.date}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>{t('collection.quantity')}:</span>
+                <span className="font-medium">{order.quantity} kg</span>
+              </div>
+              {order.dryQty > 0 && order.status !== 'drying' && (
+                <div className="flex justify-between">
+                  <span>{t('dryingBatch.dryWeight')}:</span>
+                  <span className="font-medium text-green-600 dark:text-green-400">{order.dryQty} kg</span>
+                </div>
+              )}
+              {order.drierNo && (
+                <div className="flex justify-between">
+                  <span>Drier:</span>
+                  <span className="font-medium text-blue-600 dark:text-blue-400">#{order.drierNo}</span>
+                </div>
+              )}
+              <div className="flex justify-between pt-1 border-t border-slate-200 dark:border-slate-700">
+                <span>{t('common.amount')}:</span>
+                <span className="font-normal text-slate-900 dark:text-slate-100">
+                  ₹{order.amount?.toLocaleString() || (order.quantity * order.rate).toLocaleString()}
+                </span>
+              </div>
+            </div>
+
+            {actionButton && (
+              <button
+                onClick={() => actionButton.action(order)}
+                className={`mt-3 w-full ${actionButton.className} flex items-center justify-center gap-2 text-sm font-medium py-2 rounded-lg transition-colors`}
+              >
+                {actionButton.icon}
+                {actionButton.label}
+              </button>
+            )}
+          </div>
+        ))
+      )}
+    </div>
+  </div>
+);
+
 const StoreManagement = () => {
   const { t } = useLanguage();
   const [orders, setOrders] = useState([]);
@@ -166,107 +268,6 @@ const StoreManagement = () => {
     searchTerms.completed
   );
 
-  const StatusColumn = ({ title, icon: Icon, color, orders, actionButton, searchKey }) => (
-    <div className="flex-1 min-w-[280px]">
-      <div className={`${color} rounded-t-lg p-4`}>
-        <div className="flex items-center gap-2 mb-3">
-          <Icon className="w-5 h-5" />
-          <h2 className="font-normal text-lg">{title}</h2>
-          <span className="ml-auto bg-white dark:bg-slate-800 px-2.5 py-0.5 rounded-full text-sm font-medium text-slate-900 dark:text-slate-100">
-            {orders.length}
-          </span>
-        </div>
-        
-        {/* Search Input */}
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
-          <input
-            type="text"
-            placeholder={t('common.search')}
-            value={searchTerms[searchKey] || ''}
-            onChange={(e) => {
-              const value = e.target.value;
-              handleSearchChange(searchKey, value);
-            }}
-            className="w-full pl-10 pr-8 py-2 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-lg text-sm border border-white/20 focus:border-white/40 focus:outline-none"
-          />
-          {searchTerms[searchKey] && searchTerms[searchKey].length > 0 && (
-            <button
-              onClick={() => clearSearch(searchKey)}
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-colors"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          )}
-        </div>
-      </div>
-      <div className="bg-slate-50 dark:bg-slate-800/50 min-h-[calc(100vh-280px)] p-3 space-y-3 rounded-b-lg">
-        {orders.length === 0 ? (
-          <div className="text-center py-8 text-slate-400">
-            <p className="text-sm">{t('common.noData')}</p>
-          </div>
-        ) : (
-          orders.map(order => (
-            <div 
-              key={order.id} 
-              className="bg-white dark:bg-slate-800 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow border border-slate-200 dark:border-slate-700"
-            >
-              <div className="flex justify-between items-start mb-2">
-                <h3 className="font-normal text-slate-900 dark:text-slate-100">
-                  {order.customerName}
-                </h3>
-                {order.batchNo && (
-                  <span className="text-xs bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 px-2 py-1 rounded">
-                    {order.batchNo}
-                  </span>
-                )}
-              </div>
-              
-              <div className="space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
-                <div className="flex justify-between">
-                  <span>{t('common.date')}:</span>
-                  <span className="font-medium">{order.date}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>{t('collection.quantity')}:</span>
-                  <span className="font-medium">{order.quantity} kg</span>
-                </div>
-                {order.dryQty > 0 && order.status !== 'drying' && (
-                  <div className="flex justify-between">
-                    <span>{t('dryingBatch.dryWeight')}:</span>
-                    <span className="font-medium text-green-600 dark:text-green-400">{order.dryQty} kg</span>
-                  </div>
-                )}
-                {order.drierNo && (
-                  <div className="flex justify-between">
-                    <span>Drier:</span>
-                    <span className="font-medium text-blue-600 dark:text-blue-400">#{order.drierNo}</span>
-                  </div>
-                )}
-                <div className="flex justify-between pt-1 border-t border-slate-200 dark:border-slate-700">
-                  <span>{t('common.amount')}:</span>
-                  <span className="font-normal text-slate-900 dark:text-slate-100">
-                    ₹{order.amount?.toLocaleString() || (order.quantity * order.rate).toLocaleString()}
-                  </span>
-                </div>
-              </div>
-
-              {actionButton && (
-                <button
-                  onClick={() => actionButton.action(order)}
-                  className={`mt-3 w-full ${actionButton.className} flex items-center justify-center gap-2 text-sm font-medium py-2 rounded-lg transition-colors`}
-                >
-                  {actionButton.icon}
-                  {actionButton.label}
-                </button>
-              )}
-            </div>
-          ))
-        )}
-      </div>
-    </div>
-  );
-
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -296,6 +297,10 @@ const StoreManagement = () => {
           color="bg-slate-600 dark:bg-slate-700 text-white"
           orders={pendingOrders}
           searchKey="pending"
+          searchValue={searchTerms.pending}
+          onSearchChange={handleSearchChange}
+          onClearSearch={clearSearch}
+          t={t}
           actionButton={{
             label: 'Add to Drier',
             icon: <ArrowRight className="w-4 h-4" />,
@@ -310,6 +315,10 @@ const StoreManagement = () => {
           color="bg-blue-600 dark:bg-blue-700 text-white"
           orders={dryingOrders}
           searchKey="drying"
+          searchValue={searchTerms.drying}
+          onSearchChange={handleSearchChange}
+          onClearSearch={clearSearch}
+          t={t}
           actionButton={{
             label: 'Mark Completed',
             icon: <CheckCircle2 className="w-4 h-4" />,
@@ -324,6 +333,10 @@ const StoreManagement = () => {
           color="bg-green-600 dark:bg-green-700 text-white"
           orders={completedOrders}
           searchKey="completed"
+          searchValue={searchTerms.completed}
+          onSearchChange={handleSearchChange}
+          onClearSearch={clearSearch}
+          t={t}
           actionButton={{
             label: 'Return to Customer',
             icon: <Truck className="w-4 h-4" />,
