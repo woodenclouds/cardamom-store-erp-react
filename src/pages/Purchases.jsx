@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Plus, ShoppingCart, Calendar, DollarSign, Package, FileText } from 'lucide-react';
 import DataTable from '../components/DataTable';
 import ModalForm from '../components/ModalForm';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const Purchases = () => {
+  const { t } = useLanguage();
   const [purchases, setPurchases] = useState([]);
   const [vendors, setVendors] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -113,7 +115,7 @@ const Purchases = () => {
   const columns = [
     {
       key: 'date',
-      label: 'Date',
+      label: t('purchases.purchaseDate'),
       render: (value) => (
         <div className="flex items-center space-x-2">
           <Calendar className="w-4 h-4 text-slate-400" />
@@ -125,7 +127,7 @@ const Purchases = () => {
     },
     {
       key: 'vendorName',
-      label: 'Vendor',
+      label: t('purchases.vendor'),
       render: (value, row) => (
         <div className="flex items-center space-x-3">
           <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center">
@@ -140,7 +142,7 @@ const Purchases = () => {
     },
     {
       key: 'itemDescription',
-      label: 'Item Description',
+      label: t('purchases.item'),
       render: (value) => (
         <div className="flex items-center space-x-2">
           <Package className="w-4 h-4 text-slate-400" />
@@ -150,7 +152,7 @@ const Purchases = () => {
     },
     {
       key: 'quantity',
-      label: 'Quantity',
+      label: t('collection.quantity'),
       render: (value, row) => (
         <span className="text-sm font-medium text-slate-900 dark:text-slate-100">
           {value} {row.unit}
@@ -159,7 +161,7 @@ const Purchases = () => {
     },
     {
       key: 'ratePerUnit',
-      label: 'Rate/Unit',
+      label: t('collection.pricePerKg'),
       render: (value) => (
         <span className="text-sm text-slate-600 dark:text-slate-300">
           ₹{value.toLocaleString()}
@@ -168,7 +170,7 @@ const Purchases = () => {
     },
     {
       key: 'amount',
-      label: 'Total Amount',
+      label: t('collection.totalAmount'),
       render: (value) => (
         <div className="flex items-center space-x-2">
           <DollarSign className="w-4 h-4 text-green-500" />
@@ -180,7 +182,7 @@ const Purchases = () => {
     },
     {
       key: 'paymentMode',
-      label: 'Payment Mode',
+      label: t('payments.paymentMethod'),
       render: (value) => (
         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
           {value}
@@ -379,9 +381,9 @@ const Purchases = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div>
-          <h1 className="text-lg sm:text-2xl font-normal text-slate-900 dark:text-slate-100 mb-1 sm:mb-2">Purchase Management</h1>
+          <h1 className="text-lg sm:text-2xl font-normal text-slate-900 dark:text-slate-100 mb-1 sm:mb-2">{t('purchases.title')}</h1>
           <p className="text-slate-600 dark:text-slate-400">
-            Track and manage all purchase transactions
+            {t('purchases.subtitle')}
           </p>
         </div>
         <button
@@ -389,7 +391,7 @@ const Purchases = () => {
           className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm sm:text-base"
         >
           <Plus className="w-4 h-4" />
-          <span>Add Purchase</span>
+          <span>{t('purchases.addPurchase')}</span>
         </button>
       </div>
 
@@ -401,7 +403,7 @@ const Purchases = () => {
               <ShoppingCart className="w-6 h-6 text-purple-600 dark:text-purple-400" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Total Purchases</p>
+              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">{t('purchases.totalPurchases')}</p>
               <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">{purchases.length}</p>
             </div>
           </div>
@@ -413,7 +415,7 @@ const Purchases = () => {
               <DollarSign className="w-6 h-6 text-green-600 dark:text-green-400" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Total Amount</p>
+              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">{t('collection.totalAmount')}</p>
               <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
                 ₹{totalPurchases.toLocaleString()}
               </p>
@@ -427,7 +429,7 @@ const Purchases = () => {
               <Package className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Total Quantity</p>
+              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">{t('collection.totalCollected')}</p>
               <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
                 {totalQuantity.toFixed(2)}
               </p>
@@ -441,7 +443,7 @@ const Purchases = () => {
               <FileText className="w-6 h-6 text-orange-600 dark:text-orange-400" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Active Vendors</p>
+              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">{t('vendors.activeVendors')}</p>
               <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
                 {new Set(purchases.map(p => p.vendorId)).size}
               </p>

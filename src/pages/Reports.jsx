@@ -3,8 +3,10 @@ import { Download, Calendar } from 'lucide-react';
 import DataTable from '../components/DataTable';
 import { reportAPI } from '../services/api';
 import toast from 'react-hot-toast';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const Reports = () => {
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState('drying');
   const [dryingReport, setDryingReport] = useState([]);
   const [outstandingReport, setOutstandingReport] = useState([]);
@@ -36,26 +38,26 @@ const Reports = () => {
   };
 
   const dryingColumns = [
-    { key: 'batchNo', label: 'Batch No' },
-    { key: 'rawQty', label: 'Raw Qty (kg)' },
-    { key: 'dryQty', label: 'Dry Qty (kg)' },
+    { key: 'batchNo', label: t('dryingBatch.batchNumber') },
+    { key: 'rawQty', label: t('reports.rawQty') },
+    { key: 'dryQty', label: t('reports.dryQty') },
     {
       key: 'yieldPercentage',
-      label: 'Yield %',
+      label: t('reports.yield'),
       render: (value) => `${value}%`,
     },
     {
       key: 'loss',
-      label: 'Loss %',
+      label: t('reports.loss'),
       render: (value) => `${value}%`,
     },
   ];
 
   const outstandingColumns = [
-    { key: 'customerName', label: 'Customer Name' },
+    { key: 'customerName', label: t('customers.customerName') },
     {
       key: 'outstanding',
-      label: 'Outstanding Amount',
+      label: t('reports.outstandingAmount'),
       render: (value) => `₹${value.toLocaleString()}`,
     },
   ];
@@ -65,10 +67,10 @@ const Reports = () => {
       {/* Header */}
       <div>
           <h1 className="text-lg sm:text-2xl font-normal text-slate-900 dark:text-slate-100 mb-1 sm:mb-2">
-          Reports
+          {t('reports.title')}
         </h1>
         <p className="text-slate-600 dark:text-slate-400">
-          Generate and view various reports
+          {t('reports.subtitle')}
         </p>
       </div>
 
@@ -83,7 +85,7 @@ const Reports = () => {
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
             }`}
           >
-            Drying Yield Report
+{t('reports.dryingYieldReport')}
           </button>
           <button
             onClick={() => setActiveTab('outstanding')}
@@ -93,7 +95,7 @@ const Reports = () => {
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
             }`}
           >
-            Outstanding Summary
+            {t('reports.outstandingSummary')}
           </button>
         </div>
 
@@ -103,7 +105,7 @@ const Reports = () => {
             <div className="mb-6 flex flex-col md:flex-row gap-4">
               <div className="flex-1">
                 <label htmlFor="startDate" className="label">
-                  Start Date
+                  {t('reports.startDate')}
                 </label>
                 <div className="relative">
                   <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
@@ -121,7 +123,7 @@ const Reports = () => {
 
               <div className="flex-1">
                 <label htmlFor="endDate" className="label">
-                  End Date
+                  {t('reports.endDate')}
                 </label>
                 <div className="relative">
                   <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
@@ -142,14 +144,14 @@ const Reports = () => {
                   onClick={fetchReports}
                   className="btn-primary"
                 >
-                  Apply Filter
+                  {t('reports.applyFilter')}
                 </button>
                 <button
                   onClick={() => handleExport('drying')}
                   className="btn-secondary flex items-center justify-center gap-2"
                 >
                   <Download className="w-4 h-4" />
-                  <span>Export</span>
+                  <span>{t('common.export')}</span>
                 </button>
               </div>
             </div>
@@ -162,7 +164,7 @@ const Reports = () => {
                 className="btn-secondary flex items-center gap-2"
               >
                 <Download className="w-4 h-4" />
-                Export
+                {t('common.export')}
               </button>
             </div>
           )}
@@ -180,7 +182,7 @@ const Reports = () => {
             <>
               <div className="mb-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
                 <p className="text-sm font-semibold text-yellow-900 dark:text-yellow-100">
-                  Total Outstanding: ₹
+                  {t('reports.totalOutstanding')}: ₹
                   {outstandingReport
                     .reduce((sum, item) => sum + item.outstanding, 0)
                     .toLocaleString()}

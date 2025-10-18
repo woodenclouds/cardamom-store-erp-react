@@ -3,8 +3,10 @@ import { toast } from 'react-hot-toast';
 import { TrendingUp, TrendingDown, DollarSign, Calendar, Filter } from 'lucide-react';
 import Card from '../components/Card';
 import { incomeAPI, expenseAPI, incomeCategoryAPI, expenseCategoryAPI } from '../services/api';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const FinancialReport = () => {
+  const { t } = useLanguage();
   const [loading, setLoading] = useState(true);
   const [incomes, setIncomes] = useState([]);
   const [expenses, setExpenses] = useState([]);
@@ -121,7 +123,7 @@ const FinancialReport = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-slate-600 dark:text-slate-400">Loading financial data...</div>
+        <div className="text-slate-600 dark:text-slate-400">{t('financialReport.loadingData')}</div>
       </div>
     );
   }
@@ -132,10 +134,10 @@ const FinancialReport = () => {
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
         <div>
           <h1 className="text-lg sm:text-2xl font-normal text-slate-900 dark:text-slate-100 mb-1 sm:mb-2">
-            Financial Report
+            {t('financialReport.title')}
           </h1>
           <p className="text-slate-600 dark:text-slate-400">
-            Overview of income, expenses, and profitability
+            {t('financialReport.subtitle')}
           </p>
         </div>
 
@@ -145,25 +147,25 @@ const FinancialReport = () => {
             onClick={() => setQuickDateRange('today')}
             className="px-3 py-1.5 text-sm bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors whitespace-nowrap"
           >
-            Today
+{t('financialReport.today')}
           </button>
           <button
             onClick={() => setQuickDateRange('week')}
             className="px-3 py-1.5 text-sm bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors whitespace-nowrap"
           >
-            Last 7 Days
+            {t('financialReport.last7Days')}
           </button>
           <button
             onClick={() => setQuickDateRange('month')}
             className="px-3 py-1.5 text-sm bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors whitespace-nowrap"
           >
-            This Month
+            {t('financialReport.thisMonth')}
           </button>
           <button
             onClick={() => setQuickDateRange('year')}
             className="px-3 py-1.5 text-sm bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors whitespace-nowrap"
           >
-            This Year
+            {t('financialReport.thisYear')}
           </button>
         </div>
       </div>
@@ -172,11 +174,11 @@ const FinancialReport = () => {
       <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-4">
         <div className="flex items-center gap-2 mb-3">
           <Calendar className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-          <h3 className="font-normal text-slate-900 dark:text-slate-100">Date Range</h3>
+          <h3 className="font-normal text-slate-900 dark:text-slate-100">{t('reports.dateRange')}</h3>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="label">Start Date</label>
+            <label className="label">{t('reports.startDate')}</label>
             <input
               type="date"
               value={dateRange.startDate}
@@ -185,7 +187,7 @@ const FinancialReport = () => {
             />
           </div>
           <div>
-            <label className="label">End Date</label>
+            <label className="label">{t('reports.endDate')}</label>
             <input
               type="date"
               value={dateRange.endDate}
@@ -199,24 +201,24 @@ const FinancialReport = () => {
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <Card
-          title="Total Income"
+          title={t('financialReport.totalIncome')}
           value={`₹${totalIncome.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
           icon={TrendingUp}
-          trend={`${filteredIncomes.length} transactions`}
+          trend={`${filteredIncomes.length} ${t('financialReport.transactions')}`}
           color="green"
         />
         <Card
-          title="Total Expenses"
+          title={t('financialReport.totalExpenses')}
           value={`₹${totalExpense.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
           icon={TrendingDown}
-          trend={`${filteredExpenses.length} transactions`}
+          trend={`${filteredExpenses.length} ${t('financialReport.transactions')}`}
           color="red"
         />
         <Card
-          title={netProfit >= 0 ? "Net Profit" : "Net Loss"}
+          title={netProfit >= 0 ? t('financialReport.netProfit') : t('financialReport.netLoss')}
           value={`₹${Math.abs(netProfit).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
           icon={DollarSign}
-          trend={netProfit >= 0 ? "Profitable" : "Loss"}
+          trend={netProfit >= 0 ? t('financialReport.profitable') : t('financialReport.loss')}
           color={netProfit >= 0 ? "blue" : "red"}
         />
       </div>
@@ -227,12 +229,12 @@ const FinancialReport = () => {
         <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6">
           <div className="flex items-center gap-2 mb-4">
             <TrendingUp className="w-5 h-5 text-green-600 dark:text-green-400" />
-            <h3 className="text-lg font-normal text-slate-900 dark:text-slate-100">Income by Category</h3>
+            <h3 className="text-lg font-normal text-slate-900 dark:text-slate-100">{t('financialReport.incomeByCategory')}</h3>
           </div>
           
           {sortedIncomeCategories.length === 0 ? (
             <p className="text-center py-8 text-slate-500 dark:text-slate-400 text-sm">
-              No income data for selected period
+              {t('financialReport.noIncomeData')}
             </p>
           ) : (
             <div className="space-y-3">
@@ -253,7 +255,7 @@ const FinancialReport = () => {
                       />
                     </div>
                     <div className="text-xs text-slate-500 dark:text-slate-400">
-                      {percentage.toFixed(1)}% of total income
+                      {percentage.toFixed(1)}% {t('financialReport.ofTotalIncome')}
                     </div>
                   </div>
                 );
@@ -266,12 +268,12 @@ const FinancialReport = () => {
         <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6">
           <div className="flex items-center gap-2 mb-4">
             <TrendingDown className="w-5 h-5 text-red-600 dark:text-red-400" />
-            <h3 className="text-lg font-normal text-slate-900 dark:text-slate-100">Expenses by Category</h3>
+            <h3 className="text-lg font-normal text-slate-900 dark:text-slate-100">{t('financialReport.expensesByCategory')}</h3>
           </div>
           
           {sortedExpenseCategories.length === 0 ? (
             <p className="text-center py-8 text-slate-500 dark:text-slate-400 text-sm">
-              No expense data for selected period
+              {t('financialReport.noExpenseData')}
             </p>
           ) : (
             <div className="space-y-3">
@@ -292,7 +294,7 @@ const FinancialReport = () => {
                       />
                     </div>
                     <div className="text-xs text-slate-500 dark:text-slate-400">
-                      {percentage.toFixed(1)}% of total expenses
+                      {percentage.toFixed(1)}% {t('financialReport.ofTotalExpenses')}
                     </div>
                   </div>
                 );
@@ -304,31 +306,31 @@ const FinancialReport = () => {
 
       {/* Summary Table */}
       <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-4 sm:p-6">
-        <h3 className="text-lg font-normal text-slate-900 dark:text-slate-100 mb-4">Summary</h3>
+        <h3 className="text-lg font-normal text-slate-900 dark:text-slate-100 mb-4">{t('financialReport.summary')}</h3>
         <div className="overflow-x-auto -mx-4 sm:mx-0">
           <table className="w-full min-w-[400px]">
             <thead>
               <tr className="border-b border-slate-200 dark:border-slate-700">
-                <th className="text-left py-3 px-4 text-sm font-medium text-slate-700 dark:text-slate-300">Description</th>
-                <th className="text-right py-3 px-4 text-sm font-medium text-slate-700 dark:text-slate-300">Amount</th>
+                <th className="text-left py-3 px-4 text-sm font-medium text-slate-700 dark:text-slate-300">{t('common.description')}</th>
+                <th className="text-right py-3 px-4 text-sm font-medium text-slate-700 dark:text-slate-300">{t('common.amount')}</th>
               </tr>
             </thead>
             <tbody>
               <tr className="border-b border-slate-200 dark:border-slate-700">
-                <td className="py-3 px-4 text-sm text-slate-600 dark:text-slate-400">Total Income</td>
+                <td className="py-3 px-4 text-sm text-slate-600 dark:text-slate-400">{t('financialReport.totalIncome')}</td>
                 <td className="py-3 px-4 text-sm text-right text-green-600 dark:text-green-400 font-medium">
                   ₹{totalIncome.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </td>
               </tr>
               <tr className="border-b border-slate-200 dark:border-slate-700">
-                <td className="py-3 px-4 text-sm text-slate-600 dark:text-slate-400">Total Expenses</td>
+                <td className="py-3 px-4 text-sm text-slate-600 dark:text-slate-400">{t('financialReport.totalExpenses')}</td>
                 <td className="py-3 px-4 text-sm text-right text-red-600 dark:text-red-400 font-medium">
                   ₹{totalExpense.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </td>
               </tr>
               <tr className="bg-slate-50 dark:bg-slate-700/50">
                 <td className="py-3 px-4 text-base font-medium text-slate-900 dark:text-slate-100">
-                  {netProfit >= 0 ? 'Net Profit' : 'Net Loss'}
+                  {netProfit >= 0 ? t('financialReport.netProfit') : t('financialReport.netLoss')}
                 </td>
                 <td className={`py-3 px-4 text-base text-right font-semibold ${
                   netProfit >= 0 

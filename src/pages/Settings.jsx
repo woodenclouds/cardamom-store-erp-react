@@ -15,8 +15,10 @@ import {
   TrendingDown,
 } from 'lucide-react';
 import ModalForm from '../components/ModalForm';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const Settings = () => {
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState('profile');
   const [loading, setLoading] = useState(false);
   
@@ -54,12 +56,12 @@ const Settings = () => {
   const [placeFormData, setPlaceFormData] = useState({ name: '' });
 
   const tabs = [
-    { id: 'profile', label: 'Profile', icon: User },
-    { id: 'password', label: 'Password', icon: Lock },
-    { id: 'pricing', label: 'Drying Price', icon: DollarSign },
-    { id: 'places', label: 'Places', icon: MapPin },
-    { id: 'categories', label: 'Categories', icon: Tag },
-    { id: 'general', label: 'General', icon: Building2 },
+    { id: 'profile', labelKey: 'settings.profile', icon: User },
+    { id: 'password', labelKey: 'settings.password', icon: Lock },
+    { id: 'pricing', labelKey: 'settings.dryingPrice', icon: DollarSign },
+    { id: 'places', labelKey: 'settings.places', icon: MapPin },
+    { id: 'categories', labelKey: 'settings.categories', icon: Tag },
+    { id: 'general', labelKey: 'settings.general', icon: Building2 },
   ];
 
   const handleProfileSave = () => {
@@ -141,7 +143,7 @@ const Settings = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               <div>
                 <label className="block text-sm font-normal text-slate-700 dark:text-slate-300 mb-2">
-                  Full Name
+                  {t('settings.fullName')}
                 </label>
                 <input
                   type="text"
@@ -153,7 +155,7 @@ const Settings = () => {
 
               <div>
                 <label className="block text-sm font-normal text-slate-700 dark:text-slate-300 mb-2">
-                  Email Address
+                  {t('settings.emailAddress')}
                 </label>
                 <input
                   type="email"
@@ -165,7 +167,7 @@ const Settings = () => {
 
               <div>
                 <label className="block text-sm font-normal text-slate-700 dark:text-slate-300 mb-2">
-                  Phone Number
+                  {t('settings.phoneNumber')}
                 </label>
                 <input
                   type="tel"
@@ -177,7 +179,7 @@ const Settings = () => {
 
               <div>
                 <label className="block text-sm font-normal text-slate-700 dark:text-slate-300 mb-2">
-                  Store Name
+                  {t('settings.storeName')}
                 </label>
                 <input
                   type="text"
@@ -189,7 +191,7 @@ const Settings = () => {
 
               <div className="sm:col-span-2">
                 <label className="block text-sm font-normal text-slate-700 dark:text-slate-300 mb-2">
-                  Address
+                  {t('settings.address')}
                 </label>
                 <textarea
                   value={profileData.address}
@@ -207,7 +209,7 @@ const Settings = () => {
                 className="w-full sm:w-auto flex items-center justify-center space-x-2 px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50 text-sm sm:text-base"
               >
                 <Save className="w-4 h-4 sm:w-5 sm:h-5" />
-                <span>{loading ? 'Saving...' : 'Save Changes'}</span>
+                <span>{loading ? t('settings.saving') : t('settings.saveChanges')}</span>
               </button>
             </div>
           </div>
@@ -218,14 +220,14 @@ const Settings = () => {
           <div className="space-y-4 sm:space-y-6 max-w-2xl">
             <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3 sm:p-4">
               <p className="text-xs sm:text-sm text-yellow-800 dark:text-yellow-200">
-                <strong>Password Requirements:</strong> Use at least 6 characters with a mix of letters, numbers, and symbols.
+                <strong>{t('settings.passwordRequirements')}</strong>
               </p>
             </div>
 
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-normal text-slate-700 dark:text-slate-300 mb-2">
-                  Current Password
+                  {t('settings.currentPassword')}
                 </label>
                 <input
                   type="password"
@@ -237,7 +239,7 @@ const Settings = () => {
 
               <div>
                 <label className="block text-sm font-normal text-slate-700 dark:text-slate-300 mb-2">
-                  New Password
+                  {t('settings.newPassword')}
                 </label>
                 <input
                   type="password"
@@ -249,7 +251,7 @@ const Settings = () => {
 
               <div>
                 <label className="block text-sm font-normal text-slate-700 dark:text-slate-300 mb-2">
-                  Confirm New Password
+                  {t('settings.confirmNewPassword')}
                 </label>
                 <input
                   type="password"
@@ -267,7 +269,7 @@ const Settings = () => {
                 className="w-full sm:w-auto flex items-center justify-center space-x-2 px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50 text-sm sm:text-base"
               >
                 <Lock className="w-4 h-4 sm:w-5 sm:h-5" />
-                <span>{loading ? 'Updating...' : 'Update Password'}</span>
+                <span>{loading ? t('settings.updating') : t('settings.updatePassword')}</span>
               </button>
             </div>
           </div>
@@ -280,18 +282,18 @@ const Settings = () => {
               <div className="flex items-center space-x-3 mb-2">
                 <DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-primary-600 dark:text-primary-400" />
                 <h3 className="text-base sm:text-lg font-normal text-slate-900 dark:text-slate-100">
-                  Drying Service Pricing
+                  {t('settings.dryingServicePricing')}
                 </h3>
               </div>
               <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
-                Set the standard price per kilogram for drying services.
+                {t('settings.dryingPricingDescription')}
               </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               <div>
                 <label className="block text-sm font-normal text-slate-700 dark:text-slate-300 mb-2">
-                  Price per Kg
+                  {t('settings.pricePerKg')}
                 </label>
                 <div className="relative">
                   <span className="absolute left-3 top-2.5 text-slate-500 dark:text-slate-400 text-sm sm:text-base">
@@ -310,7 +312,7 @@ const Settings = () => {
 
               <div>
                 <label className="block text-sm font-normal text-slate-700 dark:text-slate-300 mb-2">
-                  Currency
+                  {t('settings.currency')}
                 </label>
                 <select
                   value={dryingPrice.currency}
@@ -325,12 +327,12 @@ const Settings = () => {
             </div>
 
             <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-3 sm:p-4 border border-slate-200 dark:border-slate-700">
-              <h4 className="font-normal text-slate-900 dark:text-slate-100 mb-2 text-sm sm:text-base">Preview</h4>
+              <h4 className="font-normal text-slate-900 dark:text-slate-100 mb-2 text-sm sm:text-base">{t('settings.preview')}</h4>
               <p className="text-xl sm:text-2xl font-normal text-primary-600 dark:text-primary-400">
                 ₹{dryingPrice.pricePerKg} / Kg
               </p>
               <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1">
-                This rate will be used for drying cost calculations.
+                {t('settings.costCalculation')}
               </p>
             </div>
 
@@ -341,7 +343,7 @@ const Settings = () => {
                 className="w-full sm:w-auto flex items-center justify-center space-x-2 px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50 text-sm sm:text-base"
               >
                 <Save className="w-4 h-4 sm:w-5 sm:h-5" />
-                <span>{loading ? 'Saving...' : 'Save Pricing'}</span>
+                <span>{loading ? t('settings.saving') : t('settings.savePricing')}</span>
               </button>
             </div>
           </div>
@@ -353,10 +355,10 @@ const Settings = () => {
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-3 sm:space-y-0">
               <div className="min-w-0 flex-1">
                 <h3 className="text-base sm:text-lg font-normal text-slate-900 dark:text-slate-100">
-                  Manage Places
+                  {t('settings.managePlaces')}
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
-                  Add and manage places for customer locations.
+                  {t('settings.managePlacesDescription')}
                 </p>
               </div>
               <button
@@ -364,7 +366,7 @@ const Settings = () => {
                 className="w-full sm:w-auto flex items-center justify-center space-x-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm"
               >
                 <Plus className="w-4 h-4" />
-                <span>Add Place</span>
+                <span>{t('settings.addPlace')}</span>
               </button>
             </div>
 
@@ -388,7 +390,7 @@ const Settings = () => {
                             ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
                             : 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400'
                         }`}>
-                          {place.active ? 'Active' : 'Inactive'}
+                          {place.active ? t('settings.active') : t('settings.inactive')}
                         </span>
                       </div>
                     </div>
@@ -414,7 +416,7 @@ const Settings = () => {
             {places.length === 0 && (
               <div className="text-center py-8 sm:py-12">
                 <MapPin className="w-10 h-10 sm:w-12 sm:h-12 text-slate-400 mx-auto mb-3 sm:mb-4" />
-                <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">No places added yet.</p>
+                <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">{t('settings.noPlacesAdded')}</p>
               </div>
             )}
 
@@ -425,20 +427,20 @@ const Settings = () => {
                 setEditingPlace(null);
                 setPlaceFormData({ name: '' });
               }}
-              title={editingPlace ? 'Edit Place' : 'Add New Place'}
+              title={editingPlace ? t('settings.editPlace') : t('settings.addNewPlace')}
               onSubmit={handlePlaceSubmit}
             >
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-normal text-slate-700 dark:text-slate-300 mb-2">
-                    Place Name
+                    {t('settings.placeName')}
                   </label>
                   <input
                     type="text"
                     value={placeFormData.name}
                     onChange={(e) => setPlaceFormData({ ...placeFormData, name: e.target.value })}
                     className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-slate-700 dark:text-slate-100"
-                    placeholder="Enter place name"
+                    placeholder={t('settings.enterPlaceName')}
                     required
                   />
                 </div>
@@ -458,10 +460,10 @@ const Settings = () => {
                   </div>
                   <div className="min-w-0 flex-1">
                     <h3 className="text-base sm:text-lg font-normal text-slate-900 dark:text-slate-100">
-                      Income Categories
+                      {t('settings.incomeCategories')}
                     </h3>
                     <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
-                      Manage income categories
+                      {t('settings.manageIncomeCategories')}
                     </p>
                   </div>
                 </div>
@@ -469,7 +471,7 @@ const Settings = () => {
                   onClick={() => window.location.href = '/income-categories'}
                   className="w-full px-3 sm:px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm sm:text-base"
                 >
-                  Manage Income Categories
+                  {t('settings.manageIncomeCategoriesBtn')}
                 </button>
               </div>
 
@@ -480,10 +482,10 @@ const Settings = () => {
                   </div>
                   <div className="min-w-0 flex-1">
                     <h3 className="text-base sm:text-lg font-normal text-slate-900 dark:text-slate-100">
-                      Expense Categories
+                      {t('settings.expenseCategories')}
                     </h3>
                     <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
-                      Manage expense categories
+                      {t('settings.manageExpenseCategories')}
                     </p>
                   </div>
                 </div>
@@ -491,15 +493,14 @@ const Settings = () => {
                   onClick={() => window.location.href = '/expense-categories'}
                   className="w-full px-3 sm:px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm sm:text-base"
                 >
-                  Manage Expense Categories
+                  {t('settings.manageExpenseCategoriesBtn')}
                 </button>
               </div>
             </div>
 
             <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3 sm:p-4">
               <p className="text-xs sm:text-sm text-blue-800 dark:text-blue-200">
-                <strong>Note:</strong> Categories help you organize and track your income and expenses effectively. 
-                You can add, edit, or deactivate categories as needed.
+                <strong>{t('settings.note')}:</strong> {t('settings.categoriesNote')}
               </p>
             </div>
           </div>
@@ -510,15 +511,15 @@ const Settings = () => {
           <div className="space-y-4 sm:space-y-6 max-w-2xl">
             <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4 sm:p-6">
               <h3 className="text-lg font-normal text-slate-900 dark:text-slate-100 mb-4">
-                General Settings
+                {t('settings.generalSettings')}
               </h3>
               
               <div className="space-y-4">
                 {/* Date Format */}
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-3 border-b border-slate-200 dark:border-slate-700 space-y-2 sm:space-y-0">
                   <div className="flex-1 min-w-0">
-                    <p className="font-normal text-slate-900 dark:text-slate-100">Date Format</p>
-                    <p className="text-sm text-slate-600 dark:text-slate-400">Choose your preferred date format</p>
+                    <p className="font-normal text-slate-900 dark:text-slate-100">{t('settings.dateFormat')}</p>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">{t('settings.dateFormatDescription')}</p>
                   </div>
                   <div className="sm:ml-4 flex-shrink-0">
                     <select className="w-full sm:w-auto px-3 sm:px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg dark:bg-slate-700 dark:text-slate-100 text-sm">
@@ -532,8 +533,8 @@ const Settings = () => {
                 {/* Time Zone */}
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-3 border-b border-slate-200 dark:border-slate-700 space-y-2 sm:space-y-0">
                   <div className="flex-1 min-w-0">
-                    <p className="font-normal text-slate-900 dark:text-slate-100">Time Zone</p>
-                    <p className="text-sm text-slate-600 dark:text-slate-400">Set your local time zone</p>
+                    <p className="font-normal text-slate-900 dark:text-slate-100">{t('settings.timeZone')}</p>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">{t('settings.timeZoneDescription')}</p>
                   </div>
                   <div className="sm:ml-4 flex-shrink-0">
                     <select className="w-full sm:w-auto px-3 sm:px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg dark:bg-slate-700 dark:text-slate-100 text-sm">
@@ -547,8 +548,8 @@ const Settings = () => {
                 {/* Language */}
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-3 border-b border-slate-200 dark:border-slate-700 space-y-2 sm:space-y-0">
                   <div className="flex-1 min-w-0">
-                    <p className="font-normal text-slate-900 dark:text-slate-100">Language</p>
-                    <p className="text-sm text-slate-600 dark:text-slate-400">Choose display language</p>
+                    <p className="font-normal text-slate-900 dark:text-slate-100">{t('settings.language')}</p>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">{t('settings.languageDescription')}</p>
                   </div>
                   <div className="sm:ml-4 flex-shrink-0">
                     <select className="w-full sm:w-auto px-3 sm:px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg dark:bg-slate-700 dark:text-slate-100 text-sm">
@@ -562,8 +563,8 @@ const Settings = () => {
                 {/* Email Notifications */}
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-3 space-y-2 sm:space-y-0">
                   <div className="flex-1 min-w-0">
-                    <p className="font-normal text-slate-900 dark:text-slate-100">Email Notifications</p>
-                    <p className="text-sm text-slate-600 dark:text-slate-400">Receive email updates</p>
+                    <p className="font-normal text-slate-900 dark:text-slate-100">{t('settings.emailNotifications')}</p>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">{t('settings.emailNotificationsDescription')}</p>
                   </div>
                   <div className="sm:ml-4 flex-shrink-0">
                     <label className="relative inline-flex items-center cursor-pointer">
@@ -582,7 +583,7 @@ const Settings = () => {
                 className="w-full sm:w-auto flex items-center justify-center space-x-2 px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm sm:text-base"
               >
                 <Save className="w-4 h-4 sm:w-5 sm:h-5" />
-                <span>Save Settings</span>
+                <span>{t('settings.saveSettings')}</span>
               </button>
             </div>
           </div>
@@ -602,9 +603,9 @@ const Settings = () => {
             <SettingsIcon className="w-6 h-6 text-white" />
           </div>
           <div className="min-w-0 flex-1">
-            <h1 className="text-xl sm:text-2xl font-normal text-slate-900 dark:text-slate-100">Settings</h1>
+            <h1 className="text-xl sm:text-2xl font-normal text-slate-900 dark:text-slate-100">{t('settings.title')}</h1>
             <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 mt-1">
-              Manage your profile, store, and application preferences
+              {t('settings.subtitle')}
             </p>
           </div>
         </div>
@@ -627,8 +628,8 @@ const Settings = () => {
                   }`}
                 >
                   <Icon className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
-                  <span className="hidden xs:inline">{tab.label}</span>
-                  <span className="xs:hidden">{tab.label.split(' ')[0]}</span>
+                  <span className="hidden xs:inline">{t(tab.labelKey)}</span>
+                  <span className="xs:hidden">{t(tab.labelKey).split(' ')[0]}</span>
                 </button>
               );
             })}

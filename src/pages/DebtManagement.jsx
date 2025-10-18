@@ -4,8 +4,10 @@ import { Plus, Edit, Trash2, CreditCard, Filter, AlertCircle, CheckCircle, Clock
 import DataTable from '../components/DataTable';
 import ModalForm from '../components/ModalForm';
 import { debtAPI, customerAPI } from '../services/api';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const DebtManagement = () => {
+  const { t } = useLanguage();
   const [debts, setDebts] = useState([]);
   const [repayments, setRepayments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -204,11 +206,11 @@ const DebtManagement = () => {
 
   // Debt columns
   const debtColumns = [
-    { key: 'date', label: 'Date' },
-    { key: 'customerName', label: 'Customer' },
+    { key: 'date', label: t('common.date') },
+    { key: 'customerName', label: t('collection.customer') },
     { 
       key: 'amount',
-      label: 'Debt Amount',
+      label: t('debtManagement.debtAmount'),
       render: (value) => (
         <span className="font-semibold text-orange-600">
           ₹{parseFloat(value || 0).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
@@ -217,7 +219,7 @@ const DebtManagement = () => {
     },
     { 
       key: 'repaid',
-      label: 'Repaid',
+      label: t('debtManagement.repaid'),
       render: (value) => (
         <span className="font-semibold text-green-600">
           ₹{parseFloat(value || 0).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
@@ -226,17 +228,17 @@ const DebtManagement = () => {
     },
     { 
       key: 'outstanding',
-      label: 'Outstanding',
+      label: t('debtManagement.outstanding'),
       render: (value) => (
         <span className="font-semibold text-red-600">
           ₹{parseFloat(value || 0).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
         </span>
       ),
     },
-    { key: 'dueDate', label: 'Due Date' },
+    { key: 'dueDate', label: t('debtManagement.dueDate') },
     {
       key: 'status',
-      label: 'Status',
+      label: t('common.status'),
       render: (value) => {
         const statusConfig = {
           active: { bg: 'bg-orange-100', text: 'text-orange-800', icon: Clock },
@@ -253,10 +255,10 @@ const DebtManagement = () => {
         );
       },
     },
-    { key: 'reason', label: 'Reason' },
+    { key: 'reason', label: t('debtManagement.reason') },
     {
       key: 'id',
-      label: 'Actions',
+      label: t('common.actions'),
       render: (value, row) => (
         <div className="flex gap-2">
           <button
@@ -280,23 +282,23 @@ const DebtManagement = () => {
 
   // Repayment columns
   const repaymentColumns = [
-    { key: 'date', label: 'Date' },
-    { key: 'customerName', label: 'Customer' },
+    { key: 'date', label: t('common.date') },
+    { key: 'customerName', label: t('collection.customer') },
     { 
       key: 'amount',
-      label: 'Amount Repaid',
+      label: t('debtManagement.amountRepaid'),
       render: (value) => (
         <span className="font-semibold text-green-600">
           ₹{parseFloat(value || 0).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
         </span>
       ),
     },
-    { key: 'paymentMode', label: 'Payment Mode' },
-    { key: 'reference', label: 'Reference' },
-    { key: 'remarks', label: 'Remarks' },
+    { key: 'paymentMode', label: t('payments.paymentMethod') },
+    { key: 'reference', label: t('common.reference') },
+    { key: 'remarks', label: t('common.remarks') },
     {
       key: 'id',
-      label: 'Actions',
+      label: t('common.actions'),
       render: (value, row) => (
         <div className="flex gap-2">
           <button
@@ -438,10 +440,10 @@ const DebtManagement = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div>
           <h1 className="text-lg sm:text-2xl font-normal text-slate-900 dark:text-slate-100 mb-1 sm:mb-2">
-            Debt Management
+            {t('debtManagement.title')}
           </h1>
           <p className="text-slate-600 dark:text-slate-400">
-            Track debts given to customers and manage repayments
+            {t('debtManagement.subtitle')}
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
@@ -450,14 +452,14 @@ const DebtManagement = () => {
             className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors text-sm sm:text-base"
           >
             <Plus className="w-5 h-5" />
-            <span>Give Debt</span>
+            <span>{t('debtManagement.giveDebt')}</span>
           </button>
           <button
             onClick={() => setIsRepaymentModalOpen(true)}
             className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm sm:text-base"
           >
             <CreditCard className="w-5 h-5" />
-            <span>Record Repayment</span>
+            <span>{t('debtManagement.recordRepayment')}</span>
           </button>
         </div>
       </div>
@@ -467,7 +469,7 @@ const DebtManagement = () => {
         <div className="card">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">Total Debt Given</h3>
+              <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">{t('debtManagement.totalDebtGiven')}</h3>
               <p className="text-2xl font-normal text-slate-900 dark:text-slate-100 mt-1">
                 ₹{totalDebtGiven.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
               </p>
@@ -482,7 +484,7 @@ const DebtManagement = () => {
         <div className="card">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">Outstanding Amount</h3>
+              <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">{t('debtManagement.outstandingAmount')}</h3>
               <p className="text-2xl font-normal text-slate-900 dark:text-slate-100 mt-1">
                 ₹{totalOutstanding.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
               </p>
@@ -497,7 +499,7 @@ const DebtManagement = () => {
         <div className="card">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">Total Repaid</h3>
+              <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">{t('debtManagement.totalRepaid')}</h3>
               <p className="text-2xl font-normal text-slate-900 dark:text-slate-100 mt-1">
                 ₹{totalRepaid.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
               </p>
@@ -512,7 +514,7 @@ const DebtManagement = () => {
         <div className="card">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">Recovery Rate</h3>
+              <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">{t('debtManagement.recoveryRate')}</h3>
               <p className="text-2xl font-normal text-slate-900 dark:text-slate-100 mt-1">
                 {totalDebtGiven > 0 ? ((totalRepaid / totalDebtGiven) * 100).toFixed(1) : 0}%
               </p>
@@ -535,7 +537,7 @@ const DebtManagement = () => {
               : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
           }`}
         >
-          Debt Records ({debts.length})
+{t('debtManagement.debtRecords')} ({debts.length})
         </button>
         <button
           onClick={() => setActiveTab('repayments')}
@@ -545,7 +547,7 @@ const DebtManagement = () => {
               : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
           }`}
         >
-          Repayment History ({repayments.length})
+{t('debtManagement.repaymentHistory')} ({repayments.length})
         </button>
       </div>
 
@@ -559,10 +561,10 @@ const DebtManagement = () => {
               onChange={(e) => setFilterStatus(e.target.value)}
               className="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             >
-              <option value="all">All Status</option>
-              <option value="active">Active</option>
-              <option value="completed">Completed</option>
-              <option value="overdue">Overdue</option>
+              <option value="all">{t('debtManagement.allStatus')}</option>
+              <option value="active">{t('common.active')}</option>
+              <option value="completed">{t('common.completed')}</option>
+              <option value="overdue">{t('debtManagement.overdue')}</option>
             </select>
           </div>
 
@@ -570,7 +572,7 @@ const DebtManagement = () => {
             columns={debtColumns}
             data={filteredDebts}
             loading={loading}
-            emptyMessage="No debt records found. Create one to get started."
+            emptyMessage={t('debtManagement.noDebtRecordsFound')}
           />
         </>
       )}

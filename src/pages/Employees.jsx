@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Users, Mail, Phone, Briefcase, Calendar, DollarSign } from 'lucide-react';
 import DataTable from '../components/DataTable';
 import ModalForm from '../components/ModalForm';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const Employees = () => {
+  const { t } = useLanguage();
   const [employees, setEmployees] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingEmployee, setEditingEmployee] = useState(null);
@@ -92,7 +94,7 @@ const Employees = () => {
   const columns = [
     {
       key: 'fullName',
-      label: 'Employee',
+      label: t('employees.employeeName'),
       render: (value, row) => (
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
@@ -107,7 +109,7 @@ const Employees = () => {
     },
     {
       key: 'email',
-      label: 'Email',
+      label: t('common.email'),
       render: (value) => (
         <div className="flex items-center space-x-2">
           <Mail className="w-4 h-4 text-slate-400" />
@@ -117,7 +119,7 @@ const Employees = () => {
     },
     {
       key: 'phone',
-      label: 'Phone',
+      label: t('common.phone'),
       render: (value) => (
         <div className="flex items-center space-x-2">
           <Phone className="w-4 h-4 text-slate-400" />
@@ -127,7 +129,7 @@ const Employees = () => {
     },
     {
       key: 'department',
-      label: 'Department',
+      label: t('employees.department'),
       render: (value) => (
         <div className="flex items-center space-x-2">
           <Briefcase className="w-4 h-4 text-slate-400" />
@@ -137,7 +139,7 @@ const Employees = () => {
     },
     {
       key: 'payrollType',
-      label: 'Payroll Type',
+      label: t('employees.salary'),
       render: (value, row) => (
         <div className="flex flex-col">
           <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
@@ -155,7 +157,7 @@ const Employees = () => {
     },
     {
       key: 'joiningDate',
-      label: 'Joining Date',
+      label: t('employees.joinDate'),
       render: (value) => (
         <div className="flex items-center space-x-2">
           <Calendar className="w-4 h-4 text-slate-400" />
@@ -337,9 +339,9 @@ const Employees = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div>
-          <h1 className="text-lg sm:text-2xl font-normal text-slate-900 dark:text-slate-100 mb-1 sm:mb-2">Employees</h1>
+          <h1 className="text-lg sm:text-2xl font-normal text-slate-900 dark:text-slate-100 mb-1 sm:mb-2">{t('employees.title')}</h1>
           <p className="text-slate-600 dark:text-slate-400">
-            Manage employee information and payroll settings
+            {t('employees.subtitle')}
           </p>
         </div>
         <button
@@ -347,7 +349,7 @@ const Employees = () => {
           className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm sm:text-base"
         >
           <Plus className="w-4 h-4" />
-          <span>Add Employee</span>
+          <span>{t('employees.addEmployee')}</span>
         </button>
       </div>
 
@@ -359,7 +361,7 @@ const Employees = () => {
               <Users className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Total Employees</p>
+              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">{t('employees.totalEmployees')}</p>
               <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">{totalEmployees}</p>
             </div>
           </div>
@@ -371,7 +373,7 @@ const Employees = () => {
               <Users className="w-6 h-6 text-green-600 dark:text-green-400" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Active</p>
+              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">{t('employees.activeEmployees')}</p>
               <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">{activeEmployees}</p>
             </div>
           </div>
@@ -383,7 +385,7 @@ const Employees = () => {
               <DollarSign className="w-6 h-6 text-purple-600 dark:text-purple-400" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Weekly Payroll</p>
+              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">{t('employees.weeklyPayroll')}</p>
               <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
                 ₹{weeklyPayroll.toLocaleString()}
               </p>
@@ -397,7 +399,7 @@ const Employees = () => {
               <DollarSign className="w-6 h-6 text-amber-600 dark:text-amber-400" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Monthly Payroll</p>
+              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">{t('employees.monthlyPayroll')}</p>
               <p className="text-2xl font-normal text-slate-900 dark:text-slate-100">
                 ₹{monthlyPayroll.toLocaleString()}
               </p>

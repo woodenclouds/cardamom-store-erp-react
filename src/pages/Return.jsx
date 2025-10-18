@@ -7,6 +7,7 @@ import DataTable from '../components/DataTable';
 import ModalForm from '../components/ModalForm';
 import { returnAPI, customerAPI, batchAPI } from '../services/api';
 import toast from 'react-hot-toast';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const schema = yup.object().shape({
   customerName: yup.string().required('Customer name is required'),
@@ -18,6 +19,7 @@ const schema = yup.object().shape({
 });
 
 const Return = () => {
+  const { t } = useLanguage();
   const [returns, setReturns] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [customers, setCustomers] = useState([]);
@@ -97,23 +99,23 @@ const Return = () => {
   };
 
   const columns = [
-    { key: 'date', label: 'Date' },
-    { key: 'customerName', label: 'Customer Name' },
-    { key: 'batchNo', label: 'Batch No' },
-    { key: 'quantity', label: 'Quantity (kg)' },
+    { key: 'date', label: t('common.date') },
+    { key: 'customerName', label: t('collection.customer') },
+    { key: 'batchNo', label: t('dryingBatch.batchNumber') },
+    { key: 'quantity', label: t('collection.quantity') + ' (kg)' },
     {
       key: 'rate',
-      label: 'Rate/kg',
+      label: t('collection.pricePerKg'),
       render: (value) => `₹${value}`,
     },
     {
       key: 'amount',
-      label: 'Amount',
+      label: t('common.amount'),
       render: (value) => `₹${value.toLocaleString()}`,
     },
     {
       key: 'paymentStatus',
-      label: 'Payment Status',
+      label: t('common.status'),
       render: (value) => (
         <span
           className={`px-2 py-1 text-xs font-semibold rounded-full ${
@@ -134,10 +136,10 @@ const Return = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div>
           <h1 className="text-lg sm:text-2xl font-normal text-slate-900 dark:text-slate-100 mb-1 sm:mb-2">
-            Returns
+            {t('returns.title')}
           </h1>
           <p className="text-slate-600 dark:text-slate-400">
-            Return dried cardamom to customers
+            {t('returns.subtitle')}
           </p>
         </div>
         <button
@@ -145,7 +147,7 @@ const Return = () => {
           className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm sm:text-base"
         >
           <Plus className="w-5 h-5" />
-          <span>Add Return</span>
+          <span>{t('returns.addReturn')}</span>
         </button>
       </div>
 
