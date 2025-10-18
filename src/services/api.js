@@ -54,11 +54,14 @@ export const collectionAPI = {
     // Mock data with status for Order Management
     return Promise.resolve({
       data: [
-        { id: 1, customerName: 'Rajesh Kumar', date: '2025-10-15', quantity: 150, rate: 850, amount: 127500, batchNo: 'B001', status: 'drying', drierNo: 'D1', dryQty: 45 },
-        { id: 2, customerName: 'Suresh Nair', date: '2025-10-14', quantity: 200, rate: 820, amount: 164000, batchNo: 'B001', status: 'pending', drierNo: null, dryQty: 0 },
-        { id: 3, customerName: 'Mahesh Singh', date: '2025-10-13', quantity: 180, rate: 830, amount: 149400, batchNo: 'B002', status: 'pending', drierNo: null, dryQty: 0 },
-        { id: 4, customerName: 'Ramesh Patel', date: '2025-10-12', quantity: 220, rate: 800, amount: 176000, batchNo: 'B003', status: 'completed', drierNo: 'D2', dryQty: 66 },
-        { id: 5, customerName: 'Dinesh Reddy', date: '2025-10-11', quantity: 160, rate: 840, amount: 134400, batchNo: 'B004', status: 'completed', drierNo: 'D3', dryQty: 48 },
+        { id: 1, customerName: 'Rajesh Kumar', location: 'Idukki', date: '2025-10-15', quantity: 150, rate: 850, amount: 127500, advanceAmount: 0, batchNo: 'B001', status: 'drying', drierNo: 'D1', dryQty: 45 },
+        { id: 2, customerName: 'Suresh Nair', location: 'Munnar', date: '2025-10-14', quantity: 200, rate: 820, amount: 164000, advanceAmount: 20000, batchNo: 'B001', status: 'pending', drierNo: null, dryQty: 0 },
+        { id: 3, customerName: 'Mahesh Singh', location: 'Thekkady', date: '2025-10-13', quantity: 180, rate: 830, amount: 149400, advanceAmount: 15000, batchNo: 'B002', status: 'pending', drierNo: null, dryQty: 0 },
+        { id: 4, customerName: 'Ramesh Patel', location: 'Kumily', date: '2025-10-12', quantity: 220, rate: 800, amount: 176000, advanceAmount: 0, batchNo: 'B003', status: 'completed', drierNo: 'D2', dryQty: 66 },
+        { id: 5, customerName: 'Dinesh Reddy', location: 'Idukki', date: '2025-10-11', quantity: 160, rate: 840, amount: 134400, advanceAmount: 10000, batchNo: 'B004', status: 'completed', drierNo: 'D3', dryQty: 48 },
+        { id: 6, customerName: 'Rajesh Kumar', location: 'Idukki', date: '2025-10-10', quantity: 130, rate: 850, amount: 110500, advanceAmount: 0, batchNo: 'B005', status: 'completed', drierNo: 'D1', dryQty: 39 },
+        { id: 7, customerName: 'Vijay Kumar', location: 'Munnar', date: '2025-10-09', quantity: 175, rate: 830, amount: 145250, advanceAmount: 25000, batchNo: 'B006', status: 'drying', drierNo: 'D2', dryQty: 52 },
+        { id: 8, customerName: 'Anil Menon', location: 'Thekkady', date: '2025-10-08', quantity: 190, rate: 840, amount: 159600, advanceAmount: 0, batchNo: 'B007', status: 'pending', drierNo: null, dryQty: 0 },
       ],
     });
   },
@@ -77,9 +80,13 @@ export const batchAPI = {
   getAll: async () => {
     return Promise.resolve({
       data: [
-        { id: 1, batchNo: 'B001', startDate: '2025-10-10', endDate: '2025-10-15', rawQty: 500, dryQty: 150, grade: 'A', status: 'Completed' },
-        { id: 2, batchNo: 'B002', startDate: '2025-10-12', endDate: null, rawQty: 450, dryQty: 0, grade: 'A', status: 'In Progress' },
-        { id: 3, batchNo: 'B003', startDate: '2025-10-14', endDate: null, rawQty: 600, dryQty: 0, grade: 'B', status: 'In Progress' },
+        { id: 1, batchNo: 'B001', customerName: 'Rajesh Kumar', location: 'Idukki', startDate: '2025-10-10', endDate: '2025-10-15', rawQty: 500, dryQty: 150, grade: 'A', status: 'Completed' },
+        { id: 2, batchNo: 'B002', customerName: 'Suresh Nair', location: 'Munnar', startDate: '2025-10-12', endDate: null, rawQty: 450, dryQty: 135, grade: 'A', status: 'In Progress' },
+        { id: 3, batchNo: 'B003', customerName: 'Mahesh Singh', location: 'Thekkady', startDate: '2025-10-14', endDate: null, rawQty: 600, dryQty: 180, grade: 'B', status: 'In Progress' },
+        { id: 4, batchNo: 'B004', customerName: 'Ramesh Patel', location: 'Kumily', startDate: '2025-10-09', endDate: '2025-10-13', rawQty: 380, dryQty: 114, grade: 'A', status: 'Completed' },
+        { id: 5, batchNo: 'B005', customerName: 'Dinesh Reddy', location: 'Idukki', startDate: '2025-10-08', endDate: '2025-10-12', rawQty: 420, dryQty: 126, grade: 'B', status: 'Completed' },
+        { id: 6, batchNo: 'B006', customerName: 'Vijay Kumar', location: 'Munnar', startDate: '2025-10-11', endDate: null, rawQty: 550, dryQty: 165, grade: 'A', status: 'In Progress' },
+        { id: 7, batchNo: 'B007', customerName: 'Anil Menon', location: 'Thekkady', startDate: '2025-10-13', endDate: '2025-10-16', rawQty: 480, dryQty: 144, grade: 'A', status: 'Completed' },
       ],
     });
   },
@@ -98,8 +105,12 @@ export const returnAPI = {
   getAll: async () => {
     return Promise.resolve({
       data: [
-        { id: 1, customerName: 'Rajesh Kumar', batchNo: 'B001', quantity: 50, rate: 2500, amount: 125000, paymentStatus: 'Paid', date: '2025-10-16' },
-        { id: 2, customerName: 'Suresh Nair', batchNo: 'B001', quantity: 40, rate: 2450, amount: 98000, paymentStatus: 'Pending', date: '2025-10-15' },
+        { id: 1, customerName: 'Rajesh Kumar', location: 'Idukki', batchNo: 'B001', rawQty: 500, dryQty: 150, quantity: 50, rate: 2500, amount: 125000, paidAmount: 125000, pendingAmount: 0, paymentStatus: 'Paid', date: '2025-10-16' },
+        { id: 2, customerName: 'Suresh Nair', location: 'Munnar', batchNo: 'B001', rawQty: 450, dryQty: 135, quantity: 40, rate: 2450, amount: 98000, paidAmount: 50000, pendingAmount: 48000, paymentStatus: 'Pending', date: '2025-10-15' },
+        { id: 3, customerName: 'Mahesh Singh', location: 'Thekkady', batchNo: 'B002', rawQty: 600, dryQty: 180, quantity: 45, rate: 2480, amount: 111600, paidAmount: 111600, pendingAmount: 0, paymentStatus: 'Paid', date: '2025-10-14' },
+        { id: 4, customerName: 'Ramesh Patel', location: 'Kumily', batchNo: 'B003', rawQty: 380, dryQty: 114, quantity: 55, rate: 2520, amount: 138600, paidAmount: 70000, pendingAmount: 68600, paymentStatus: 'Pending', date: '2025-10-13' },
+        { id: 5, customerName: 'Dinesh Reddy', location: 'Idukki', batchNo: 'B004', rawQty: 420, dryQty: 126, quantity: 48, rate: 2500, amount: 120000, paidAmount: 120000, pendingAmount: 0, paymentStatus: 'Paid', date: '2025-10-12' },
+        { id: 6, customerName: 'Vijay Kumar', location: 'Munnar', batchNo: 'B005', rawQty: 550, dryQty: 165, quantity: 52, rate: 2550, amount: 132600, paidAmount: 80000, pendingAmount: 52600, paymentStatus: 'Pending', date: '2025-10-11' },
       ],
     });
   },
