@@ -4,6 +4,7 @@ import { Plus, Edit, Trash2, Tag } from 'lucide-react';
 import DataTable from '../components/DataTable';
 import ModalForm from '../components/ModalForm';
 import { incomeCategoryAPI } from '../services/api';
+import { useNavigation } from '../hooks/useNavigation';
 
 const IncomeCategories = () => {
   const [categories, setCategories] = useState([]);
@@ -15,18 +16,34 @@ const IncomeCategories = () => {
     description: '',
     status: 'active',
   });
+  
+  const { currentPath } = useNavigation();
 
   useEffect(() => {
+    console.log('IncomeCategories component mounted');
     fetchCategories();
+    
+    // Cleanup function
+    return () => {
+      console.log('IncomeCategories component unmounting');
+    };
   }, []);
+
+  useEffect(() => {
+    console.log('IncomeCategories categories updated:', categories);
+  }, [categories]);
 
   const fetchCategories = async () => {
     try {
       setLoading(true);
+      console.log('Fetching income categories...');
       const response = await incomeCategoryAPI.getAll();
-      setCategories(response.data);
+      console.log('Income categories response:', response);
+      setCategories(response.data || []);
     } catch (error) {
+      console.error('Error fetching income categories:', error);
       toast.error('Failed to fetch income categories');
+      setCategories([]);
     } finally {
       setLoading(false);
     }

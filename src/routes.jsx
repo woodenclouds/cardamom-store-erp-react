@@ -221,6 +221,27 @@ const routes = [
       </ProtectedRoute>
     ),
   },
+  {
+    path: '*',
+    element: (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold text-slate-900 dark:text-slate-100 mb-4">
+            404 - Page Not Found
+          </h1>
+          <p className="text-slate-600 dark:text-slate-400 mb-4">
+            The page you're looking for doesn't exist.
+          </p>
+          <button
+            onClick={() => window.history.back()}
+            className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
+          >
+            Go Back
+          </button>
+        </div>
+      </div>
+    ),
+  },
 ];
 
 export default routes;
