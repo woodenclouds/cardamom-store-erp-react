@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -142,7 +143,7 @@ const ModalForm = ({
     children
   );
 
-  return (
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
         <>
@@ -152,17 +153,18 @@ const ModalForm = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+            className="fixed top-0 left-0 w-full h-full bg-black/50 backdrop-blur-sm z-[9999]"
+            style={{ margin: 0, padding: 0 }}
           />
 
           {/* Modal */}
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4">
+          <div className="fixed inset-0 z-[10000] flex items-center justify-center p-2 sm:p-4 pointer-events-none">
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: 'spring', duration: 0.3 }}
-              className={`bg-white dark:bg-slate-800 rounded-lg shadow-xl w-full ${sizeClasses[size]} max-h-[95vh] sm:max-h-[90vh] overflow-hidden`}
+              className={`bg-white dark:bg-slate-800 rounded-lg shadow-xl w-full ${sizeClasses[size]} max-h-[95vh] sm:max-h-[90vh] overflow-hidden pointer-events-auto`}
             >
               {/* Header */}
               <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-700">
@@ -185,7 +187,8 @@ const ModalForm = ({
           </div>
         </>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 };
 
