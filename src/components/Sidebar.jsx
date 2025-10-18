@@ -33,7 +33,6 @@ const Sidebar = ({ isOpen, onClose }) => {
   const [isAccountsOpen, setIsAccountsOpen] = useState(false);
   const [isOperationsOpen, setIsOperationsOpen] = useState(false);
   const [isReportsOpen, setIsReportsOpen] = useState(false);
-  const [isHROpen, setIsHROpen] = useState(false);
   const [isPurchaseOpen, setIsPurchaseOpen] = useState(false);
 
   const menuItems = [
@@ -48,11 +47,6 @@ const Sidebar = ({ isOpen, onClose }) => {
     { path: '/return', icon: Send, label: 'Returns' },
   ];
 
-  const hrMenuItems = [
-    { path: '/employees', icon: UserCog, label: 'Employees' },
-    { path: '/payrolls', icon: Receipt, label: 'Payrolls' },
-  ];
-
   const purchaseMenuItems = [
     { path: '/vendors', icon: Building2, label: 'Vendors' },
     { path: '/purchases', icon: ShoppingCart, label: 'Purchases' },
@@ -62,6 +56,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     { path: '/payments', icon: Wallet, label: 'Payments' },
     { path: '/income', icon: TrendingUp, label: 'Income' },
     { path: '/expenses', icon: TrendingDown, label: 'Expenses' },
+    { path: '/payrolls', icon: Receipt, label: 'Salary Payments' },
     { path: '/debt-management', icon: CreditCard, label: 'Debt Management' },
   ];
 
@@ -302,52 +297,6 @@ const Sidebar = ({ isOpen, onClose }) => {
                   </div>
                 </li>
 
-                {/* HR Management Dropdown Menu */}
-                <li>
-                  <button
-                    onClick={() => setIsHROpen(!isHROpen)}
-                    className="flex items-center justify-between w-full gap-3 px-4 py-3 rounded-lg transition-colors text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
-                  >
-                    <div className="flex items-center gap-3">
-                      <UserCog className="w-5 h-5" />
-                      <span className="font-normal">HR Management</span>
-                    </div>
-                    <ChevronDown
-                      className={`w-4 h-4 transition-transform duration-200 ${
-                        isHROpen ? 'rotate-180' : ''
-                      }`}
-                    />
-                  </button>
-                  
-                  {/* Submenu Items */}
-                  <div
-                    className={`overflow-hidden transition-all duration-200 ${
-                      isHROpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-                    }`}
-                  >
-                    <ul className="mt-2 space-y-1 pl-4">
-                      {hrMenuItems.map((item) => (
-                        <li key={item.path}>
-                          <NavLink
-                            to={item.path}
-                            onClick={onClose}
-                            className={({ isActive }) =>
-                              `flex items-center gap-3 px-4 py-2 rounded-lg transition-colors ${
-                                isActive
-                                  ? 'bg-primary-600 text-white'
-                                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700'
-                              }`
-                            }
-                          >
-                            <item.icon className="w-4 h-4" />
-                            <span className="text-sm font-normal">{item.label}</span>
-                          </NavLink>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </li>
-
                 {/* Accounts Dropdown Menu */}
                 <li>
                   <button
@@ -455,6 +404,24 @@ const Sidebar = ({ isOpen, onClose }) => {
                   >
                     <Users className="w-5 h-5" />
                     <span className="font-normal">Customers</span>
+                  </NavLink>
+                </li>
+
+                {/* Employees */}
+                <li>
+                  <NavLink
+                    to="/employees"
+                    onClick={onClose}
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                        isActive
+                          ? 'bg-primary-600 text-white'
+                          : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
+                      }`
+                    }
+                  >
+                    <UserCog className="w-5 h-5" />
+                    <span className="font-normal">Employees</span>
                   </NavLink>
                 </li>
               </ul>
