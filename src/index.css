@@ -37,8 +37,15 @@
     top: 4rem;
     left: 0;
     bottom: 0;
-    width: 16rem;
-    z-index: 40;
+    width: 18rem; /* w-72 */
+    z-index: 9999;
+  }
+  
+  /* Mobile sidebar width */
+  @media (min-width: 640px) {
+    .sidebar-fixed {
+      width: 16rem; /* w-64 */
+    }
   }
   
   /* Smooth scrolling for sidebar navigation */
@@ -153,5 +160,54 @@
   .sidebar-nav-container {
     height: 100%;
     overflow: hidden;
+  }
+  
+  /* Mobile-specific sidebar improvements */
+  @media (max-width: 1023px) {
+    .sidebar-container {
+      /* Ensure proper mobile behavior */
+      position: relative;
+      height: 100%;
+    }
+    
+    .sidebar-nav {
+      /* Better mobile scrolling */
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      /* Improve touch scrolling on iOS */
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+    }
+    
+    /* Prevent body scroll when sidebar is open on mobile */
+    body.sidebar-open {
+      overflow: hidden;
+      position: fixed;
+      width: 100%;
+      height: 100%;
+    }
+    
+    /* Improve sidebar animation on mobile */
+    .sidebar-main {
+      will-change: transform;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+    
+    /* Better touch targets for mobile */
+    .sidebar-nav button,
+    .sidebar-nav a {
+      min-height: 44px;
+      touch-action: manipulation;
+    }
+  }
+  
+  /* Ensure proper z-index layering */
+  .sidebar-overlay {
+    z-index: 9998;
+  }
+  
+  .sidebar-main {
+    z-index: 9999;
   }
 }
