@@ -117,6 +117,12 @@ export const returnAPI = {
   create: async (data) => {
     return Promise.resolve({ data: { id: Date.now(), ...data } });
   },
+  update: async (id, data) => {
+    return Promise.resolve({ data: { id, ...data } });
+  },
+  delete: async (id) => {
+    return Promise.resolve({ data: { message: 'Deleted successfully' } });
+  },
 };
 
 export const paymentAPI = {

@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Plus, ArrowRight, Package, Droplet, CheckCircle2, Truck, Search, X } from 'lucide-react';
 import ModalForm from '../components/ModalForm';
 import AddCollectionModal from '../components/AddCollectionModal';
-import { collectionAPI } from '../services/api';
+import { collectionAPI, returnAPI } from '../services/api';
 import toast from 'react-hot-toast';
 import { useLanguage } from '../contexts/LanguageContext';
 
 // StatusColumn component moved outside to prevent re-creation on every render
-const StatusColumn = ({ title, icon: Icon, color, orders, actionButton, searchKey, searchValue, onSearchChange, onClearSearch, t }) => (
+const StatusColumn = ({ title, icon: Icon, color, orders, actionButton, secondaryButton, searchKey, searchValue, onSearchChange, onClearSearch, t }) => (
   <div className="flex-1 min-w-[280px]">
     <div className={`${color} rounded-t-lg p-4`}>
       <div className="flex items-center gap-2 mb-3">
@@ -92,15 +92,26 @@ const StatusColumn = ({ title, icon: Icon, color, orders, actionButton, searchKe
               </div>
             </div>
 
-            {actionButton && (
-              <button
-                onClick={() => actionButton.action(order)}
-                className={`mt-3 w-full ${actionButton.className} flex items-center justify-center gap-2 text-sm font-medium py-2 rounded-lg transition-colors`}
-              >
-                {actionButton.icon}
-                {actionButton.label}
-              </button>
-            )}
+            <div className="mt-3 space-y-2">
+              {actionButton && (
+                <button
+                  onClick={() => actionButton.action(order)}
+                  className={`w-full ${actionButton.className} flex items-center justify-center gap-2 text-sm font-medium py-2 rounded-lg transition-colors`}
+                >
+                  {actionButton.icon}
+                  {actionButton.label}
+                </button>
+              )}
+              {secondaryButton && (
+                <button
+                  onClick={() => secondaryButton.action(order)}
+                  className={`w-full ${secondaryButton.className} flex items-center justify-center gap-2 text-sm font-medium py-2 rounded-lg transition-colors`}
+                >
+                  {secondaryButton.icon}
+                  {secondaryButton.label}
+                </button>
+              )}
+            </div>
           </div>
         ))
       )}
@@ -113,12 +124,13 @@ const StoreManagement = () => {
   const [orders, setOrders] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDrierModalOpen, setIsDrierModalOpen] = useState(false);
+  const [isChangeDrierModalOpen, setIsChangeDrierModalOpen] = useState(false);
   const [isCompleteModalOpen, setIsCompleteModalOpen] = useState(false);
   const [isReturnModalOpen, setIsReturnModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [drierNumber, setDrierNumber] = useState('');
   const [dryQuantity, setDryQuantity] = useState('');
-  const [amountBalance, setAmountBalance] = useState('');
+  const [paidAmount, setPaidAmount] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('');
   const [searchTerms, setSearchTerms] = useState({
     pending: '',
@@ -183,15 +195,59 @@ const StoreManagement = () => {
     setDryQuantity('');
   };
 
+  const handleChangeDrier = (order) => {
+    setSelectedOrder(order);
+    setDrierNumber(order.drierNo || '');
+    setIsChangeDrierModalOpen(true);
+  };
+
+  const handleConfirmChangeDrier = () => {
+    if (!drierNumber) {
+      toast.error('Please select a dryer number');
+      return;
+    }
+    
+    setOrders(orders.map(o => 
+      o.id === selectedOrder.id 
+        ? { ...o, drierNo: drierNumber }
+        : o
+    ));
+    toast.success(`Dryer changed to ${drierNumber}`);
+    setIsChangeDrierModalOpen(false);
+    setDrierNumber('');
+  };
+
+  const handleMoveToPending = (order) => {
+    if (window.confirm('Move this order back to Pending Collection?')) {
+      setOrders(orders.map(o => 
+        o.id === order.id 
+          ? { ...o, status: 'pending', drierNo: null }
+          : o
+      ));
+      toast.success('Moved back to Pending Collection');
+    }
+  };
+
+  const handleMoveToDrying = (order) => {
+    if (window.confirm('Move this order back to Drying?')) {
+      setOrders(orders.map(o => 
+        o.id === order.id 
+          ? { ...o, status: 'drying' }
+          : o
+      ));
+      toast.success('Moved back to Drying');
+    }
+  };
+
   const handleMarkReturned = (order) => {
     setSelectedOrder(order);
-    setAmountBalance('');
+    setPaidAmount('');
     setPaymentMethod('');
     setIsReturnModalOpen(true);
   };
 
-  const handleConfirmReturn = () => {
-    if (!amountBalance || amountBalance <= 0) {
+  const handleConfirmReturn = async () => {
+    if (!paidAmount || parseFloat(paidAmount) < 0) {
       toast.error('Please enter a valid paid amount');
       return;
     }
@@ -201,12 +257,38 @@ const StoreManagement = () => {
       return;
     }
     
-    // Remove from orders completely when returned
-    setOrders(orders.filter(o => o.id !== selectedOrder.id));
-    toast.success('Order returned to customer successfully');
-    setIsReturnModalOpen(false);
-    setAmountBalance('');
-    setPaymentMethod('');
+    try {
+      const totalAmount = selectedOrder.amount || (selectedOrder.quantity * selectedOrder.rate);
+      const pendingAmount = totalAmount - parseFloat(paidAmount);
+      
+      // Create return record
+      const returnData = {
+        customerName: selectedOrder.customerName,
+        location: selectedOrder.location || 'N/A',
+        batchNo: selectedOrder.batchNo,
+        rawQty: selectedOrder.quantity,
+        dryQty: selectedOrder.dryQty,
+        quantity: selectedOrder.dryQty,
+        rate: 2500, // Default rate for returns (can be adjusted)
+        amount: totalAmount,
+        paidAmount: parseFloat(paidAmount),
+        pendingAmount: pendingAmount,
+        paymentStatus: pendingAmount > 0 ? 'Pending' : 'Paid',
+        paymentMethod: paymentMethod,
+        date: new Date().toISOString().split('T')[0],
+      };
+      
+      await returnAPI.create(returnData);
+      
+      // Remove from orders after successful return creation
+      setOrders(orders.filter(o => o.id !== selectedOrder.id));
+      toast.success('Order returned to customer and recorded successfully');
+      setIsReturnModalOpen(false);
+      setPaidAmount('');
+      setPaymentMethod('');
+    } catch (error) {
+      toast.error('Failed to create return record');
+    }
   };
 
   const handleCloseModal = () => {
@@ -325,6 +407,12 @@ const StoreManagement = () => {
             action: handleMarkCompleted,
             className: 'bg-green-600 hover:bg-green-700 text-white',
           }}
+          secondaryButton={{
+            label: 'Change Dryer / Move Back',
+            icon: <ArrowRight className="w-4 h-4 rotate-180" />,
+            action: handleChangeDrier,
+            className: 'bg-slate-200 hover:bg-slate-300 text-slate-700 dark:bg-slate-600 dark:hover:bg-slate-500 dark:text-slate-200',
+          }}
         />
 
         <StatusColumn
@@ -342,6 +430,12 @@ const StoreManagement = () => {
             icon: <Truck className="w-4 h-4" />,
             action: handleMarkReturned,
             className: 'bg-purple-600 hover:bg-purple-700 text-white',
+          }}
+          secondaryButton={{
+            label: 'Move Back to Drying',
+            icon: <ArrowRight className="w-4 h-4 rotate-180" />,
+            action: handleMoveToDrying,
+            className: 'bg-slate-200 hover:bg-slate-300 text-slate-700 dark:bg-slate-600 dark:hover:bg-slate-500 dark:text-slate-200',
           }}
         />
       </div>
@@ -465,6 +559,65 @@ const StoreManagement = () => {
         </div>
       </ModalForm>
 
+      {/* Change Dryer Modal */}
+      <ModalForm
+        isOpen={isChangeDrierModalOpen}
+        onClose={() => setIsChangeDrierModalOpen(false)}
+        title="Change Dryer / Move Back"
+      >
+        <div className="space-y-4">
+          {selectedOrder && (
+            <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-4">
+              <h3 className="font-normal text-slate-900 dark:text-slate-100 mb-2">
+                {selectedOrder.customerName}
+              </h3>
+              <div className="text-sm text-slate-600 dark:text-slate-400 space-y-1">
+                <p>Current Dryer: #{selectedOrder.drierNo}</p>
+                <p>Quantity: {selectedOrder.quantity} kg</p>
+                <p>Batch: {selectedOrder.batchNo || 'N/A'}</p>
+              </div>
+            </div>
+          )}
+
+          <div>
+            <label htmlFor="newDrierNumber" className="label">
+              Select New Dryer Number
+            </label>
+            <select
+              id="newDrierNumber"
+              value={drierNumber}
+              onChange={(e) => setDrierNumber(e.target.value)}
+              className="input-field"
+            >
+              <option value="">Select Dryer</option>
+              <option value="D1">Dryer 1</option>
+              <option value="D2">Dryer 2</option>
+              <option value="D3">Dryer 3</option>
+              <option value="D4">Dryer 4</option>
+              <option value="D5">Dryer 5</option>
+            </select>
+          </div>
+
+          <div className="flex gap-3 pt-4">
+            <button
+              onClick={() => {
+                setIsChangeDrierModalOpen(false);
+                handleMoveToPending(selectedOrder);
+              }}
+              className="btn-secondary flex-1"
+            >
+              Move to Pending
+            </button>
+            <button
+              onClick={handleConfirmChangeDrier}
+              className="btn-primary flex-1"
+            >
+              Change Dryer
+            </button>
+          </div>
+        </div>
+      </ModalForm>
+
       {/* Return to Customer Modal */}
       <ModalForm
         isOpen={isReturnModalOpen}
@@ -479,11 +632,11 @@ const StoreManagement = () => {
               </h3>
               <div className="text-sm text-slate-600 dark:text-slate-400 space-y-1">
                 <p>Batch: {selectedOrder.batchNo || 'N/A'}</p>
-                <p>Quantity: {selectedOrder.quantity} kg</p>
+                <p>Raw Quantity: {selectedOrder.quantity} kg</p>
                 {selectedOrder.dryQty > 0 && (
                   <p>Dry Weight: {selectedOrder.dryQty} kg</p>
                 )}
-                <p>Drier: #{selectedOrder.drierNo}</p>
+                <p>Dryer: #{selectedOrder.drierNo}</p>
               </div>
             </div>
           )}
@@ -491,7 +644,7 @@ const StoreManagement = () => {
           <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
             <div className="flex justify-between items-center">
               <span className="text-sm font-medium text-blue-900 dark:text-blue-100">
-                Pending Amount:
+                Total Amount:
               </span>
               <span className="text-lg font-semibold text-blue-900 dark:text-blue-100">
                 ₹{selectedOrder?.amount?.toLocaleString() || (selectedOrder?.quantity * selectedOrder?.rate)?.toLocaleString() || '0'}
@@ -500,32 +653,32 @@ const StoreManagement = () => {
           </div>
 
           <div>
-            <label htmlFor="amountBalance" className="label">
+            <label htmlFor="paidAmount" className="label">
               Customer Paid Amount
             </label>
             <input
-              id="amountBalance"
+              id="paidAmount"
               type="number"
               step="0.01"
-              value={amountBalance}
-              onChange={(e) => setAmountBalance(e.target.value)}
+              value={paidAmount}
+              onChange={(e) => setPaidAmount(e.target.value)}
               className="input-field"
               placeholder="Enter paid amount"
             />
-            {amountBalance && selectedOrder && (
+            {paidAmount && selectedOrder && (
               <div className="mt-2 p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
                 <div className="flex justify-between text-sm">
-                  <span className="text-slate-600 dark:text-slate-400">Pending Amount:</span>
-                  <span className="font-medium">₹{selectedOrder?.amount?.toLocaleString() || (selectedOrder?.quantity * selectedOrder?.rate)?.toLocaleString() || '0'}</span>
+                  <span className="text-slate-600 dark:text-slate-400">Total Amount:</span>
+                  <span className="font-medium">₹{(selectedOrder?.amount || (selectedOrder?.quantity * selectedOrder?.rate) || 0).toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between text-sm mt-1">
                   <span className="text-slate-600 dark:text-slate-400">Paid Amount:</span>
-                  <span className="font-medium text-green-600 dark:text-green-400">₹{parseFloat(amountBalance || 0).toLocaleString()}</span>
+                  <span className="font-medium text-green-600 dark:text-green-400">₹{parseFloat(paidAmount || 0).toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between text-sm mt-1 pt-1 border-t border-slate-200 dark:border-slate-700">
-                  <span className="text-slate-600 dark:text-slate-400">Balance:</span>
-                  <span className={`font-medium ${(selectedOrder?.amount || (selectedOrder?.quantity * selectedOrder?.rate) || 0) - parseFloat(amountBalance || 0) > 0 ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`}>
-                    ₹{((selectedOrder?.amount || (selectedOrder?.quantity * selectedOrder?.rate) || 0) - parseFloat(amountBalance || 0)).toLocaleString()}
+                  <span className="text-slate-600 dark:text-slate-400">Pending Balance:</span>
+                  <span className={`font-medium ${(selectedOrder?.amount || (selectedOrder?.quantity * selectedOrder?.rate) || 0) - parseFloat(paidAmount || 0) > 0 ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`}>
+                    ₹{((selectedOrder?.amount || (selectedOrder?.quantity * selectedOrder?.rate) || 0) - parseFloat(paidAmount || 0)).toLocaleString()}
                   </span>
                 </div>
               </div>
@@ -543,8 +696,10 @@ const StoreManagement = () => {
               className="input-field"
             >
               <option value="">Select Payment Method</option>
-              <option value="cash">Cash</option>
-              <option value="online">Online</option>
+              <option value="Cash">Cash</option>
+              <option value="Bank Transfer">Bank Transfer</option>
+              <option value="UPI">UPI</option>
+              <option value="Cheque">Cheque</option>
             </select>
           </div>
 
@@ -559,7 +714,7 @@ const StoreManagement = () => {
               onClick={handleConfirmReturn}
               className="btn-primary flex-1"
             >
-              Return to Customer
+              Complete Return
             </button>
           </div>
         </div>

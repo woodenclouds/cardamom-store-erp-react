@@ -69,6 +69,12 @@ const Sidebar = ({ isOpen, onClose }) => {
     }
   };
 
+  // Handle touch events for better mobile experience
+  const handleTouchStart = (e) => {
+    // Prevent touch events from bubbling up
+    e.stopPropagation();
+  };
+
   // Close sidebar on Escape key press and scroll to top on route change
   useEffect(() => {
     const handleEscape = (e) => {
@@ -80,7 +86,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     if (isOpen) {
       document.addEventListener('keydown', handleEscape);
       // Prevent body scroll when sidebar is open on mobile
-      document.body.style.overflow = 'hidden';
+      document.body.classList.add('sidebar-open');
     }
 
     // Scroll sidebar to top when it opens
@@ -90,7 +96,7 @@ const Sidebar = ({ isOpen, onClose }) => {
 
     return () => {
       document.removeEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'unset';
+      document.body.classList.remove('sidebar-open');
     };
   }, [isOpen, onClose]);
 
@@ -127,18 +133,19 @@ const Sidebar = ({ isOpen, onClose }) => {
       {/* Mobile Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] lg:hidden"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm sidebar-overlay lg:hidden"
           onClick={handleOverlayClick}
         />
       )}
 
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 shadow-lg transform transition-transform duration-300 ease-in-out ${
+        className={`fixed inset-y-0 left-0 sidebar-main w-72 sm:w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 shadow-xl transform transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
         aria-label="Navigation menu"
         style={{ top: '4rem', height: 'calc(100vh - 4rem)' }}
+        onTouchStart={handleTouchStart}
       >
         <div className="h-full flex flex-col sidebar-container">
           {/* Close Button (Mobile) */}
