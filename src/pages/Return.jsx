@@ -23,6 +23,7 @@ const Return = () => {
   const [returns, setReturns] = useState([]);
   const [filteredReturns, setFilteredReturns] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingItem, setEditingItem] = useState(null);
   const [customers, setCustomers] = useState([]);
   const [batches, setBatches] = useState([]);
   const [showFilters, setShowFilters] = useState(false);
@@ -151,17 +152,41 @@ const Return = () => {
 
   const onSubmit = async (data) => {
     try {
-      await returnAPI.create(data);
-      toast.success('Return created successfully');
+      if (editingItem) {
+        await returnAPI.update(editingItem.id, data);
+        toast.success('Return updated successfully');
+      } else {
+        await returnAPI.create(data);
+        toast.success('Return created successfully');
+      }
       fetchReturns();
       handleCloseModal();
     } catch (error) {
-      toast.error('Failed to create return');
+      toast.error(editingItem ? 'Failed to update return' : 'Failed to create return');
+    }
+  };
+
+  const handleEdit = (item) => {
+    setEditingItem(item);
+    reset(item);
+    setIsModalOpen(true);
+  };
+
+  const handleDelete = async (item) => {
+    if (window.confirm('Are you sure you want to delete this return?')) {
+      try {
+        await returnAPI.delete(item.id);
+        toast.success('Return deleted successfully');
+        fetchReturns();
+      } catch (error) {
+        toast.error('Failed to delete return');
+      }
     }
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    setEditingItem(null);
     reset({
       paymentStatus: 'Pending',
     });
@@ -376,14 +401,19 @@ const Return = () => {
 
       {/* Table */}
       <div className="card">
-        <DataTable columns={columns} data={hasActiveFilters() ? filteredReturns : returns} />
+        <DataTable 
+          columns={columns} 
+          data={hasActiveFilters() ? filteredReturns : returns}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
       </div>
 
-      {/* Add Modal */}
+      {/* Add/Edit Modal */}
       <ModalForm
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        title="Add Return"
+        title={editingItem ? 'Edit Return' : 'Add Return'}
       >
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
@@ -499,7 +529,7 @@ const Return = () => {
 
           <div className="flex gap-3 pt-4">
             <button type="submit" className="btn-primary flex-1">
-              Save Return
+              {editingItem ? 'Update Return' : 'Save Return'}
             </button>
             <button
               type="button"
