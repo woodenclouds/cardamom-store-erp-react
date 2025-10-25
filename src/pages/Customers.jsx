@@ -15,6 +15,7 @@ const Customers = () => {
     location: '',
     houseName: '',
     phone: '',
+    previousDue: '',
   });
 
   // Sample data - replace with actual API calls
@@ -26,6 +27,7 @@ const Customers = () => {
         location: 'Downtown',
         houseName: 'Smith Villa',
         phone: '+1 (555) 123-4567',
+        previousDue: '₹2,500',
         createdAt: '2024-01-15',
       },
       {
@@ -34,6 +36,7 @@ const Customers = () => {
         location: 'Uptown',
         houseName: 'Rose Garden House',
         phone: '+1 (555) 987-6543',
+        previousDue: '₹0',
         createdAt: '2024-01-20',
       },
       {
@@ -42,6 +45,7 @@ const Customers = () => {
         location: 'Suburbs',
         houseName: 'Green Meadows',
         phone: '+1 (555) 456-7890',
+        previousDue: '₹1,200',
         createdAt: '2024-02-01',
       },
       {
@@ -50,6 +54,7 @@ const Customers = () => {
         location: 'Downtown',
         houseName: 'Sunset Residence',
         phone: '+1 (555) 321-0987',
+        previousDue: '₹0',
         createdAt: '2024-02-10',
       },
     ];
@@ -106,6 +111,21 @@ const Customers = () => {
       ),
     },
     {
+      key: 'previousDue',
+      label: t('customers.previousDue'),
+      render: (value) => (
+        <div className="flex items-center space-x-2">
+          <span className={`text-sm font-medium ${
+            value === '₹0' || value === '0' 
+              ? 'text-green-600 dark:text-green-400' 
+              : 'text-red-600 dark:text-red-400'
+          }`}>
+            {value}
+          </span>
+        </div>
+      ),
+    },
+    {
       key: 'createdAt',
       label: t('customers.addedDate'),
       render: (value) => (
@@ -123,6 +143,7 @@ const Customers = () => {
       location: '',
       houseName: '',
       phone: '',
+      previousDue: '',
     });
     setIsModalOpen(true);
   };
@@ -134,6 +155,7 @@ const Customers = () => {
       location: customer.location,
       houseName: customer.houseName,
       phone: customer.phone,
+      previousDue: customer.previousDue,
     });
     setIsModalOpen(true);
   };
@@ -174,6 +196,7 @@ const Customers = () => {
       location: '',
       houseName: '',
       phone: '',
+      previousDue: '',
     });
   };
 
@@ -213,6 +236,13 @@ const Customers = () => {
       type: 'tel',
       required: true,
       placeholder: t('customers.enterPhoneNumber'),
+    },
+    {
+      name: 'previousDue',
+      label: t('customers.previousDue'),
+      type: 'number',
+      required: false,
+      placeholder: t('customers.enterPreviousDue'),
     },
   ];
 

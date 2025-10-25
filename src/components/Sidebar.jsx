@@ -152,12 +152,20 @@ const Sidebar = ({ isOpen, onClose }) => {
         onTouchStart={handleTouchStart}
       >
         <div className="h-full flex flex-col sidebar-container">
-          {/* Mobile Header */}
-          <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700 lg:hidden">
-            <h2 className="text-lg font-normal text-slate-900 dark:text-slate-100">{t('sidebar.menu')}</h2>
+          {/* Logo Section */}
+          <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">W</span>
+              </div>
+              <div className="hidden sm:block">
+                <h1 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Wostore</h1>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Store Management</p>
+              </div>
+            </div>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+              className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors lg:hidden"
               aria-label="Close menu"
             >
               <X className="w-5 h-5" />

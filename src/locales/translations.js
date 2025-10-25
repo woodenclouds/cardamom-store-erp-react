@@ -134,6 +134,8 @@ const translations = {
       enterFullName: 'Enter customer full name',
       enterHouseName: 'Enter house name',
       enterPhoneNumber: 'Enter phone number',
+      previousDue: 'Total Due',
+      enterPreviousDue: 'Enter total due amount',
     },
     // Vendors
     vendors: {
@@ -644,6 +646,8 @@ const translations = {
       enterFullName: 'ഉപഭോക്താവിന്റെ മുഴുവൻ പേര് നൽകുക',
       enterHouseName: 'വീട്ടുപേര് നൽകുക',
       enterPhoneNumber: 'ഫോൺ നമ്പർ നൽകുക',
+      previousDue: 'ആകെ കുടിശ്ശിക',
+      enterPreviousDue: 'ആകെ കുടിശ്ശിക തുക നൽകുക',
     },
     // Vendors
     vendors: {
