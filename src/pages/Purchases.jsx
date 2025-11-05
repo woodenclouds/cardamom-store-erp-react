@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, ShoppingCart, Calendar, DollarSign, Package, FileText } from 'lucide-react';
+import { Plus, ShoppingCart, Calendar, DollarSign, Package, FileText, Upload } from 'lucide-react';
 import DataTable from '../components/DataTable';
 import ModalForm from '../components/ModalForm';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -8,20 +8,24 @@ const Purchases = () => {
   const { t } = useLanguage();
   const [purchases, setPurchases] = useState([]);
   const [vendors, setVendors] = useState([]);
+  const [items, setItems] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingPurchase, setEditingPurchase] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [invoiceFile, setInvoiceFile] = useState(null);
   const [formData, setFormData] = useState({
     date: new Date().toISOString().split('T')[0],
     vendorId: '',
     vendorName: '',
-    itemDescription: '',
+    itemId: '',
+    itemName: '',
     quantity: '',
     unit: 'kg',
     ratePerUnit: '',
     amount: '',
     paymentMode: 'Cash',
     invoiceNumber: '',
+    invoiceFile: null,
     remarks: '',
   });
 
@@ -34,19 +38,27 @@ const Purchases = () => {
       { id: 4, name: 'Spice Garden Co.' },
     ];
 
+    const sampleItems = [
+      { id: 1, itemName: 'Raw Cardamom', description: 'Fresh cardamom pods for drying' },
+      { id: 2, itemName: 'Packaging Materials', description: 'Cardboard boxes and packaging supplies' },
+      { id: 3, itemName: 'Drying Equipment', description: 'Equipment used for drying process' },
+    ];
+
     const samplePurchases = [
       {
         id: 1,
         date: '2025-10-15',
         vendorId: 1,
         vendorName: 'Kerala Spices Ltd',
-        itemDescription: 'Raw Cardamom',
+        itemId: 1,
+        itemName: 'Raw Cardamom',
         quantity: 500,
         unit: 'kg',
         ratePerUnit: 850,
         amount: 425000,
         paymentMode: 'Bank Transfer',
         invoiceNumber: 'INV-2025-001',
+        invoiceFile: null,
         remarks: 'Grade A quality',
       },
       {
@@ -54,13 +66,15 @@ const Purchases = () => {
         date: '2025-10-14',
         vendorId: 2,
         vendorName: 'Green Valley Traders',
-        itemDescription: 'Raw Cardamom',
+        itemId: 1,
+        itemName: 'Raw Cardamom',
         quantity: 300,
         unit: 'kg',
         ratePerUnit: 820,
         amount: 246000,
         paymentMode: 'Cash',
         invoiceNumber: 'INV-2025-002',
+        invoiceFile: null,
         remarks: 'Grade B quality',
       },
       {
@@ -68,13 +82,15 @@ const Purchases = () => {
         date: '2025-10-13',
         vendorId: 3,
         vendorName: 'Mountain Fresh Supplies',
-        itemDescription: 'Raw Cardamom',
+        itemId: 1,
+        itemName: 'Raw Cardamom',
         quantity: 400,
         unit: 'kg',
         ratePerUnit: 830,
         amount: 332000,
         paymentMode: 'Bank Transfer',
         invoiceNumber: 'INV-2025-003',
+        invoiceFile: null,
         remarks: 'Premium quality',
       },
       {
@@ -82,13 +98,15 @@ const Purchases = () => {
         date: '2025-10-12',
         vendorId: 1,
         vendorName: 'Kerala Spices Ltd',
-        itemDescription: 'Packaging Materials',
+        itemId: 2,
+        itemName: 'Packaging Materials',
         quantity: 1000,
         unit: 'pieces',
         ratePerUnit: 15,
         amount: 15000,
         paymentMode: 'UPI',
         invoiceNumber: 'INV-2025-004',
+        invoiceFile: null,
         remarks: 'Cardboard boxes',
       },
       {
@@ -96,18 +114,21 @@ const Purchases = () => {
         date: '2025-10-11',
         vendorId: 4,
         vendorName: 'Spice Garden Co.',
-        itemDescription: 'Raw Cardamom',
+        itemId: 1,
+        itemName: 'Raw Cardamom',
         quantity: 250,
         unit: 'kg',
         ratePerUnit: 840,
         amount: 210000,
         paymentMode: 'Cheque',
         invoiceNumber: 'INV-2025-005',
+        invoiceFile: null,
         remarks: 'Mixed grade',
       },
     ];
 
     setVendors(sampleVendors);
+    setItems(sampleItems);
     setPurchases(samplePurchases);
     setLoading(false);
   }, []);
@@ -141,7 +162,7 @@ const Purchases = () => {
       ),
     },
     {
-      key: 'itemDescription',
+      key: 'itemName',
       label: t('purchases.item'),
       render: (value) => (
         <div className="flex items-center space-x-2">
@@ -193,17 +214,20 @@ const Purchases = () => {
 
   const handleAddPurchase = () => {
     setEditingPurchase(null);
+    setInvoiceFile(null);
     setFormData({
       date: new Date().toISOString().split('T')[0],
       vendorId: '',
       vendorName: '',
-      itemDescription: '',
+      itemId: '',
+      itemName: '',
       quantity: '',
       unit: 'kg',
       ratePerUnit: '',
       amount: '',
       paymentMode: 'Cash',
       invoiceNumber: '',
+      invoiceFile: null,
       remarks: '',
     });
     setIsModalOpen(true);
@@ -211,17 +235,20 @@ const Purchases = () => {
 
   const handleEditPurchase = (purchase) => {
     setEditingPurchase(purchase);
+    setInvoiceFile(purchase.invoiceFile || null);
     setFormData({
       date: purchase.date,
       vendorId: purchase.vendorId,
       vendorName: purchase.vendorName,
-      itemDescription: purchase.itemDescription,
+      itemId: purchase.itemId || '',
+      itemName: purchase.itemName || '',
       quantity: purchase.quantity,
       unit: purchase.unit,
       ratePerUnit: purchase.ratePerUnit,
       amount: purchase.amount,
       paymentMode: purchase.paymentMode,
       invoiceNumber: purchase.invoiceNumber,
+      invoiceFile: purchase.invoiceFile || null,
       remarks: purchase.remarks,
     });
     setIsModalOpen(true);
@@ -243,6 +270,10 @@ const Purchases = () => {
     const selectedVendor = vendors.find(v => v.id === parseInt(formData.vendorId));
     const vendorName = selectedVendor ? selectedVendor.name : formData.vendorName;
     
+    // Find item name from itemId
+    const selectedItem = items.find(i => i.id === parseInt(formData.itemId));
+    const itemName = selectedItem ? selectedItem.itemName : formData.itemName;
+    
     if (editingPurchase) {
       // Update existing purchase
       setPurchases(purchases.map(p => 
@@ -251,6 +282,8 @@ const Purchases = () => {
               ...p, 
               ...formData, 
               vendorName,
+              itemName,
+              invoiceFile: invoiceFile || p.invoiceFile,
               amount: calculatedAmount,
               quantity: parseFloat(formData.quantity),
               ratePerUnit: parseFloat(formData.ratePerUnit)
@@ -263,6 +296,8 @@ const Purchases = () => {
         ...formData,
         id: Math.max(...purchases.map(p => p.id), 0) + 1,
         vendorName,
+        itemName,
+        invoiceFile: invoiceFile,
         amount: calculatedAmount,
         quantity: parseFloat(formData.quantity),
         ratePerUnit: parseFloat(formData.ratePerUnit)
@@ -271,11 +306,21 @@ const Purchases = () => {
     }
     setIsModalOpen(false);
     setEditingPurchase(null);
+    setInvoiceFile(null);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setEditingPurchase(null);
+    setInvoiceFile(null);
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setInvoiceFile(file);
+      setFormData(prev => ({ ...prev, invoiceFile: file }));
+    }
   };
 
   const handleFormChange = (newFormData) => {
@@ -283,6 +328,15 @@ const Purchases = () => {
     if (newFormData.quantity && newFormData.ratePerUnit) {
       newFormData.amount = parseFloat(newFormData.quantity) * parseFloat(newFormData.ratePerUnit);
     }
+    
+    // Set item name when item is selected
+    if (newFormData.itemId) {
+      const selectedItem = items.find(i => i.id === parseInt(newFormData.itemId));
+      if (selectedItem) {
+        newFormData.itemName = selectedItem.itemName;
+      }
+    }
+    
     setFormData(newFormData);
   };
 
@@ -301,11 +355,11 @@ const Purchases = () => {
       options: vendors.map(v => ({ value: v.id, label: v.name })),
     },
     {
-      name: 'itemDescription',
-      label: 'Item Description',
-      type: 'text',
+      name: 'itemId',
+      label: 'Item',
+      type: 'select',
       required: true,
-      placeholder: 'Enter item description',
+      options: items.map(i => ({ value: i.id, label: i.itemName })),
     },
     {
       name: 'quantity',
@@ -363,6 +417,14 @@ const Purchases = () => {
       type: 'text',
       required: false,
       placeholder: 'Enter invoice number',
+    },
+    {
+      name: 'invoiceFile',
+      label: 'Upload Invoice',
+      type: 'file',
+      required: false,
+      accept: '.pdf,.jpg,.jpeg,.png,.doc,.docx',
+      onChange: handleFileChange,
     },
     {
       name: 'remarks',

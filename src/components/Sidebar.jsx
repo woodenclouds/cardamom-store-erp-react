@@ -46,6 +46,7 @@ const Sidebar = ({ isOpen, onClose }) => {
   const purchaseMenuItems = [
     { path: '/vendors', icon: Building2, labelKey: 'sidebar.vendors' },
     { path: '/purchases', icon: ShoppingCart, labelKey: 'sidebar.purchases' },
+    { path: '/items', icon: Package, labelKey: 'sidebar.items' },
   ];
 
   const accountsMenuItems = [

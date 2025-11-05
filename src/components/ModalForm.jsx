@@ -89,6 +89,32 @@ const ModalForm = ({
             ))}
           </select>
         );
+      case 'file':
+        const fileProps = {
+          id: field.name,
+          name: field.name,
+          type: 'file',
+          accept: field.accept || '*/*',
+          onChange: field.onChange || commonProps.onChange,
+          required: field.required,
+          disabled: field.disabled || false,
+          className: commonProps.className.replace('py-2', 'py-2.5'),
+        };
+        return (
+          <div>
+            <input {...fileProps} />
+            {formData?.[field.name] && formData[field.name] instanceof File && (
+              <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+                Selected: {formData[field.name].name}
+              </p>
+            )}
+            {formData?.[field.name] && typeof formData[field.name] === 'string' && formData[field.name] !== '' && (
+              <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+                Current file: {formData[field.name]}
+              </p>
+            )}
+          </div>
+        );
       default:
         return (
           <input
@@ -98,6 +124,7 @@ const ModalForm = ({
             min={field.min}
             max={field.max}
             step={field.step}
+            readOnly={field.readOnly}
           />
         );
     }

@@ -20,6 +20,7 @@ const translations = {
       purchase: 'Purchase',
       vendors: 'Vendors',
       purchases: 'Purchases',
+      items: 'Items',
       accounts: 'Accounts',
       payments: 'Payments',
       income: 'Income',
@@ -233,6 +234,20 @@ const translations = {
       totalPurchases: 'Total Purchases',
       thisMonth: 'This Month',
       noPurchasesFound: 'No purchases found. Add one to get started.',
+    },
+    // Items
+    items: {
+      title: 'Items',
+      subtitle: 'Manage items and their descriptions',
+      addItem: 'Add Item',
+      editItem: 'Edit Item',
+      addNewItem: 'Add New Item',
+      updateItem: 'Update Item',
+      itemName: 'Item Name',
+      totalItems: 'Total Items',
+      noItemsFound: 'No items found. Add one to get started.',
+      enterItemName: 'Enter item name',
+      enterDescription: 'Enter description',
     },
     // Payments
     payments: {
@@ -532,6 +547,7 @@ const translations = {
       purchase: 'വാങ്ങൽ',
       vendors: 'വെൻഡർമാർ',
       purchases: 'വാങ്ങലുകൾ',
+      items: 'ഇനങ്ങൾ',
       accounts: 'അക്കൗണ്ടുകൾ',
       payments: 'പേയ്‌മെന്റുകൾ',
       income: 'വരുമാനം',
@@ -745,6 +761,20 @@ const translations = {
       totalPurchases: 'ആകെ വാങ്ങലുകൾ',
       thisMonth: 'ഈ മാസം',
       noPurchasesFound: 'വാങ്ങലുകൾ കണ്ടെത്തിയില്ല. ആരംഭിക്കാൻ ഒന്ന് ചേർക്കുക.',
+    },
+    // Items
+    items: {
+      title: 'ഇനങ്ങൾ',
+      subtitle: 'ഇനങ്ങളും അവയുടെ വിവരണങ്ങളും നിയന്ത്രിക്കുക',
+      addItem: 'ഇനം ചേർക്കുക',
+      editItem: 'ഇനം തിരുത്തുക',
+      addNewItem: 'പുതിയ ഇനം ചേർക്കുക',
+      updateItem: 'ഇനം അപ്‌ഡേറ്റ് ചെയ്യുക',
+      itemName: 'ഇനത്തിന്റെ പേര്',
+      totalItems: 'ആകെ ഇനങ്ങൾ',
+      noItemsFound: 'ഇനങ്ങൾ കണ്ടെത്തിയില്ല. ആരംഭിക്കാൻ ഒന്ന് ചേർക്കുക.',
+      enterItemName: 'ഇനത്തിന്റെ പേര് നൽകുക',
+      enterDescription: 'വിവരണം നൽകുക',
     },
     // Payments
     payments: {

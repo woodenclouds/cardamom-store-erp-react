@@ -7,6 +7,7 @@ import DryingBatch from './pages/DryingBatch';
 import Customers from './pages/Customers';
 import Vendors from './pages/Vendors';
 import Purchases from './pages/Purchases';
+import Items from './pages/Items';
 import Return from './pages/Return';
 import Payments from './pages/Payments';
 import Ledger from './pages/Ledger';
@@ -114,6 +115,14 @@ const routes = [
     element: (
       <ProtectedRoute>
         <Purchases />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/items',
+    element: (
+      <ProtectedRoute>
+        <Items />
       </ProtectedRoute>
     ),
   },
